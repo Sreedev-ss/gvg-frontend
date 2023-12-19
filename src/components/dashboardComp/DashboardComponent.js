@@ -413,12 +413,14 @@ const DashboardComponent = () => {
                                             ) : null}
 
                                         </div>
+                                        <Link to='/s-plant-facilities'>
                                         {!showDropDownSPlantSFac && (
                                             <>
                                             <p className="m-0 text-white whitespace-nowrap ">{`S - PLANT`}</p>
                                             <p className="m-0 text-white whitespace-nowrap mb-3">{`S Facilities`}</p>
                                             </>
                                         )}
+                                        </Link>
                                     </div>
                                 </div>
                                 </div>

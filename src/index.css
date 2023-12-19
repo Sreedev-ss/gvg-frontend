@@ -3,24 +3,25 @@
 @import 'tailwindcss/components';
 @import 'tailwindcss/utilities';
 
-
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap');
-
-
+/* Your custom styles go here */
 body {
   margin: 0;
-  font-family: 'Poppins', sans-serif; 
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
 }
 
-
+/* Apply global styles for the app */
 :root {
   background-color: #FCF1EF;
+  font-family: 'Helvetica Neue', sans-serif;
   letter-spacing: 1px;
   padding: 0.8rem;
 }
