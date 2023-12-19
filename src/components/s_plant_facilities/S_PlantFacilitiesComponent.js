@@ -350,6 +350,7 @@ const SPlantFacilitiesComponent = () => {
                                             ) : null}
 
                                         </div>
+                                        <Link to='/s-plant-sat-com-compression'>
                                         {!showDropDownSPlantSFac && (
                                             <>
                                             <p className="m-0 text-white mt-[-10px]">S-PLANT-SAT-</p>
@@ -357,6 +358,7 @@ const SPlantFacilitiesComponent = () => {
                                             <p className="m-0 text-white mb-3">Compression</p>
                                             </>
                                         )}
+                                        </Link>
                                     </div>
                                     </div>
                                     <div className=" rounded-6xl bg-cornflowerblue h-[215px] overflow-hidden shrink-0 ml-[7%] mt-2">
