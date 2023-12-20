@@ -21,15 +21,6 @@ const AdminSidebar = () => {
             <div className=" font-bold text-[25px]  text-[rgb(157,49,113)] flex justify-center items-center">
                 GVG - Plant
             </div>
-            {/* <div>
-                <ul className='text-black'>
-                    <li><HiBuildingLibrary/>Dashboard</li>
-                    <li>Dashboard</li>
-                    <li>Dashboard</li>
-                    <li>Dashboard</li>
-                </ul>
-            </div> */}
-          
 
             <div className='m-6'>
                 <div className=" text-zinc-900 text-[14px] flex items-center justify-center">

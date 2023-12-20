@@ -133,11 +133,6 @@ const DummyComp = () => {
 
     return (
         <div className="bg-white p-4 h-[89.4vh] rounded-lg shadow-md">
-            <div className="top-0 left-0 m-4 cursor-pointer">
-                <Link to='/assets' onClick={() => fetchData(parentName?.parent)}>
-                    <FaArrowLeft className="text-slate-500 font-lighter text-[20px]" />
-                </Link>
-            </div>
             <div className="w-[95%] h-[90%] bg-[#ebf5f4] m-6 rounded-2xl" style={{ border: '2px solid rgb(65,73,115)' }}>
                 <div className='mt-4'>
                     {grandparentName && grandparentName?.name?.length === 1 ? (
@@ -256,8 +251,8 @@ const DummyComp = () => {
                                 <div className="flex flex-wrap justify-center items-center gap-4">
                                     {drillDownData.map((item) => (
                                         <div key={item._id} className=" rounded-6xl bg-cornflowerblue h-[215px] overflow-hidden  shrink-0 mt-2">
-                                            <div className=" font-light relative flex justify-center items-center bg-blue-800 rounded-xl w-[300px] h-[150px] text-[15px] mt-3">
-                                                <div className="absolute top-0 right-0 p-2 text-red-800  cursor-pointer" onClick={handlePlusSPlantSFacClick}>
+                                            <div className=" font-light relative flex justify-center items-center bg-blue-800 rounded-xl w-[300px] h-[150px] text-[15px] mt-3 cursor-pointer">
+                                                <div className="absolute top-0 right-0 p-2 text-blue-800  cursor-pointer" onClick={handlePlusSPlantSFacClick}>
                                                     <BsThreeDots className="font-lighter text-[20px] hover:text-green-50" />
                                                 </div>
                                                 <div className={`dropdown ${showDropDownSPlantSFac ? 'visible' : 'hidden'}`} >
