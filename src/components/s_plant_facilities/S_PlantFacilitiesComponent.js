@@ -25,22 +25,22 @@ const SPlantFacilitiesComponent = () => {
                     <FaArrowLeft className="text-slate-500 font-lighter text-[20px]"/>
                 </Link>
             </div>
-            <div className=" w-[95%] h-[85%] bg-green-50 m-6">
+            <div className=" w-[95%] h-[90%] bg-[#ebf5f4] m-6 rounded-2xl" style={{ border: '2px solid rgb(65,73,115)'}}>
                 <div className='m-15'>
 
-                    <b className="text-2xl cursor-pointer flex items-center justify-center">
+                    <b className="text-2xl cursor-pointer flex items-center justify-center" >
                         S - PLANT - S Facilities
                     </b>
                
                     <div className='flex items-center justify-center m-16 mt-5'>
-                        <div className="rounded-6xl  py-2 px-[15px] box-border ml-[-66px] bg-green-200 rounded-2xl w-[20%]">
+                        <div className="rounded-6xl  py-2 px-[15px] box-border ml-[-66px] bg-[rgb(215,235,230)] rounded-2xl w-[20%]" style={{ border: '2px solid rgb(77,164,164)'}}>
                             <p className="m-0 text-black mt-2 justify-center items-center flex font-semibold">S-Plant-SAT</p>
                             <p className="m-0 text-black justify-center items-center flex font-semibold">S Satellite</p>
                         </div>
 
                         <div className='absolute mt-0 left-0 top-60'>
 
-                            <div className="text-center text-xl text-white bg-green-200 rounded-2xl ml-[310px] mt-[30px] w-[102%] h-auto">
+                            <div className="text-center text-xl text-white bg-[rgb(215,235,230)] rounded-2xl ml-[310px] mt-[30px] w-[102%] h-[95%]" style={{ border: '2px solid rgb(77,164,164)' }}>
                                 <div className="cursor-pointer flex items-end justify-end">
                                     <CiCirclePlus className="text-slate-950 font-bold text-[20px]" onClick={() => setShowAddModal(true)}/>
                                 </div>
