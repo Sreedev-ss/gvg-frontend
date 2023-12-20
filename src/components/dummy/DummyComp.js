@@ -52,7 +52,7 @@ const DummyComp = () => {
     return (
         <div className="bg-white p-4 h-[89.4vh] rounded-lg shadow-md">
             <div className="top-0 left-0 m-4 cursor-pointer">
-                <Link to='#' onClick={() => fetchData(parentName?.parent)}>
+                <Link to='/assets' onClick={() => fetchData(parentName?.parent)}>
                     <FaArrowLeft className="text-slate-500 font-lighter text-[20px]" />
                 </Link>
             </div>
@@ -80,7 +80,7 @@ const DummyComp = () => {
                                             <div className="font-light flex justify-center items-center bg-blue-800 rounded-xl w-[300px] h-[150px] text-[15px] mt-3">
                                                 <div className=" font-semibold text-[15px] overflow:hidden">
                                                     <p className="m-0 text-white mt-3 ">{item.name}</p>
-                                                    <p className="m-0 text-white whitespace-nowrap mb-3 overflow-ellipsis">{item.description}</p>
+                                                    <p className="m-0 text-white whitespace-nowrap mb-3 overflow-ellipsis"  style={{ whiteSpace: 'pre-line', wordWrap: 'break-word' }}>{item.description}</p>
                                                 </div>
                                                 {/* <p className="m-0 text-white ">BULID</p>
                                     <p className="m-0 text-white mb-3 ">Bulidings</p> */}
