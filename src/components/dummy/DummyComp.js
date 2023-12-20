@@ -14,7 +14,7 @@ const DummyComp = () => {
     const [grandparentName, setGrandparentName] = useState('');
     const [showAddModal, setShowAddModal] = useState(false);
     const [selectedSystem, setSelectedSystem] = useState('Primary');
-    const [showDropDownSPlantSFac, setShowDropDownSPlantSFac] = useState(false);
+    const [showDropDownSPlantSFac, setShowDropDownSPlantSFac] = useState({});
     const [showDeleteModal, setShowDeleteModal] = useState(false);
     const [showEditSPlantSFacModal, setShowEditSPlantSFacModal] = useState(false);
     const [selectedEditSystem, setSelectedEditSystem] = useState('Primary');
@@ -27,9 +27,12 @@ const DummyComp = () => {
         parent: ''
     })
 
-    const handlePlusSPlantSFacClick = () => {
+    const handlePlusSPlantSFacClick = (itemId) => {
         console.log("ssss");
-        setShowDropDownSPlantSFac(!showDropDownSPlantSFac)
+        setShowDropDownSPlantSFac(prevState => ({
+            ...prevState,
+            [itemId]: !prevState[itemId]
+        }));
     }
 
     useEffect(() => {
@@ -252,9 +255,12 @@ const DummyComp = () => {
                                     {drillDownData.map((item) => (
                                         <div key={item._id} className=" rounded-6xl bg-cornflowerblue h-[215px] overflow-hidden  shrink-0 mt-2">
                                             <div className=" font-light relative flex justify-center items-center bg-blue-800 rounded-xl w-[300px] h-[150px] text-[15px] mt-3 cursor-pointer">
-                                                <div className="absolute top-0 right-0 p-2 text-blue-800  cursor-pointer" onClick={handlePlusSPlantSFacClick}>
+                                                <div className="absolute top-0 right-0 p-2 text-blue-800  cursor-pointer" onClick={()=>handlePlusSPlantSFacClick(item._id)}>
                                                     <BsThreeDots className="font-lighter text-[20px] hover:text-green-50" />
                                                 </div>
+                                                {showDropDownSPlantSFac[item._id] && (
+
+                                               
                                                 <div className={`dropdown ${showDropDownSPlantSFac ? 'visible' : 'hidden'}`} >
                                                     <p className="m-0 text-white whitespace-nowrap mt-3 cursor-pointer " onClick={() => setShowDeleteModal(true)}><MdDeleteOutline /></p>
                                                     {showDeleteModal ? (
@@ -405,7 +411,8 @@ const DummyComp = () => {
                                                     ) : null}
 
                                                 </div>
-                                                {!showDropDownSPlantSFac && (
+                                                 )}
+                                                {!showDropDownSPlantSFac[item._id] && (
                                                     <>
                                                         <div className=" font-semibold text-[15px] overflow:hidden" onClick={() => handleItemClick(item._id, item.level, item.parent)}>
                                                             <p className="m-0 text-white mt-3 ">{item.name}</p>
