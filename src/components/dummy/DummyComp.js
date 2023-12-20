@@ -73,7 +73,7 @@ const DummyComp = () => {
                             <p className="m-0 text-black justify-center items-center flex font-semibold">{parentName?.description.slice(0,35)}</p>
                         </div>)}
                         <div className=''>
-                            <div className="text-center text-xl text-white bg-[rgb(215,235,230)] rounded-2xl  mt-[20px] w-[127vh] min-h-[58vh]" style={{ border: '2px solid rgb(77,164,164)', overflowY: 'auto', maxHeight: '58vh'  }}>
+                            <div className="text-center text-xl text-white bg-[rgb(215,235,230)] rounded-2xl  mt-[20px] w-[127vh] min-h-[54vh]" style={{ border: '2px solid rgb(77,164,164)', overflowY: 'auto', maxHeight: '54vh'  }}>
                                 <div className="flex flex-wrap justify-center items-center gap-4">
                                     {drillDownData.map((item) => (
                                         <div key={item._id} onClick={() => handleItemClick(item._id, item.level)} className=" rounded-6xl bg-cornflowerblue h-[215px] overflow-hidden  shrink-0 mt-2">
