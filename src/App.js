@@ -6,10 +6,12 @@ import SPlantFacilities from './pages/dashboard/SPlantfacilities';
 import SPlantSatComCompression from './pages/dashboard/SPlantSatComCompression';
 import Dummy from './pages/dashboard/Dummy';
 import Assets from './pages/dashboard/Assets';
+import Login from './pages/dashboard/Login';
 
 function App() {
   return (
     <Routes>
+      <Route path='/' element={<Login />} />
       <Route path='/east-assets' element={<Dashboard />} />
       <Route path='/s-plant-facilities' element={<SPlantFacilities />} />
       <Route path='/s-plant-sat-com-compression' element={<SPlantSatComCompression />} />
