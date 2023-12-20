@@ -7,15 +7,40 @@ import { CiImport } from "react-icons/ci";
 import { CiExport } from "react-icons/ci";
 import { IoMdSettings } from "react-icons/io";
 import { IoIosLogOut } from "react-icons/io";
+import Papa from 'papaparse';
 import { useHierarchy } from '../../context/HierarchyContext';
 
-const Sidebar = () => {
+const Sidebar = ({drillDownData}) => {
     const { hierarchicalPath, selectItem } = useHierarchy();
     const navigate = useNavigate();
 
     const handleLogout = () => {
         navigate('/')
     }
+
+    const handleExport = () => {
+        const fields = ['name', 'description', 'system']; 
+      
+        try {
+          const csv = Papa.unparse({
+            fields: fields,
+            data: drillDownData,
+          });
+          console.log("drillll:",drillDownData);
+      
+          const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+          const link = document.createElement('a');
+          const url = URL.createObjectURL(blob);
+      
+          link.href = url;
+          link.setAttribute('download', 'exported_data.csv');
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+        } catch (error) {
+          console.error('Error exporting data:', error);
+        }
+      };
 
     const linkStyle = {
         color: "inherit",
@@ -58,8 +83,10 @@ return (
                 <button className="rounded-31xl flex items-center justify-center py-2.5 px-5 gap-[9px] text-[14px] text-white  cursor-pointer text-center rounded  bg-blue-800 border-blue-800  ">
                     <CiImport />Import
                 </button>
-                <button className="rounded-31xl flex items-center justify-center py-2.5 px-5 gap-[9px] text-center text-[14px] text-white cursor-pointer rounded  bg-blue-800 border-blue-800 mt-4">
-                    <CiExport />Export
+                <button className="rounded-31xl flex items-center justify-center py-2.5 px-5 gap-[9px] text-center text-[14px] text-white cursor-pointer rounded  bg-blue-800 border-blue-800 mt-4"
+                onClick={handleExport}
+                >
+                    <CiExport/>Export
                 </button>
             </div>
             <div className='mt-10'>
