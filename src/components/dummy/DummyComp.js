@@ -7,8 +7,10 @@ import { BsThreeDots } from "react-icons/bs";
 import { CiEdit } from "react-icons/ci";
 import { MdDeleteOutline } from "react-icons/md";
 import { HiOutlineDocumentDuplicate } from "react-icons/hi";
+import { useHierarchy } from '../../context/HierarchyContext';
 
 const DummyComp = () => {
+    const { hierarchicalPath, updatePath, selectedItemId } = useHierarchy();
     const [selectedItems, setSelectedItems] = useState([]);
     const [drillDownData, setDrillDownData] = useState([]);
     const [parentName, setParentName] = useState('');
@@ -21,7 +23,6 @@ const DummyComp = () => {
     const [selectedEditSystem, setSelectedEditSystem] = useState('Primary');
     const [parent, setParent] = useState(null)
     const [level, setLevel] = useState(0)
-    const [useEffectCall, setUseEffectCall] = useState(false)
     const [formData, setFormData] = useState({
         name: '',
         description: '',
@@ -36,16 +37,17 @@ const DummyComp = () => {
         }));
     }
 
-    // useEffect(() => {
-    //     setFormData((prevData) => ({
-    //         ...prevData,
-    //     }))
+    useEffect(() => {
+      
+        if(selectedItemId !=null) {
+            fetchData(selectedItemId)
+        }
 
-    // }, [useEffectCall]);
+    }, [selectedItemId]);
 
     useEffect(() => {
         // Fetch initial data when the component mounts
-        fetchData('null'); // Fetch top-level data
+        fetchData("657d9cc91a95c5b61f5d90b5"); // Fetch top-level data
 
     }, []);
 
@@ -56,14 +58,27 @@ const DummyComp = () => {
         }))
     }, [parent])
 
+    console.log(drillDownData)
+
     const fetchData = async (parentId) => {
         try {
             const response = await instance.get(`/assets/children/${parentId}`);
             setDrillDownData(response.data);
+
             if (parentId !== 'null') {
                 const parentResponse = await instance.get(`/assets/asset/${parentId}`);
                 setParentName(parentResponse.data);
+                const existingIndex = hierarchicalPath.findIndex(item => item._id === parentResponse.data?._id);
 
+                // If the _id exists, slice the array up to that index (exclusive)
+                // If it doesn't exist, add the new object to the path
+                updatePath((prevPath) => {
+                    if (existingIndex !== -1) {
+                        return prevPath.slice(0, existingIndex + 1);
+                    } else {
+                        return [...prevPath, { _id: parentResponse.data?._id, name: parentResponse.data?.name }];
+                    }
+                });
                 if (parentResponse.data.parent !== null) {
                     const grandparentResponse = await instance.get(`/assets/asset/${parentResponse.data.parent}`);
                     setGrandparentName(grandparentResponse.data);
@@ -75,6 +90,7 @@ const DummyComp = () => {
                 setParentName('');
                 setGrandparentName('');
             }
+
         } catch (error) {
             console.log(error)
         }

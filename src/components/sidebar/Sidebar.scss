@@ -1,13 +1,37 @@
 .sidebar {
     border-radius: 10px;
     grid-area: sidebar;
+
     .active {
         background-color: rgba(0, 0, 0, 0.061);
     }
 }
-.mSidebar{
+
+.mSidebar {
     .active {
         background-color: rgba(0, 0, 0, 0.061);
     }
 
+}
+
+.liPath {
+    /* Add your existing styles here */
+    position: relative;
+}
+
+.liPath:hover::before {
+    content: attr(title);
+    position: absolute;
+    background: #fff;
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+    white-space: normal;
+    z-index: 1000;
+    max-width: 200px;
+    /* Adjust the maximum width as needed */
+    word-wrap: break-word;
+    left: 100%;
+    top: 0;
 }
