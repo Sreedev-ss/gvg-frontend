@@ -6,6 +6,7 @@ import { CiCirclePlus } from "react-icons/ci";
 import { BsThreeDots } from "react-icons/bs";
 import { CiEdit } from "react-icons/ci";
 import { MdDeleteOutline } from "react-icons/md";
+import { HiOutlineDocumentDuplicate } from "react-icons/hi";
 
 const DummyComp = () => {
     const [selectedItems, setSelectedItems] = useState([]);
@@ -29,7 +30,6 @@ const DummyComp = () => {
     })
 
     const handlePlusSPlantSFacClick = (itemId) => {
-        console.log("ssss");
         setShowDropDownSPlantSFac(prevState => ({
             ...prevState,
             [itemId]: !prevState[itemId]
@@ -154,6 +154,15 @@ const DummyComp = () => {
             })
             fetchData(res.data?.parent)
             setShowEditSPlantSFacModal(false)
+        }).catch((err) => {
+            console.log(err)
+        })
+    }
+
+    const handleDuplicate = (id) => {
+        console.log(id)
+        instance.post(`/assets/duplicate/${id}`).then((res) => {
+            fetchData(parent)
         }).catch((err) => {
             console.log(err)
         })
@@ -435,6 +444,8 @@ const DummyComp = () => {
                                                                 </div>
                                                             </>
                                                         ) : null}
+
+                                                        <p className="m-0 text-white whitespace-nowrap mt-3 cursor-pointer" onClick={() => handleDuplicate(item._id)}><HiOutlineDocumentDuplicate /></p>
 
                                                     </div>
                                                 )}
