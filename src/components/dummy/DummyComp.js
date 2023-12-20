@@ -6,6 +6,7 @@ import { CiCirclePlus } from "react-icons/ci";
 import { BsThreeDots } from "react-icons/bs";
 import { CiEdit } from "react-icons/ci";
 import { MdDeleteOutline } from "react-icons/md";
+import { HiOutlineDocumentDuplicate } from "react-icons/hi";
 
 const DummyComp = () => {
     const [selectedItems, setSelectedItems] = useState([]);
@@ -409,6 +410,7 @@ const DummyComp = () => {
                                                             </div>
                                                         </>
                                                     ) : null}
+                                                    <p className="m-0 text-white whitespace-nowrap mt-3 cursor-pointer"><HiOutlineDocumentDuplicate /></p>
 
                                                 </div>
                                                  )}
