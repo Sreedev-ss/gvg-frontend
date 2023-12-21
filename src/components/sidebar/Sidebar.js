@@ -9,38 +9,41 @@ import { IoMdSettings } from "react-icons/io";
 import { IoIosLogOut } from "react-icons/io";
 import Papa from 'papaparse';
 import { useHierarchy } from '../../context/HierarchyContext';
+import { instance } from '../../api';
 
-const Sidebar = ({drillDownData}) => {
-    const { hierarchicalPath, selectItem } = useHierarchy();
+const Sidebar = ({ drillDownData }) => {
+    const { hierarchicalPath, selectItem, parentid } = useHierarchy();
+    console.log(parentid)
     const navigate = useNavigate();
 
     const handleLogout = () => {
-        navigate('/')
+        localStorage.removeItem("loginData");
+        navigate('/authentication/login')
     }
 
-    const handleExport = () => {
-        const fields = ['name', 'description', 'system']; 
-      
-        try {
-          const csv = Papa.unparse({
-            fields: fields,
-            data: drillDownData,
-          });
-          console.log("drillll:",drillDownData);
-      
-          const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
-          const link = document.createElement('a');
-          const url = URL.createObjectURL(blob);
-      
-          link.href = url;
-          link.setAttribute('download', 'exported_data.csv');
-          document.body.appendChild(link);
-          link.click();
-          document.body.removeChild(link);
-        } catch (error) {
-          console.error('Error exporting data:', error);
-        }
-      };
+    // const handleExport = () => {
+    //     const fields = ['name', 'description', 'system']; 
+
+    //     try {
+    //       const csv = Papa.unparse({
+    //         fields: fields,
+    //         data: drillDownData,
+    //       });
+    //       console.log("drillll:",drillDownData);
+
+    //       const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+    //       const link = document.createElement('a');
+    //       const url = URL.createObjectURL(blob);
+
+    //       link.href = url;
+    //       link.setAttribute('download', 'exported_data.csv');
+    //       document.body.appendChild(link);
+    //       link.click();
+    //       document.body.removeChild(link);
+    //     } catch (error) {
+    //       console.error('Error exporting data:', error);
+    //     }
+    //   };
 
     const linkStyle = {
         color: "inherit",
@@ -50,60 +53,105 @@ const Sidebar = ({drillDownData}) => {
 
     const handleLiClick = (id) => {
         selectItem(id)
-}
+    }
+    const handleExport = () => {
+        const fields = ['name', 'description', 'system', 'parent', 'level'];
 
-return (
-    <aside className="bg-white p-4 text-white rounded-lg mr-4 w-60 flex flex-col justify-between">
-        <div className='overflow-hidden'>
-            <Link to='/admin-dashboard'>
-            <div className=" font-bold text-[25px]  text-[rgb(157,49,113)] flex justify-center items-center">
-                GVG - Plant
-            </div>
-            </Link>
-            <div className="flex items-center mt-3">
-                <GiPathDistance className="text-black" />
-                <b className="text-[15px] underline text-black m-2">Path</b>
-            </div>
-            <div className="flex items-center text-[14px] mt-5 text-black">
-                {/* <IoIosPlay className="text-black" /> */}
-                {/* <Link to="/dashboardMain" style={linkStyle}>
+        try {
+            const exportedData = [];
+            instance.get(`/assets/drill-asset/${parentid}`).then((res) => {
+                res.data.forEach(async (item) => {
+                    await flattenHierarchy(item, exportedData);
+                });
+                const csv = Papa.unparse({
+                    fields: fields,
+                    data: exportedData,
+                });
+
+                const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+                const link = document.createElement('a');
+                const url = URL.createObjectURL(blob);
+
+                link.href = url;
+                link.setAttribute('download', 'exported_asset_data.csv');
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            }).catch(err => {
+                console.log(err)
+            })
+            function flattenHierarchy(item, exportedData) {
+                exportedData.push({
+                    name: item.name,
+                    description: item.description,
+                    system: item.system,
+                    parent: item.parent,
+                    level: item.level
+                });
+
+                if (item.children && item.children.length > 0) {
+                    item.children.forEach((child) => {
+                        flattenHierarchy(child, exportedData);
+                    });
+                }
+            }
+        } catch (error) {
+            console.error('Error exporting data:', error);
+        }
+    };
+
+    return (
+        <aside className="bg-white p-4 text-white rounded-lg mr-4 w-60 flex flex-col justify-between">
+            <div className='overflow-hidden'>
+                <Link to='/'>
+                    <div className=" font-bold text-[25px]  text-[rgb(157,49,113)] flex justify-center items-center">
+                        GVG - Plant
+                    </div>
+                </Link>
+                <div className="flex items-center mt-3">
+                    <GiPathDistance className="text-black" />
+                    <b className="text-[15px] underline text-black m-2">Path</b>
+                </div>
+                <div className="flex items-center text-[14px] mt-5 text-black">
+                    {/* <IoIosPlay className="text-black" /> */}
+                    {/* <Link to="/dashboardMain" style={linkStyle}>
                         East Assets
                     </Link> */}
-                <ul className="hierarchical-path">
-                    {hierarchicalPath.map((pathItem, index) => (
-                        <span style={{ marginLeft: `${index * 10}px` }} className={`flex items-center mt-2`}>
-                            <IoIosPlay className={`text-black `} />
-                            <li title={pathItem?.name} className='liPath w-28 cursor-pointer overflow-hidden text-ellipsis whitespace-nowrap' onClick={() => handleLiClick(pathItem?._id)} key={index} >{pathItem?.name}</li>
-                        </span>
-                    ))}
-                </ul>
+                    <ul className="hierarchical-path">
+                        {hierarchicalPath.map((pathItem, index) => (
+                            <span style={{ marginLeft: `${index * 10}px` }} className={`flex items-center mt-2`}>
+                                <IoIosPlay className={`text-black `} />
+                                <li title={pathItem?.name} className='liPath w-28 cursor-pointer overflow-hidden text-ellipsis whitespace-nowrap' onClick={() => handleLiClick(pathItem?._id)} key={index} >{pathItem?.name}</li>
+                            </span>
+                        ))}
+                    </ul>
+                </div>
             </div>
-        </div>
 
-        <div >
-            <div className='ml-9'>
-                <button className="rounded-31xl flex items-center justify-center py-2.5 px-5 gap-[9px] text-[14px] text-white  cursor-pointer text-center rounded  bg-blue-800 border-blue-800  ">
-                    <CiImport />Import
-                </button>
-                <button className="rounded-31xl flex items-center justify-center py-2.5 px-5 gap-[9px] text-center text-[14px] text-white cursor-pointer rounded  bg-blue-800 border-blue-800 mt-4"
-                onClick={handleExport}
-                >
-                    <CiExport/>Export
-                </button>
-            </div>
-            <div className='mt-10'>
-                <div className=" text-zinc-900 text-[14px] flex items-center justify-center">
-                    <IoMdSettings style={{ marginRight: '10px', marginBottom: '-3px' }} />
-                    Settings
+            <div >
+                <div className='ml-9'>
+                    <button className="rounded-31xl flex items-center justify-center py-2.5 px-5 gap-[9px] text-[14px] text-white  cursor-pointer text-center rounded  bg-blue-800 border-blue-800  ">
+                        <CiImport />Import
+                    </button>
+                    <button className="rounded-31xl flex items-center justify-center py-2.5 px-5 gap-[9px] text-center text-[14px] text-white cursor-pointer rounded  bg-blue-800 border-blue-800 mt-4"
+                        onClick={handleExport}
+                    >
+                        <CiExport />Export
+                    </button>
                 </div>
-                <div className=" text-zinc-900 text-[14px] cursor-pointer flex items-center justify-center" onClick={handleLogout}>
-                    <IoIosLogOut style={{ marginRight: '10px', marginBottom: '-3px' }} />
-                    Logout
+                <div className='mt-10'>
+                    <div className=" text-zinc-900 text-[14px] flex items-center justify-center">
+                        <IoMdSettings style={{ marginRight: '10px', marginBottom: '-3px' }} />
+                        Settings
+                    </div>
+                    <div className=" text-zinc-900 text-[14px] cursor-pointer flex items-center justify-center" onClick={handleLogout}>
+                        <IoIosLogOut style={{ marginRight: '10px', marginBottom: '-3px' }} />
+                        Logout
+                    </div>
                 </div>
             </div>
-        </div>
-    </aside>
-)
+        </aside>
+    )
 }
 
 export default Sidebar

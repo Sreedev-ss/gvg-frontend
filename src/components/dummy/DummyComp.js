@@ -14,7 +14,7 @@ import Papa from 'papaparse';
 
 
 const DummyComp = () => {
-    const { hierarchicalPath, updatePath, selectedItemId } = useHierarchy();
+    const { hierarchicalPath, updatePath, selectedItemId, updateParent } = useHierarchy();
     const [selectedItems, setSelectedItems] = useState([]);
     const [drillDownData, setDrillDownData] = useState([]);
     const [parentName, setParentName] = useState('');
@@ -28,6 +28,7 @@ const DummyComp = () => {
     const [parent, setParent] = useState(null)
     const [level, setLevel] = useState(0)
     const [useEffectCall, setUseEffectCall] = useState(false)
+    const [exportData, setExportData] = useState([])
 
     const [formData, setFormData] = useState({
         name: '',
@@ -35,63 +36,23 @@ const DummyComp = () => {
         system: 'primary',
         parent: ''
     })
-
-    const handleExport = () => {
-        const fields = ['name', 'description', 'system'];
+    //TODO - i) Set this function in sidebar. ii) call drill-asset api and recursely push all data into exportedData
     
-        try {
-          const exportedData = [];
-          drillDownData.forEach((item) => {
-            exportedData.push({
-              name: item.name,
-              description: item.description,
-              system: item.system,
-            });
-    
-            if (item.children && item.children.length > 0) {
-              item.children.forEach((child) => {
-                exportedData.push({
-                  name: child.name,
-                  description: child.description,
-                  system: child.system,
-                });
-              });
-            }
-          });
-    
-          const csv = Papa.unparse({
-            fields: fields,
-            data: exportedData,
-          });
-    
-          const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
-          const link = document.createElement('a');
-          const url = URL.createObjectURL(blob);
-    
-          link.href = url;
-          link.setAttribute('download', 'exported_data.csv');
-          document.body.appendChild(link);
-          link.click();
-          document.body.removeChild(link);
-        } catch (error) {
-          console.error('Error exporting data:', error);
-        }
-      };
 
     // const handleExport = () => {
     //     const fields = ['name', 'description', 'system']; 
-      
+
     //     try {
     //       const csv = Papa.unparse({
     //         fields: fields,
     //         data: drillDownData,
     //       });
     //       console.log("drillll:",drillDownData);
-      
+
     //       const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
     //       const link = document.createElement('a');
     //       const url = URL.createObjectURL(blob);
-      
+
     //       link.href = url;
     //       link.setAttribute('download', 'exported_data.csv');
     //       document.body.appendChild(link);
@@ -110,8 +71,8 @@ const DummyComp = () => {
     }
 
     useEffect(() => {
-      
-        if(selectedItemId !=null) {
+
+        if (selectedItemId != null) {
             fetchData(selectedItemId)
         }
 
@@ -140,6 +101,7 @@ const DummyComp = () => {
             if (parentId !== 'null') {
                 const parentResponse = await instance.get(`/assets/asset/${parentId}`);
                 setParentName(parentResponse.data);
+                updateParent(parentResponse.data._id)
                 const existingIndex = hierarchicalPath.findIndex(item => item._id === parentResponse.data?._id);
 
                 // If the _id exists, slice the array up to that index (exclusive)
@@ -259,16 +221,16 @@ const DummyComp = () => {
     return (
         <div className="bg-white p-4 h-[89.4vh] rounded-lg shadow-md">
             <div className="w-[95%] h-[90%] bg-[rgb(235,245,244)] m-6 rounded-2xl" style={{ border: '2px solid rgb(65,73,115)' }}>
-            {/* <div className='flex items-end justify-end'>
-                <button className="rounded-21xl flex items-center justify-center py-2.5 px-5 gap-[9px] text-[10px] text-white  cursor-pointer text-center rounded  bg-blue-800 border-blue-800  ">
-                    <CiImport/>Import
-                </button>
-                <button className="rounded-21xl flex items-center justify-center py-2.5 px-5 gap-[9px] text-center text-[10px] text-white cursor-pointer rounded  bg-blue-800 border-blue-800 mt-4"
-                onClick={handleExport}
-                >
-                    <CiExport/>Export
-                </button>
-            </div> */}
+                {/* <div className='flex items-end justify-end'>
+                    <button className="rounded-21xl flex items-center justify-center py-2.5 px-5 gap-[9px] text-[10px] text-white  cursor-pointer text-center rounded  bg-blue-800 border-blue-800  ">
+                        <CiImport />Import
+                    </button>
+                    <button className="rounded-21xl flex items-center justify-center py-2.5 px-5 gap-[9px] text-center text-[10px] text-white cursor-pointer rounded  bg-blue-800 border-blue-800 mt-4"
+                        onClick={handleExport}
+                    >
+                        <CiExport />Export
+                    </button>
+                </div> */}
                 <div className='mt-4'>
                     {grandparentName && grandparentName?.name?.length === 1 ? (
                         <b className="text-2xl cursor-pointer flex items-center justify-center" onClick={() => fetchData(grandparentName?.parent)}>
@@ -385,9 +347,9 @@ const DummyComp = () => {
 
                                 <div className="flex flex-wrap justify-center items-center gap-4">
                                     {drillDownData.map((item) => (
-                                        
+
                                         <div key={item._id} className=" rounded-6xl bg-cornflowerblue h-[215px] overflow-hidden  shrink-0 mt-2">
-                                            
+
                                             <div className=" font-light relative flex justify-center items-center bg-blue-800 rounded-xl w-[300px] h-[150px] text-[15px] mt-3 cursor-pointer">
                                                 <div className="absolute top-0 right-0 p-2 text-blue-800  cursor-pointer" onClick={() => handlePlusSPlantSFacClick(item._id)}>
                                                     <BsThreeDots className="font-lighter text-[20px] hover:text-green-50" />

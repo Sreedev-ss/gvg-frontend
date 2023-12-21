@@ -11,7 +11,7 @@ const AdminDashboardComp = () => {
                         <div className=''> 
                             <div className="flex items-center justify-center">
                                 <div className=" rounded-6xl bg-cornflowerblue h-[215px] overflow-hidden shrink-0 ">
-                                    <Link to='/dummy'>
+                                    <Link to='/asset'>
                                         <div className="font-semibold bg-blue-800 rounded-xl w-[200px] h-[100px] text-[15px] mt-14 flex items-center justify-center">
                                             <p className="m-0 text-white mt-[-20px] ">East</p>
                                             <p className="m-0 text-white  mt-8 ml-[-38px]">Assets</p>                                    

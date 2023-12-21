@@ -12,7 +12,8 @@ const Navbar = () => {
       };
 
     const handleLogout = () => {
-        navigate('/');
+        localStorage.removeItem("loginData");
+        navigate('/authentication/login');
     }
 
     return (
