@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useRef } from 'react'
 // import './Sidebar.scss',
 import { GiPathDistance } from "react-icons/gi";
 import { Link, useNavigate } from 'react-router-dom';
@@ -11,8 +11,8 @@ import Papa from 'papaparse';
 import { useHierarchy } from '../../context/HierarchyContext';
 import { instance } from '../../api';
 
-const Sidebar = ({ drillDownData }) => {
-    const { hierarchicalPath, selectItem, parentid } = useHierarchy();
+const Sidebar = () => {
+    const { hierarchicalPath, selectItem, parentid, level } = useHierarchy();
     console.log(parentid)
     const navigate = useNavigate();
 
@@ -20,30 +20,6 @@ const Sidebar = ({ drillDownData }) => {
         localStorage.removeItem("loginData");
         navigate('/authentication/login')
     }
-
-    // const handleExport = () => {
-    //     const fields = ['name', 'description', 'system']; 
-
-    //     try {
-    //       const csv = Papa.unparse({
-    //         fields: fields,
-    //         data: drillDownData,
-    //       });
-    //       console.log("drillll:",drillDownData);
-
-    //       const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
-    //       const link = document.createElement('a');
-    //       const url = URL.createObjectURL(blob);
-
-    //       link.href = url;
-    //       link.setAttribute('download', 'exported_data.csv');
-    //       document.body.appendChild(link);
-    //       link.click();
-    //       document.body.removeChild(link);
-    //     } catch (error) {
-    //       console.error('Error exporting data:', error);
-    //     }
-    //   };
 
     const linkStyle = {
         color: "inherit",
@@ -54,6 +30,10 @@ const Sidebar = ({ drillDownData }) => {
     const handleLiClick = (id) => {
         selectItem(id)
     }
+
+
+
+
     const handleExport = () => {
         const fields = ['name', 'description', 'system', 'parent', 'level'];
 
@@ -100,6 +80,46 @@ const Sidebar = ({ drillDownData }) => {
         }
     };
 
+    const fileInputRef = useRef(null);
+
+    const handleFileChange = (event) => {
+        console.log(parentid, level)
+        const levelofAsset = parseInt(level + 1)
+        const file = event.target.files[0];
+        Papa.parse(file, {
+            header: true,
+            dynamicTyping: true,
+            complete: (result) => {
+                const parsedData = result?.data;
+
+                const extractedData = parsedData.map((item) => ({
+                    name: item.name,
+                    description: item.description,
+                    system: item.system,
+                    parent: parentid
+                }));
+
+                console.log(extractedData);
+                extractedData.forEach((element, index) => {
+                    instance.post(`/assets/addAsset/${levelofAsset}`, element).then((res) => {
+                        if (res.data) {
+                            console.log(res.data)
+                            handleLiClick(parentid)
+                        } else {
+                            console.log('Error adding data')
+                        }
+                    }).catch((err) => {
+                        console.log(err)
+                    })
+                })
+            },
+        });
+    };
+
+    const handleImportButtonClick = () => {
+        // Trigger click event of the hidden input element
+        fileInputRef.current.click();
+    };
     return (
         <aside className="bg-white p-4 text-white rounded-lg mr-4 w-60 flex flex-col justify-between">
             <div className='overflow-hidden'>
@@ -130,9 +150,19 @@ const Sidebar = ({ drillDownData }) => {
 
             <div >
                 <div className='ml-9'>
-                    <button className="rounded-31xl flex items-center justify-center py-2.5 px-5 gap-[9px] text-[14px] text-white  cursor-pointer text-center rounded  bg-blue-800 border-blue-800  ">
-                        <CiImport />Import
-                    </button>
+                    <div>
+                        <input
+                            type="file"
+                            ref={fileInputRef}
+                            onChange={handleFileChange}
+                            style={{ display: 'none' }}
+                        />
+                        <button className="rounded-31xl flex items-center justify-center py-2.5 px-5 gap-[9px] text-[14px] text-white  cursor-pointer text-center rounded  bg-blue-800 border-blue-800  "
+                            onClick={handleImportButtonClick}
+                        >
+                            <CiImport />Import
+                        </button>
+                    </div>
                     <button className="rounded-31xl flex items-center justify-center py-2.5 px-5 gap-[9px] text-center text-[14px] text-white cursor-pointer rounded  bg-blue-800 border-blue-800 mt-4"
                         onClick={handleExport}
                     >
