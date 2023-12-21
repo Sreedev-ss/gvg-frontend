@@ -8,6 +8,7 @@ export const HierarchyProvider = ({ children }) => {
     const [hierarchicalPath, setHierarchicalPath] = useState([]);
     const [selectedItemId, setSelectedItemId] = useState(null);
     const [parentid, setParentId] = useState(null)
+    const [level, setLevel] = useState(null)
 
     const selectItem = (itemId) => {
         setSelectedItemId(itemId);
@@ -21,8 +22,13 @@ export const HierarchyProvider = ({ children }) => {
         setParentId(id)
     }
 
+    const updateLevel = (level) =>{
+        console.log(level)
+        setLevel(level)
+    }
+
     return (
-        <HierarchyContext.Provider value={{ hierarchicalPath, updatePath, selectItem, selectedItemId,updateParent,parentid }}>
+        <HierarchyContext.Provider value={{ hierarchicalPath, updatePath, selectItem, selectedItemId, updateParent, parentid,updateLevel,level }}>
             {children}
         </HierarchyContext.Provider>
     );

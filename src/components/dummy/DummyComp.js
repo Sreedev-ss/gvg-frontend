@@ -14,7 +14,7 @@ import Papa from 'papaparse';
 
 
 const DummyComp = () => {
-    const { hierarchicalPath, updatePath, selectedItemId, updateParent } = useHierarchy();
+    const { hierarchicalPath, updatePath, selectedItemId, updateParent, updateLevel } = useHierarchy();
     const [selectedItems, setSelectedItems] = useState([]);
     const [drillDownData, setDrillDownData] = useState([]);
     const [parentName, setParentName] = useState('');
@@ -37,7 +37,7 @@ const DummyComp = () => {
         parent: ''
     })
     //TODO - i) Set this function in sidebar. ii) call drill-asset api and recursely push all data into exportedData
-    
+
 
     // const handleExport = () => {
     //     const fields = ['name', 'description', 'system']; 
@@ -91,8 +91,6 @@ const DummyComp = () => {
         }))
     }, [parent])
 
-    console.log(drillDownData)
-
     const fetchData = async (parentId) => {
         try {
             const response = await instance.get(`/assets/children/${parentId}`);
@@ -102,6 +100,7 @@ const DummyComp = () => {
                 const parentResponse = await instance.get(`/assets/asset/${parentId}`);
                 setParentName(parentResponse.data);
                 updateParent(parentResponse.data._id)
+                updateLevel(parentResponse.data.level)
                 const existingIndex = hierarchicalPath.findIndex(item => item._id === parentResponse.data?._id);
 
                 // If the _id exists, slice the array up to that index (exclusive)

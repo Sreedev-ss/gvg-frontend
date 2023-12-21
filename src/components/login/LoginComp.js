@@ -21,13 +21,13 @@ const LoginComp = () => {
 
   }
   return (
-    <div className="bg-white p-4 h-[89.4vh] rounded-lg shadow-md">
+    <div className="bg-white p-4 h-screen rounded-lg shadow-md">
       <div className="flex items-center justify-center min-h-screen">
         <div className="bg-white rounded-lg p-8 w-full max-w-[582px]">
           <h1 className="text-3xl font-bold mb-6 text-center">Login</h1>
           <div className="mb-6">
             <label htmlFor="username" className="block text-sm font-semibold text-gray-600 mb-2">
-              Username
+              Email
             </label>
             <input
               type="text"
@@ -36,7 +36,7 @@ const LoginComp = () => {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               className="w-full border border-gray-300 p-2 rounded h-8"
-              placeholder="Enter your username"
+              placeholder="Enter your email"
             />
           </div>
           <div className="mb-6">
