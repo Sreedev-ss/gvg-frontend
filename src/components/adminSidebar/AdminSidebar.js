@@ -17,12 +17,15 @@ const AdminSidebar = () => {
     }
 
     return (
-        <aside className="bg-white p-4 text-white rounded-lg mr-4 w-56">
+        <aside className="bg-white p-4 text-white rounded-lg mr-4 w-60">
             <div className=" font-bold text-[25px]  text-[rgb(157,49,113)] flex justify-center items-center">
                 GVG - Plant
             </div>
+            <div className=" font-bold text-[15px]  text-[rgb(157,49,113)] flex justify-center items-center">
+                Admin Dashboard
+            </div>
 
-            <div className='m-6'>
+            <div className='mt-12'>
                 <div className=" text-zinc-900 text-[14px] flex items-center justify-center">
                     <HiBuildingLibrary style={{marginRight:'10px'}}/>
                     Dashboard

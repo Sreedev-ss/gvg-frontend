@@ -5,7 +5,7 @@ const LoginComp = () => {
     const navigate = useNavigate();
 
     const handleLogin = () => {
-      navigate('/assets')
+      navigate('/admin-dashboard')
     }
     return (
         <div className="bg-white p-4 h-[89.4vh] rounded-lg shadow-md">
