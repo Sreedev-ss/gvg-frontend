@@ -13,7 +13,6 @@ import { instance } from '../../api';
 
 const Sidebar = () => {
     const { hierarchicalPath, selectItem, parentid, level } = useHierarchy();
-    console.log(parentid)
     const navigate = useNavigate();
 
     const handleLogout = () => {
@@ -83,7 +82,6 @@ const Sidebar = () => {
     const fileInputRef = useRef(null);
 
     const handleFileChange = (event) => {
-        console.log(parentid, level)
         const levelofAsset = parseInt(level + 1)
         const file = event.target.files[0];
         Papa.parse(file, {
@@ -96,15 +94,15 @@ const Sidebar = () => {
                     name: item.name,
                     description: item.description,
                     system: item.system,
-                    parent: parentid
+                    parent: item.parent,
+                    level:item.level
                 }));
 
-                console.log(extractedData);
                 extractedData.forEach((element, index) => {
-                    instance.post(`/assets/addAsset/${levelofAsset}`, element).then((res) => {
+                    instance.post(`/assets/addAssetImport`, element).then((res) => {
                         if (res.data) {
                             console.log(res.data)
-                            handleLiClick(parentid)
+                            handleLiClick("657d9cc91a95c5b61f5d90b5")
                         } else {
                             console.log('Error adding data')
                         }
@@ -112,8 +110,9 @@ const Sidebar = () => {
                         console.log(err)
                     })
                 })
-            },
+            }
         });
+        window.location.reload()
     };
 
     const handleImportButtonClick = () => {
@@ -139,7 +138,7 @@ const Sidebar = () => {
                     </Link> */}
                     <ul className="hierarchical-path">
                         {hierarchicalPath.map((pathItem, index) => (
-                            <span style={{ marginLeft: `${index * 10}px` }} className={`flex items-center mt-2`}>
+                            <span key={index} style={{ marginLeft: `${index * 10}px` }} className={`flex items-center mt-2`}>
                                 <IoIosPlay className={`text-black `} />
                                 <li title={pathItem?.name} className='liPath w-28 cursor-pointer overflow-hidden text-ellipsis whitespace-nowrap' onClick={() => handleLiClick(pathItem?._id)} key={index} >{pathItem?.name}</li>
                             </span>
