@@ -10,9 +10,11 @@ import { HiOutlineDocumentDuplicate } from "react-icons/hi";
 import { useHierarchy } from '../../context/HierarchyContext';
 import './Dummy.scss'
 import Draggable from 'react-draggable';
-import { DotLoader } from "react-spinners";
+// import { DotLoader } from "react-spinners";
+// import 'tailwindcss-spinner/dist/spinner.min.css';
 
 const DummyComp = () => {
+    const [loading, setLoading] = useState(null);
     const { hierarchicalPath, updatePath, selectedItemId, updateParent, updateLevel } = useHierarchy();
     const [selectedItems, setSelectedItems] = useState([]);
     const [drillDownData, setDrillDownData] = useState([]);
@@ -100,6 +102,7 @@ const DummyComp = () => {
 
     const fetchData = async (parentId) => {
         try {
+            setLoading(true);
             const response = await instance.get(`/assets/children/${parentId}`);
             setDrillDownData(response.data);
 
@@ -133,6 +136,8 @@ const DummyComp = () => {
 
         } catch (error) {
             console.log(error)
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -172,6 +177,7 @@ const DummyComp = () => {
         if (formData.name === "" || formData.description === "" || formData.system === "") {
             console.log('Fill data')
         } else {
+            
             instance.post(`/assets/addAsset/${level}`, formData).then((res) => {
                 console.log(res)
                 setFormData({
@@ -234,6 +240,7 @@ const DummyComp = () => {
             <div className="bg-white p-4 h-[89.4vh] rounded-lg shadow-md">
 
                 <div className="w-[95%] h-[90%] bg-[rgb(235,245,244)] m-6 rounded-2xl" style={{ border: '2px solid rgb(65,73,115)' }}>
+                    
                     {/* <div className='flex items-end justify-end'>
                     <button className="rounded-21xl flex items-center justify-center py-2.5 px-5 gap-[9px] text-[10px] text-white  cursor-pointer text-center rounded  bg-blue-800 border-blue-800  ">
                         <CiImport />Import
@@ -244,6 +251,13 @@ const DummyComp = () => {
                         <CiExport />Export
                     </button>
                 </div> */}
+                        {loading ? (
+                            <div className="flex justify-center items-center h-[80%]">
+                                <div className="animate-spin rounded-full h-10 w-10 border-t-4 border-blue-500 border-solid">
+                                    
+                                </div>
+                            </div>
+                        ):(
                     <div className='mt-4'>
                         {grandparentName && grandparentName?.name?.length === 1 ? (
                             <b className="text-2xl cursor-pointer flex items-center justify-center" onClick={() => fetchData(grandparentName?.parent)}>
@@ -545,6 +559,7 @@ const DummyComp = () => {
                             </div>
                         </div>
                     </div>
+                    )}
                 </div>
             </div>
         </>
