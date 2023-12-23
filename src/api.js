@@ -1,5 +1,5 @@
 import axios from 'axios'
 
 export const instance = axios.create({
-    baseURL:"http://localhost:4000/gvg"
+    baseURL:"https://gvg-backend-jot3gt0ae-sreedev-ss-projects.vercel.app/gvg"
 })
