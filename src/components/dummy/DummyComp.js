@@ -260,7 +260,7 @@ const DummyComp = () => {
                                 <p className="m-0 text-black justify-center items-center flex font-semibold">{parentName?.description.slice(0, 35)}</p>
                             </div>)}
                             <div className=''>
-                                <div className="text-center text-xl text-white bg-[rgb(215,235,230)] rounded-2xl  mt-[20px] w-[127vh] min-h-[54vh]" style={{ border: '2px solid rgb(77,164,164)', overflowY: 'auto', maxHeight: '54vh' }}>
+                                <div className="text-center text-xl text-white bg-[rgb(215,235,230)] rounded-2xl  mt-[20px] w-[127vh] min-h-[50vh]" style={{ border: '2px solid rgb(77,164,164)', overflowY: 'auto', maxHeight: '50vh' }}>
                                     <div className="cursor-pointer flex items-end justify-end">
                                         <CiCirclePlus className="text-slate-950 font-bold text-[20px]" onClick={() => setShowAddModal(true)} />
                                     </div>
