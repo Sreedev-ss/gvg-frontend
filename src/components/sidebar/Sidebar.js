@@ -168,7 +168,7 @@ const Sidebar = () => {
                         <CiExport />Export
                     </button>
                 </div>
-                <div className='mt-10'>
+                {/* <div className='mt-10'>
                     <div className=" text-zinc-900 text-[14px] flex items-center justify-center">
                         <IoMdSettings style={{ marginRight: '10px', marginBottom: '-3px' }} />
                         Settings
@@ -177,7 +177,7 @@ const Sidebar = () => {
                         <IoIosLogOut style={{ marginRight: '10px', marginBottom: '-3px' }} />
                         Logout
                     </div>
-                </div>
+                </div> */}
             </div>
         </aside>
     )

@@ -10,8 +10,9 @@ import { HiOutlineDocumentDuplicate } from "react-icons/hi";
 import { useHierarchy } from '../../context/HierarchyContext';
 import './Dummy.scss'
 import Draggable from 'react-draggable';
-// import { DotLoader } from "react-spinners";
-// import 'tailwindcss-spinner/dist/spinner.min.css';
+
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const DummyComp = () => {
     const [loading, setLoading] = useState(null);
@@ -179,6 +180,7 @@ const DummyComp = () => {
         } else {
             
             instance.post(`/assets/addAsset/${level}`, formData).then((res) => {
+                toast.success("Created successfully");
                 console.log(res)
                 setFormData({
                     name: '',
@@ -197,6 +199,7 @@ const DummyComp = () => {
 
     const handleDelete = (id, parent) => {
         instance.delete(`/assets/deleteAsset/${id}`).then((res) => {
+            toast.success("Deleted successfully");
             fetchData(parent)
             setShowDeleteModal(false)
 
@@ -208,6 +211,7 @@ const DummyComp = () => {
     const handleEditSubmit = () => {
         console.log(formData)
         instance.put(`/assets/editAsset/${formData._id}`, formData).then((res) => {
+            toast.success("Edited successfully");
             console.log(res)
             setFormData({
                 name: '',
@@ -227,6 +231,7 @@ const DummyComp = () => {
     const handleDuplicate = (id) => {
         console.log(id)
         instance.post(`/assets/duplicate/${id}`).then((res) => {
+            toast.success("Cloned successfully");
             fetchData(parent)
             handlePlusSPlantSFacClick(id)
         }).catch((err) => {
@@ -238,6 +243,7 @@ const DummyComp = () => {
     return (
         <>
             <div className="bg-white p-4 h-[89.4vh] rounded-lg shadow-md">
+            <ToastContainer />
 
                 <div className="w-[95%] h-[90%] bg-[rgb(235,245,244)] m-6 rounded-2xl" style={{ border: '2px solid rgb(65,73,115)' }}>
                     
