@@ -23,7 +23,6 @@ export const HierarchyProvider = ({ children }) => {
     }
 
     const updateLevel = (level) =>{
-        console.log(level)
         setLevel(level)
     }
 
