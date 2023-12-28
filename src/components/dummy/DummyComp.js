@@ -385,7 +385,7 @@ const DummyComp = () => {
                                                     <div key={item._id} className=" rounded-6xl bg-cornflowerblue h-[215px] overflow-hidden  shrink-0 mt-2"
                                                     >
 
-                                                        <div className=" font-light relative flex justify-center items-center bg-blue-800 rounded-xl w-[300px] h-[150px] text-[15px] mt-3 cursor-pointer">
+                                                        <div className=" font-light relative flex justify-center items-center bg-blue-800 rounded-xl w-[200px] h-[150px] text-[15px] mt-3 cursor-pointer">
                                                             <div className="absolute top-0 right-0 p-2 text-blue-800  cursor-pointer" onClick={() => handlePlusSPlantSFacClick(item._id)}>
                                                                 <BsThreeDots className="font-lighter text-[20px] hover:text-green-50" />
                                                             </div>
