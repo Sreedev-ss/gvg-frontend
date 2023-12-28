@@ -25,3 +25,10 @@ code {
   letter-spacing: 1px;
   padding: 0.8rem;
 }
+
+@media screen and (max-width: 768px) {
+
+  .rounded-6xl {
+    width: 100%;
+  }
+}

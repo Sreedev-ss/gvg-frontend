@@ -154,7 +154,11 @@ const Sidebar = () => {
 
             <div >
                 <div>
-                <div className="m-5 text-zinc-900 text-[14px] cursor-pointer flex items-center justify-center" onClick={handleLogout}>
+                <div className="mt-16  text-zinc-900 text-[14px] cursor-pointer flex items-center justify-center">
+                    <IoMdSettings style={{marginRight:'10px'}}/>
+                    Settings
+                </div>
+                <div className="mt-4 text-zinc-900 text-[14px] cursor-pointer flex items-center justify-center" onClick={handleLogout}>
                     <IoIosLogOut style={{marginRight:'10px'}}/>
                     Logout
                 </div>

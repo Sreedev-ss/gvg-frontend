@@ -8,6 +8,7 @@ import { CiExport } from "react-icons/ci";
 import { IoMdSettings } from "react-icons/io";
 import { IoIosLogOut } from "react-icons/io";
 import { HiBuildingLibrary } from "react-icons/hi2";
+import { SiGoogleanalytics } from "react-icons/si";
 
 const AdminSidebar = () => {
     const navigate = useNavigate();
@@ -26,13 +27,13 @@ const AdminSidebar = () => {
             </div>
 
             <div className='mt-12'>
-                <div className=" text-zinc-900 text-[14px] flex items-center justify-center">
-                    <HiBuildingLibrary style={{marginRight:'10px'}}/>
+                <div className=" text-zinc-900 text-[14px] flex items-start justify-start">
+                    <HiBuildingLibrary style={{marginRight:'8px', marginTop:'4px'}}/>
                     Dashboard
                 </div>
-                <div className="m-5 text-zinc-900 text-[14px] cursor-pointer flex items-center justify-center">
-                    <IoIosLogOut style={{marginRight:'10px'}}/>
-                    User Page
+                <div className="mt-5 text-zinc-900 text-[14px] cursor-pointer flex items-start justify-start">
+                    <SiGoogleanalytics style={{marginRight:'8px', marginTop:'4px'}} />
+                    Reporting & Analytics
                 </div>
                 {/* <div className="m-5 text-zinc-900 text-[14px] flex items-center justify-center">
                     <HiBuildingLibrary style={{marginRight:'10px'}}/>
@@ -63,7 +64,11 @@ const AdminSidebar = () => {
                     </button>
                 </div>
                 <div>
-                <div className="m-16 text-zinc-900 text-[14px] cursor-pointer flex items-center justify-center" onClick={handleLogout}>
+                <div className="mt-16  text-zinc-900 text-[14px] cursor-pointer flex items-center justify-center">
+                    <IoMdSettings style={{marginRight:'10px'}}/>
+                    Settings
+                </div>
+                <div className="mt-4 text-zinc-900 text-[14px] cursor-pointer flex items-center justify-center" onClick={handleLogout}>
                     <IoIosLogOut style={{marginRight:'10px'}}/>
                     Logout
                 </div>

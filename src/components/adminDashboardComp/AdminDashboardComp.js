@@ -1,40 +1,24 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { FaEdit } from "react-icons/fa";
+import { CiCirclePlus } from "react-icons/ci";
 
 const AdminDashboardComp = () => {
     return (
         <div className="bg-white p-4 h-[89.4vh] rounded-lg shadow-md">
-            <div className=" w-[100%] h-[30%] bg-[#ebf5f4]  rounded-2xl flex items-center justify-center " style={{ border: '2px solid rgb(65,73,115)'}}>
+            <div className="h-[30%] bg-white  rounded-2xl" >
                 <div className=''>
-                    <div className='flex items-center justify-center'>
+                    <div className=''>
                         <div className=''> 
-                            <div className="flex items-center justify-center">
-                                <div className=" rounded-6xl bg-cornflowerblue h-[215px] overflow-hidden shrink-0 ">
-                                    <Link to='/asset'>
-                                        <div className="font-semibold bg-blue-800 rounded-xl w-[200px] h-[100px] text-[15px] mt-14 flex items-center justify-center">
-                                            <p className="m-0 text-white mt-[-20px] ">East</p>
-                                            <p className="m-0 text-white  mt-8 ml-[-38px]">Assets</p>                                    
+                            <div className="">
+                                <div className=" rounded-6xl bg-cornflowerblue h-[215px] overflow-hidden shrink-0 m-8">
+                                    <Link to='/assets'>
+                                        <div className="font-semibold bg-[rgb(254,132,183)] rounded-xl w-[200px] h-[100px] text-[15px]  flex items-center justify-center">
+                                            <p className="m-0 text-white mt-[-15px] ">Plants</p>                         
+                                       
                                         </div>
                                     </Link>
-                                </div>
-                                <div className=" rounded-6xl bg-cornflowerblue h-[215px] overflow-hidden shrink-0 ml-[5%]">
-                                    <div className="font-semibold bg-blue-800 rounded-xl w-[200px] h-[100px] text-[15px] mt-14 flex items-center justify-center">
-                                        <p className="m-0 text-white mt-[-20px]">West</p>
-                                        <p className="m-0 text-white mt-8 ml-[-45px]">Assets</p>                                        
-                                    </div>
-                                </div>
-                                <div className=" rounded-6xl bg-cornflowerblue h-[215px] overflow-hidden shrink-0 ml-[5%]">
-                                    <div className="font-semibold bg-blue-800 rounded-xl w-[200px] h-[100px] text-[15px] mt-14 flex items-center justify-center">
-                                        <p className="m-0 text-white mt-[-20px]">North</p>
-                                        <p className="m-0 text-white mt-8 ml-[-45px]">Assets</p>                                        
-                                    </div>
-                                </div>
-                                <div className=" rounded-6xl bg-cornflowerblue h-[215px] overflow-hidden shrink-0 ml-[5%]">
-                                    <div className="font-semibold bg-blue-800 rounded-xl w-[200px] h-[100px] text-[15px] mt-14 flex items-center justify-center">
-                                        <p className="m-0 text-white mt-[-20px]">South</p>
-                                        <p className="m-0 text-white mt-8 ml-[-45px]">Assets</p>                                        
-                                    </div>
+                                        <span><CiCirclePlus className="text-slate-950 font-bold text-[20px] mt-[-60px] ml-[250px]"  /></span>
                                 </div>
                             </div>
                         </div>
@@ -42,7 +26,7 @@ const AdminDashboardComp = () => {
                 </div>
             </div>
 
-            <div className=" w-[100%] h-[65%] bg-[#ebf5f4] mt-5  rounded-2xl " style={{ border: '2px solid rgb(65,73,115)'}}>
+            <div className="h-[45%] bg-white mt-5  rounded-2xl " >
                 <div className="m-8">
                     <h1 className="ml-5"><strong>Recent Activities</strong></h1>
                     <div className='m-6'>
