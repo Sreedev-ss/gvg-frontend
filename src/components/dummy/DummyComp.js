@@ -8,8 +8,10 @@ import { CiEdit } from "react-icons/ci";
 import { MdDeleteOutline } from "react-icons/md";
 import { HiOutlineDocumentDuplicate } from "react-icons/hi";
 import { useHierarchy } from '../../context/HierarchyContext';
-import './Dummy.scss'
+import './Dummy.scss';
+import './Dummy.css';
 import Draggable from 'react-draggable';
+
 
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -382,16 +384,64 @@ const DummyComp = () => {
                                         {drillDownData.map((item) => (
                                             <div key={item._id}>
                                                 <Draggable key={item._id}>
-                                                    <div key={item._id} className=" rounded-6xl bg-cornflowerblue h-[215px] overflow-hidden  shrink-0 mt-2"
+                                                    <div key={item._id} className=" rounded-6xl bg-cornflowerblue h-[215px] overflow-hidden shrink-0 mt-2"
                                                     >
 
-                                                        <div className=" font-light relative flex justify-center items-center bg-blue-800 rounded-xl w-[250px] h-[150px] text-[15px] mt-3 cursor-pointer">
+                                                    <div className="relative w-[250px] h-[150px] mt-3 cursor-pointer">
+                                                    <div
+                                                    className="flex justify-center items-center bg-blue-800 rounded-xl font-light w-full h-full text-[15px]"
+                                                    onClick={() => handleItemClick(item._id, item.level, item.parent)}
+                                                    >
+                                                    <div className="font-semibold text-[15px] overflow-hidden">
+                                                        <p className="m-0 text-white mt-3 ">{item.name}</p>
+                                                        <p
+                                                        className="m-0 text-white whitespace-nowrap mb-3 overflow-ellipsis"
+                                                        style={{ whiteSpace: 'pre-line', wordWrap: 'break-word' }}
+                                                        >
+                                                        {item.description}
+                                                        </p>
+                                                    </div>
+                                                    </div>
+
+                                                    <div
+                                                    className="absolute top-0 right-0 p-2 text-slate-500 cursor-pointer "
+                                                    onClick={() => handlePlusSPlantSFacClick(item._id)}
+                                                    >
+                                                    <CiCirclePlus className="font-lighter text-[20px]" />
+                                                    </div>
+
+                                                    {showDropDownSPlantSFac[item._id] && (
+                                                    <div className="text-gray-500 absolute top-0 right-0 mt-8 mr-2 dropContent show">
+                                                        {/* <div className="dropdown"> */}
+                                                        <p className="m-0  whitespace-nowrap cursor-pointer p-tooltip" onClick={() => handleDeleteModalView(item._id)}
+                                                        style={{'--i':0}}
+                                                        >
+                                                            <MdDeleteOutline />
+                                                            <span className="tooltip">Delete</span>
+                                                        </p>
+                                                        <p className="m-0  whitespace-nowrap cursor-pointer p-tooltip" onClick={() => { setShowEditSPlantSFacModal(true); setFormData(item); }}
+                                                        style={{'--i':1}}
+                                                        >
+                                                            <CiEdit className='mt-2'  />
+                                                            <span className="tooltip">Edit</span>
+                                                        </p>
+                                                        <p className="m-0  whitespace-nowrap cursor-pointer p-tooltip" onClick={() => handleDuplicate(item._id)}
+                                                        style={{'--i':2}}
+                                                        >
+                                                            <HiOutlineDocumentDuplicate className='mt-2'  />
+                                                            <span className="tooltip">Duplicate</span>
+                                                        </p>
+                                                        {/* </div> */}
+                                                    </div>
+                                                    )}
+                                                    </div>
+
+
+                                                        {/* <div className=" font-light relative flex justify-center items-center bg-blue-800 rounded-xl w-[250px] h-[150px] text-[15px] mt-3 cursor-pointer">
                                                             <div className="absolute top-0 right-0 p-2 text-slate-500 cursor-pointer" onClick={() => handlePlusSPlantSFacClick(item._id)}>
-                                                                <BsThreeDots className="font-lighter text-[20px]" />
+                                                                <CiCirclePlus className="font-lighter text-[20px]" />
                                                             </div>
                                                             {showDropDownSPlantSFac[item._id] && (
-
-
                                                                 <div className={`dropdown ${showDropDownSPlantSFac ? 'visible' : 'hidden'}`} >
                                                                     <p className="m-0 text-white whitespace-nowrap mt-3 cursor-pointer " onClick={() => handleDeleteModalView(item._id)}><MdDeleteOutline /></p>
 
@@ -403,6 +453,7 @@ const DummyComp = () => {
 
                                                                 </div>
                                                             )}
+                                                            
                                                             {!showDropDownSPlantSFac[item._id] && (
                                                                 <>
                                                                     <div className=" font-semibold text-[15px] overflow:hidden" onClick={() => handleItemClick(item._id, item.level, item.parent)}>
@@ -411,7 +462,7 @@ const DummyComp = () => {
                                                                     </div>
                                                                 </>
                                                             )}
-                                                        </div>
+                                                        </div> */}
                                                     </div>
                                                 </Draggable>
                                                 {deleteModal[item._id] ? (
