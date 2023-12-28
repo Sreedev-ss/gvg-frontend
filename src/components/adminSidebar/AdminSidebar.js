@@ -30,17 +30,44 @@ const AdminSidebar = () => {
                     <HiBuildingLibrary style={{marginRight:'10px'}}/>
                     Dashboard
                 </div>
-                <div className="m-5 text-zinc-900 text-[14px] cursor-pointer flex items-center justify-center" onClick={handleLogout}>
+                <div className="m-5 text-zinc-900 text-[14px] cursor-pointer flex items-center justify-center">
                     <IoIosLogOut style={{marginRight:'10px'}}/>
-                    Dashboard
+                    User Page
                 </div>
-                <div className="m-5 text-zinc-900 text-[14px] flex items-center justify-center">
+                {/* <div className="m-5 text-zinc-900 text-[14px] flex items-center justify-center">
                     <HiBuildingLibrary style={{marginRight:'10px'}}/>
                     Dashboard
                 </div>
                 <div className="m-5 text-zinc-900 text-[14px] cursor-pointer flex items-center justify-center" onClick={handleLogout}>
                     <IoIosLogOut style={{marginRight:'10px'}}/>
                     Dashboard
+                </div> */}
+                <div className='mt-64 ml-12'>
+                    <div>
+                        <input
+                            type="file"
+                            //ref={fileInputRef}
+                            //onChange={handleFileChange}
+                            style={{ display: 'none' }}
+                        />
+                        <button className="rounded-31xl flex items-center justify-center py-2.5 px-5 gap-[9px] text-[14px] text-white  cursor-pointer text-center rounded  bg-[rgb(254,0,144)] border-[rgb(254,0,144)]  "
+                            //onClick={handleImportButtonClick}
+                        >
+                            <CiImport />Import
+                        </button>
+                    </div>
+                    <button className="rounded-31xl flex items-center justify-center py-2.5 px-5 gap-[9px] text-center text-[14px] text-white cursor-pointer rounded  bg-[rgb(254,132,183)] border-[rgb(254,132,183)] mt-4"
+                        //onClick={handleExport}
+                    >
+                        <CiExport />Export
+                    </button>
+                </div>
+                <div>
+                <div className="m-16 text-zinc-900 text-[14px] cursor-pointer flex items-center justify-center" onClick={handleLogout}>
+                    <IoIosLogOut style={{marginRight:'10px'}}/>
+                    Logout
+                </div>
+
                 </div>
             </div>
         </aside>

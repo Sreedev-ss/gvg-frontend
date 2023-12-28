@@ -15,10 +15,10 @@ const Sidebar = () => {
     const { hierarchicalPath, selectItem, parentid, level } = useHierarchy();
     const navigate = useNavigate();
 
-    const handleLogout = () => {
-        localStorage.removeItem("loginData");
-        navigate('/authentication/login')
-    }
+    // const handleLogout = () => {
+    //     localStorage.removeItem("loginData");
+    //     navigate('/authentication/login')
+    // }
 
     const linkStyle = {
         color: "inherit",
@@ -119,6 +119,11 @@ const Sidebar = () => {
         // Trigger click event of the hidden input element
         fileInputRef.current.click();
     };
+
+    const handleLogout = () => {
+        navigate('/authentication/login')
+    }
+
     return (
         <aside className="bg-white p-4 text-white rounded-lg mr-4 w-60 flex flex-col justify-between">
             <div className='overflow-hidden'>
@@ -148,7 +153,14 @@ const Sidebar = () => {
             </div>
 
             <div >
-                <div className='ml-9'>
+                <div>
+                <div className="m-5 text-zinc-900 text-[14px] cursor-pointer flex items-center justify-center" onClick={handleLogout}>
+                    <IoIosLogOut style={{marginRight:'10px'}}/>
+                    Logout
+                </div>
+
+                </div>
+                {/* <div className='ml-9'>
                     <div>
                         <input
                             type="file"
@@ -167,7 +179,7 @@ const Sidebar = () => {
                     >
                         <CiExport />Export
                     </button>
-                </div>
+                </div> */}
                 {/* <div className='mt-10'>
                     <div className=" text-zinc-900 text-[14px] flex items-center justify-center">
                         <IoMdSettings style={{ marginRight: '10px', marginBottom: '-3px' }} />

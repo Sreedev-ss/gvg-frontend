@@ -25,7 +25,7 @@ const Navbar = () => {
                     placeholder="Search"
                     className="rounded border-none outline-none bg-slate-200 mt-2 ml-2 w-[50%]"
                 />
-                <div className="cursor-pointer flex items-end ml-[42%]">
+                {/* <div className="cursor-pointer flex items-end ml-[42%]">
                     <FaCog size={20} />
                 </div>
                 <div className="cursor-pointer flex items-end ml-[2%]" onClick={handleUserIconClick}>
@@ -35,7 +35,7 @@ const Navbar = () => {
                             <button onClick={handleLogout}>Logout</button>
                         </div>
                     )}
-                </div>
+                </div> */}
             </div>
         </nav>
     )
