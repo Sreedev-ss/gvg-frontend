@@ -32,7 +32,8 @@ const DummyComp = () => {
     const [parent, setParent] = useState(null)
     const [level, setLevel] = useState(1)
     const [useEffectCall, setUseEffectCall] = useState(false)
-    const [exportData, setExportData] = useState([])
+    const [exportData, setExportData] = useState([]);
+    const [showUpdateConfirmation, setShowUpdateConfirmation] = useState(false);
     console.log(level, 'level')
     const [formData, setFormData] = useState({
         name: '',
@@ -170,7 +171,21 @@ const DummyComp = () => {
             ...prevData,
             [name]: value
         }))
+    };
+
+    const handleUpdateCloseModal = () => {
+        setShowEditSPlantSFacModal(false)
     }
+
+    const handleUpdateConfirmationView = () => {
+        console.log("clickeddddd");
+        setShowUpdateConfirmation(true);
+      };
+      
+      
+      const handleUpdateConfirmationClose = () => {
+        setShowUpdateConfirmation(false);
+      };
 
 
     const handleCreate = (e) => {
@@ -389,7 +404,7 @@ const DummyComp = () => {
 
                                                     <div className="relative w-[250px] h-[150px] mt-3 cursor-pointer">
                                                     <div
-                                                    className="flex justify-center items-center bg-blue-800 rounded-xl font-light w-full h-full text-[15px]"
+                                                    className="flex justify-center items-center bg-[#3773ca] rounded-xl font-light w-full h-full text-[15px]"
                                                     onClick={() => handleItemClick(item._id, item.level, item.parent)}
                                                     >
                                                     <div className="font-semibold text-[15px] overflow-hidden">
@@ -404,14 +419,14 @@ const DummyComp = () => {
                                                     </div>
 
                                                     <div
-                                                    className="absolute top-0 right-0 p-2 text-slate-500 cursor-pointer "
+                                                    className="absolute top-0 right-0 p-2 text-slate-400 cursor-pointer "
                                                     onClick={() => handlePlusSPlantSFacClick(item._id)}
                                                     >
-                                                    <CiCirclePlus className="font-lighter text-[20px]" />
+                                                        <BsThreeDots className="font-lighter text-[20px]" />
                                                     </div>
 
                                                     {showDropDownSPlantSFac[item._id] && (
-                                                    <div className="text-gray-500 absolute top-0 right-0 mt-8 mr-2 dropContent show">
+                                                    <div className="text-slate-400  absolute top-0 right-0 mt-8 mr-2 dropContent show">
                                                         {/* <div className="dropdown"> */}
                                                         <p className="m-0  whitespace-nowrap cursor-pointer p-tooltip" onClick={() => handleDeleteModalView(item._id)}
                                                         style={{'--i':0}}
@@ -520,7 +535,7 @@ const DummyComp = () => {
                                                 ) : null}
                                                 {showEditSPlantSFacModal ? (
                                                     <>
-                                                        <div className="bg-slate-900">
+                                                        <div className={`bg-slate-900 z-50 ${showUpdateConfirmation ? 'modal-overlay' : ''}`}>
                                                             <div
                                                                 className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none"
                                                             >
@@ -585,7 +600,6 @@ const DummyComp = () => {
                                                                             </select>
                                                                         </div>
 
-
                                                                         <div className="flex items-center justify-end p-6">
                                                                             <button
                                                                                 className="text-red-500 background-transparent font-bold uppercase px-6 py-2 text-sm outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150 h-10"
@@ -597,25 +611,62 @@ const DummyComp = () => {
                                                                             <button
                                                                                 className="bg-emerald-500 text-white active:bg-emerald-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
                                                                                 type="button"
-                                                                                onClick={handleEditSubmit}
+                                                                                //onClick={handleEditSubmit}
+                                                                                onClick={()=> {
+                                                                                    handleUpdateConfirmationView();
+  
+                                                                                }}
                                                                             >
                                                                                 Update
-                                                                            </button>
-                                                                        </div>
-                                                                    </div>
+                                                                            </button>                                                                             
+                                                                       </div>                                                                       
+                                                                    </div>                                                                   
                                                                 </div>
                                                             </div>
                                                             <div className="opacity-25 fixed inset-0 z-40 bg-black"></div>
                                                         </div>
+                                                        
+                                                        {showUpdateConfirmation && (
+                                                        
+                                                        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50 bg-white ml-[-138px]" style={{ border: '2px solid rgb(65,73,115)' }}>
+                                                            <div className="relative p-6 flex-auto">
+                                                                <p className="my-4 text-blueGray-500 text-lg leading-relaxed text-black">
+                                                                    Are you sure you want to update?
+                                                                </p>
+                                                            </div>
+                                                            <div className="bg-white p-6 shadow-md rounded-md">
+                                                                <button
+                                                                    className="text-red-500 background-transparent font-bold uppercase px-6 py-2 text-sm outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150 h-10"
+                                                                    type="button"
+                                                                    onClick={()=>{
+                                                                        setShowUpdateConfirmation(false);
+                                                                        handleUpdateConfirmationClose();
+                                                                    }}
+                                                                >
+                                                                    Cancel
+                                                                </button>
+                                                                <button
+                                                                    className="bg-emerald-500 text-white active:bg-emerald-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+                                                                    type="button"
+                                                                    onClick={() => {
+                                                                    handleUpdateConfirmationClose();                                                               
+                                                                    handleEditSubmit(); 
+                                                                    }}
+                                                                >
+                                                                    Confirm Update
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                        )}
                                                     </>
                                                 ) : null}
-                                            </div>
-                                        ))}
+                                                </div>
+                                            ))}
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    </div>
+                        </div>                                                                              
                     )}
                 </div>
             </div>
