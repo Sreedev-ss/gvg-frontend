@@ -275,7 +275,7 @@ const DummyComp = () => {
                             </b>
                         )}
                         <div className='flex flex-col items-center justify-center mt-4 relative'>
-                            {parentName?.name && (<div className="rounded-6xl  py-2 px-[15px] box-border bg-[rgb(215,235,230)] rounded-2xl w-[400px]" style={{ border: '2px solid rgb(77,164,164)' }} onClick={() => fetchData(parentName?.parent)}>
+                            {parentName?.name && (<div className="rounded-6xl  py-2 px-[15px] box-border rounded-2xl w-[400px]" onClick={() => fetchData(parentName?.parent)}>
                                 <p className="m-0 text-black justify-center items-center flex font-semibold">{parentName?.name?.length !== 1 && parentName?.name}</p>
                                 <p className="m-0 text-black justify-center items-center flex font-semibold">{parentName?.description.slice(0, 35)}</p>
                             </div>)}
@@ -386,8 +386,8 @@ const DummyComp = () => {
                                                     >
 
                                                         <div className=" font-light relative flex justify-center items-center bg-blue-800 rounded-xl w-[200px] h-[150px] text-[15px] mt-3 cursor-pointer">
-                                                            <div className="absolute top-0 right-0 p-2 text-blue-800  cursor-pointer" onClick={() => handlePlusSPlantSFacClick(item._id)}>
-                                                                <BsThreeDots className="font-lighter text-[20px] hover:text-green-50" />
+                                                            <div className="absolute top-0 right-0 p-2 text-slate-500 cursor-pointer" onClick={() => handlePlusSPlantSFacClick(item._id)}>
+                                                                <BsThreeDots className="font-lighter text-[20px]" />
                                                             </div>
                                                             {showDropDownSPlantSFac[item._id] && (
 
