@@ -26,13 +26,13 @@ const LoginComp = () => {
       <div>
         <h1 className="text-white flex items-center justify-center text-6xl font-bold m-8">Welcome</h1>
       </div>
-      <div className="flex items-start m-16 justify-center h-[70%] bg-white rounded-2xl">
+      <div className="flex items-center justify-center h-[60%] bg-white rounded-2xl ml-64  w-[60%]">
       <div
-        className=" login bg-cover bg-center rounded-lg  w-full max-w-[700px] h-[400px] m-4"
+        className=" login bg-cover bg-center rounded-lg  w-full  h-[100%] m-4"
         
       ></div>
 
-        <div className="bg-white rounded-lg p-8 w-full max-w-[582px] h-[400px]">
+        <div className="bg-white rounded-lg p-8 w-[50%] ">
           <h1 className="text-3xl font-bold mb-6 text-center text-[rgb(104,186,164)]">Login</h1>
           <div className="mb-6">
             <label htmlFor="username" className="block text-sm font-semibold text-gray-600 mb-2">
@@ -62,7 +62,7 @@ const LoginComp = () => {
               placeholder="Enter your password"
             />
           </div>
-          <button className="text-black py-2 px-4 mt-2 rounded hover:bg-mediumaquamarine h-10 w-[521px]  text-[14px] font-bold cursor-pointer"
+          <button className="text-black py-2 px-4 mt-2 rounded-2xl shadow-xl hover:bg-mediumaquamarine h-10 w-[100%]  text-[14px] font-bold cursor-pointer"
             style={{ backgroundColor: "rgb(172,252,235)", border: '#acfceb' }}
             onClick={handleLogin}
           >

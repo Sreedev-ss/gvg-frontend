@@ -6,8 +6,10 @@
 
 .login {
     background-image: url('../../../public/img/login.jpg');
-    background-size: cover;
+  
+    background-size:  80%;
     background-position: center;
+    background-repeat: no-repeat;
 
 }
 
