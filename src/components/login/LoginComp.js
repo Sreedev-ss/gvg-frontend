@@ -27,10 +27,7 @@ const LoginComp = () => {
         <h1 className="text-white flex items-center justify-center text-6xl font-bold m-8">Welcome</h1>
       </div>
       <div className="flex items-center justify-center h-[60%] bg-white rounded-2xl ml-64  w-[60%]">
-      <div
-        className=" login bg-cover bg-center rounded-lg  w-full  h-[100%] m-4"
-        
-      ></div>
+      <div className=" login bg-cover bg-center rounded-lg  w-[60%]  h-[100%] m-4"></div>
 
         <div className="bg-white rounded-lg p-8 w-[50%] ">
           <h1 className="text-3xl font-bold mb-6 text-center text-[rgb(104,186,164)]">Login</h1>
