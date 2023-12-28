@@ -1,0 +1,18 @@
+.login-container {
+    background-image: url('../../../public/img/background_img.jpg');
+    background-size: cover;
+    background-position: center;
+}
+
+.login {
+    background-image: url('../../../public/img/login.jpg');
+    background-size: cover;
+    background-position: center;
+
+}
+
+@media (max-width: 768px) {
+    .login-container {
+      padding: 2rem
+    }
+}
