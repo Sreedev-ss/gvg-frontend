@@ -11,6 +11,7 @@ import { useHierarchy } from '../../context/HierarchyContext';
 import './Dummy.scss';
 import './Dummy.css';
 import Draggable from 'react-draggable';
+import { CiFilter } from "react-icons/ci";
 
 
 import { ToastContainer, toast } from "react-toastify";
@@ -34,6 +35,7 @@ const DummyComp = () => {
     const [useEffectCall, setUseEffectCall] = useState(false)
     const [exportData, setExportData] = useState([]);
     const [showUpdateConfirmation, setShowUpdateConfirmation] = useState(false);
+    const [filterTerm, setFilterTerm] = useState('');
     console.log(level, 'level')
     const [formData, setFormData] = useState({
         name: '',
@@ -254,7 +256,15 @@ const DummyComp = () => {
         }).catch((err) => {
             console.log(err)
         })
-    }
+    };
+    const handleFilterChange = (event) => {
+        setFilterTerm(event.target.value);
+    };
+
+    const filteredData = drillDownData.filter((item) => {
+        return item.name.toLowerCase().includes(filterTerm.toLowerCase()) ||
+               item.description.toLowerCase().includes(filterTerm.toLowerCase());
+    });
 
 
     return (
@@ -263,6 +273,7 @@ const DummyComp = () => {
             <ToastContainer />
 
                 <div className="w-[95%] h-[90%] bg-[rgb(235,245,244)] m-6 rounded-2xl" style={{ border: '2px solid rgb(65,73,115)' }}>
+                <CiFilter className='ml-[98%] m-4'/>
                     
                     {/* <div className='flex items-end justify-end'>
                     <button className="rounded-21xl flex items-center justify-center py-2.5 px-5 gap-[9px] text-[10px] text-white  cursor-pointer text-center rounded  bg-blue-800 border-blue-800  ">
@@ -282,6 +293,7 @@ const DummyComp = () => {
                             </div>
                         ):(
                     <div className='mt-4'>
+                       
                         {grandparentName && grandparentName?.name?.length === 1 ? (
                             <b className="text-2xl cursor-pointer flex items-center justify-center" onClick={() => fetchData(grandparentName?.parent)}>
                                 {grandparentName?.description?.slice(0, 35)}
@@ -403,6 +415,17 @@ const DummyComp = () => {
                                                     >
 
                                                     <div className="relative w-[250px] h-[150px] mt-3 cursor-pointer">
+                                                    {/* <input
+                                                        type="text"
+                                                        value={filterTerm}
+                                                        onChange={handleFilterChange}
+                                                        placeholder="Filter by name or description"
+                                                        className="p-2 border rounded-md"
+                                                    />
+                                                     {filteredData.map((item) => (
+                                                        <div key={item._id}>
+                                                            
+                                                        </div>))} */}
                                                     <div
                                                     className="flex justify-center items-center bg-[#3773ca] rounded-xl font-light w-full h-full text-[15px]"
                                                     onClick={() => handleItemClick(item._id, item.level, item.parent)}
