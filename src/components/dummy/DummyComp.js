@@ -452,14 +452,14 @@ const DummyComp = () => {
                                                             </div>
 
                                                             {level > 1 && <div
-                                                                className="absolute top-0 right-0 p-2 text-white cursor-pointer "
+                                                                className="absolute top-0 right-0 p-2 text-white cursor-pointer  rounded-xl shadow-lg"
                                                                 onClick={() => handlePlusSPlantSFacClick(item._id)}
                                                             >
                                                                 <BsThreeDots className="font-lighter text-[20px]" />
                                                             </div>}
 
                                                             {showDropDownSPlantSFac[item._id] && (
-                                                                <div className="text-white  absolute top-0 right-0 mt-8 mr-2 dropContent show">
+                                                                <div className="text-white bg-[#3773ca] rounded-xl shadow-lg px-2 absolute top-0 right-0 mt-8 mr-2 dropContent show">
                                                                     {/* <div className="dropdown"> */}
                                                                     <p className="m-0  whitespace-nowrap cursor-pointer p-tooltip" onClick={() => handleDeleteModalView(item._id)}
                                                                         style={{ '--i': 0 }}
