@@ -12,6 +12,7 @@ import './Dummy.scss';
 import './Dummy.css';
 import Draggable from 'react-draggable';
 import { CiFilter } from "react-icons/ci";
+import Modal from 'react-modal'; 
 
 
 import { ToastContainer, toast } from "react-toastify";
@@ -36,7 +37,9 @@ const DummyComp = () => {
     const [exportData, setExportData] = useState([]);
     const [showUpdateConfirmation, setShowUpdateConfirmation] = useState(false);
     const [filterTerm, setFilterTerm] = useState('');
-    const [mainRegion, setMainRegion] = useState([])
+    const [mainRegion, setMainRegion] = useState([]);
+    const [showConfirmationModal, setShowConfirmationModal] = useState(false);
+    const [itemIdToDuplicate, setItemIdToDuplicate] = useState(null);
     const [formData, setFormData] = useState({
         name: '',
         description: '',
@@ -248,17 +251,29 @@ const DummyComp = () => {
         }).catch((err) => {
             console.log(err)
         })
-    }
+    };
 
     const handleDuplicate = (id) => {
-        instance.post(`/assets/duplicate/${id}`).then((res) => {
+        setItemIdToDuplicate(id);
+        setShowConfirmationModal(true);
+      };
+
+    const handleConfirmDuplicate = () => {
+        instance.post(`/assets/duplicate/${itemIdToDuplicate}`).then((res) => {
             toast.success("Cloned successfully");
             fetchData(parent)
-            handlePlusSPlantSFacClick(id)
+            handlePlusSPlantSFacClick(itemIdToDuplicate);
+            setShowConfirmationModal(false);
         }).catch((err) => {
-            console.log(err)
+            console.log(err);
+            setShowConfirmationModal(false);
         })
     };
+
+    const handleCancelDuplicate = () => {
+        setShowConfirmationModal(false);
+      };
+
     const handleFilterChange = (event) => {
         setFilterTerm(event.target.value);
     };
@@ -485,6 +500,68 @@ const DummyComp = () => {
                                                                         <HiOutlineDocumentDuplicate className='mt-2' />
                                                                         <span className="tooltip">Duplicate</span>
                                                                     </p>
+                                                                    <Modal className='w-[30%] h-[25%] mt-[10%] ml-[50%] flex items-center justify-center '  style={{ border: '2px solid rgb(65,73,115)' }}
+                                                                        isOpen={showConfirmationModal}
+                                                                        onRequestClose={() => setShowConfirmationModal(false)}
+                                                                    >
+                                                                        <div>
+                                                                            <div
+                                                                                className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none mt-[25px] "
+                                                                            >
+                                                                                <div className=" my-6 mx-auto">
+
+                                                                                    <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-green-50 outline-none focus:outline-none">
+
+                                                                                        <div className="flex items-start justify-between p-5 ">
+                                                                                            <h3 className="text-3xl font-semibold text-black">
+                                                                                                Clone - {item.name}
+                                                                                            </h3>
+                                                                                            <button
+                                                                                                className="p-1 ml-auto bg-transparent border-0 text-black opacity-5 float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
+                                                                                                isOpen={showConfirmationModal}
+                                                                                                onRequestClose={() => setShowConfirmationModal(false)}
+                                                                                            >
+                                                                                                <span className="bg-transparent text-black opacity-5 h-6 w-6 text-2xl block outline-none focus:outline-none">
+                                                                                                    ×
+                                                                                                </span>
+                                                                                            </button>
+                                                                                        </div>
+
+                                                                                        <div className="relative p-1 flex-auto">
+                                                                                            <p className="my-4 text-blueGray-500 text-lg leading-relaxed text-black">
+                                                                                                Are you sure you want to clone?
+                                                                                            </p>
+                                                                                        </div>
+
+                                                                                        <div className="flex items-center justify-end p-6">
+                                                                                            <button
+                                                                                                className="text-red-500 background-transparent font-bold uppercase px-6 py-2 text-sm outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150 h-10"
+                                                                                                type="button"
+                                                                                                onClick={handleCancelDuplicate}
+                                                                                            >
+                                                                                                No
+                                                                                            </button>
+                                                                                            <button
+                                                                                                className="bg-emerald-500 text-white active:bg-emerald-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+                                                                                                type="button"
+                                                                                                onClick={handleConfirmDuplicate}
+                                                                                            >
+                                                                                                Yes
+                                                                                            </button>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div className="opacity-25 fixed inset-0 z-40 bg-black"></div>
+                                                                        </div>
+
+                                                                        
+                                                                        {/* <div>
+                                                                        <p>Do you want to clone it?</p>
+                                                                        <button onClick={handleConfirmDuplicate}>Yes</button>
+                                                                        <button onClick={handleCancelDuplicate}>No</button>
+                                                                        </div> */}
+                                                                    </Modal>
                                                                     {/* </div> */}
                                                                 </div>
                                                             )}
