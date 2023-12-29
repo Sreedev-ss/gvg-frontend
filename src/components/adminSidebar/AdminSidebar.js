@@ -14,7 +14,7 @@ import { instance } from '../../api';
 import { useHierarchy } from '../../context/HierarchyContext';
 
 const AdminSidebar = () => {
-    const { hierarchicalPath, selectItem, parentid, level } = useHierarchy();
+    // const { hierarchicalPath, selectItem, parentid, level } = useHierarchy();
     const navigate = useNavigate();
 
     const handleLogout = () => {
@@ -26,7 +26,7 @@ const AdminSidebar = () => {
 
         try {
             const exportedData = [];
-            instance.get(`/assets/drill-asset/${parentid}`).then((res) => {
+            instance.get(`/assets/drill-asset/null`).then((res) => {
                 res.data.forEach(async (item) => {
                     await flattenHierarchy(item, exportedData);
                 });
