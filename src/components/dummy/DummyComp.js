@@ -108,7 +108,6 @@ const DummyComp = () => {
                 setParentName(parentResponse.data);
                 updateParent(parentResponse.data._id)
                 updateLevel(parentResponse.data.level + 1)
-                const existingIndex = hierarchicalPath.findIndex(item => item._id === parentResponse.data?._id);
 
                 // If the _id exists, slice the array up to that index (exclusive)
                 // If it doesn't exist, add the new object to the path
