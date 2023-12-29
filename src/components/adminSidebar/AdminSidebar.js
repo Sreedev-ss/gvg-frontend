@@ -131,7 +131,7 @@ const AdminSidebar = () => {
                 Admin Dashboard
             </div>
 
-            <div className='mt-12'>
+            <div className='mt-12 h-[90%]'>
                 <div className=" text-zinc-900 text-[14px] flex items-start justify-start">
                     <HiBuildingLibrary style={{ marginRight: '8px', marginTop: '4px' }} />
                     Dashboard
@@ -179,7 +179,7 @@ const AdminSidebar = () => {
                     </button>
                 </div>
                 <div>
-                    <div className="mt-36 text-zinc-900 text-[14px] cursor-pointer flex items-center justify-center">
+                    <div className="mt-20 text-zinc-900 text-[14px] cursor-pointer flex items-center justify-center">
                         <IoMdSettings style={{ marginRight: '10px' }} />
                         Settings
                     </div>
