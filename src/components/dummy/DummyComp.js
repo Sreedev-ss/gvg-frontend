@@ -299,7 +299,7 @@ const DummyComp = () => {
                             </div>
                         </div>
                     ) : (
-                        <div className='mt-4 h-[40%]'>
+                        <div className='w-[100%] h-[100%] flex flex-col justify-center items-center p-3'>
                             {grandparentName && grandparentName?.name?.length === 1 ? (
                                 <b className="text-2xl cursor-pointer flex items-center justify-center" onClick={() => handleFetchData(grandparentName?.parent)}>
                                     {grandparentName?.description?.slice(0, 35)}
@@ -309,190 +309,183 @@ const DummyComp = () => {
                                     {grandparentName?.name && grandparentName?.name + ' - '}{grandparentName?.description?.slice(0, 35)}
                                 </b>
                             )}
-                            <div className='flex flex-col items-center justify-center mt-4 relative'>
+                            <div className='flex flex-col items-center mt-4'>
                                 {parentName?.name && level !== 2 ? (
-                                    <div className="rounded-6xl  py-2 px-[15px] box-border rounded-2xl w-[400px]" onClick={() => handleFetchData(parentName?.parent)}>
-                                        <div>
-                                            <p className="m-0 text-black justify-center items-center flex font-semibold">{parentName?.name?.length !== 1 && parentName?.name}</p>
-                                            <p className="m-0 text-black justify-center items-center flex font-semibold">{parentName?.description?.slice(0, 35)}</p>
+                                    <div className="flex justify-between z-10 box-border rounded-2xl w-[100%]" onClick={() => handleFetchData(parentName?.parent)}>
+                                        <div className='' style={{ backgroundColor: 'rgb(215,235,230)', border: '2px solid rgb(77,164,164)', borderRadius: '7px 7px 0 0', padding: '3px', borderBottom: 'none' }}>
+                                            <p className="m-0 px-4 text-black justify-center items-center flex font-semibold">{parentName?.name?.length !== 1 && parentName?.name}</p>
+                                            <p className="m-0 px-4 text-black justify-center items-center flex font-semibold">{parentName?.description?.slice(0, 35)}</p>
                                         </div>
                                     </div>
                                 ) :
-                                    <div className="rounded-6xl flex justify-evenly py-2 px-[15px] box-border rounded-2xl w-[400px]" >
-                                        {mainRegion && mainRegion.map((item, index) => (<div key={index} onClick={() => fetchData(item._id)} style={{ backgroundColor: parentName?.name?.trim() == item?.name?.trim() ? 'rgb(215,235,230)' : '', border: parentName?.name?.trim() == item?.name?.trim() ? '2px solid rgb(77,164,164)' : '', borderRadius: parentName?.name?.trim() == item?.name?.trim() ? '7px' : '', padding: '3px' }}>
-                                            <p className="m-0 text-black justify-center items-center flex font-semibold">{item?.name?.length !== 1 && item?.name}</p>
-                                            <p className="m-0 text-black justify-center items-center flex font-semibold">{item?.description?.slice(0, 35)}</p>
-                                        </div>))}
+                                    <div className="flex justify-evenly z-10 gap-10 align-middle box-border rounded-2xl w-[100%]" >
+                                        {mainRegion && mainRegion.map((item, index) => (
+                                            <div key={index} onClick={() => fetchData(item._id)} style={{ backgroundColor: parentName?.name?.trim() == item?.name?.trim() ? 'rgb(215,235,230)' : '', border: parentName?.name?.trim() == item?.name?.trim() ? '2px solid rgb(77,164,164)' : '', borderRadius: parentName?.name?.trim() == item?.name?.trim() ? '7px 7px 0 0' : '', padding: '3px', borderBottom: 'none' }}>
+                                                <p className="m-0 px-4 text-black justify-center items-center flex font-semibold">{item?.name?.length !== 1 && item?.name}</p>
+                                                <p className="m-0 px-4 text-black justify-center items-center flex font-semibold">{item?.description?.slice(0, 35)}</p>
+                                            </div>
+                                        ))}
                                     </div>
                                 }
-                                <div className='w-[98%] '>
-                                    <div className="text-center text-xl text-white bg-[rgb(215,235,230)] rounded-2xl mt-[20px] h-[50vh] overflow-y-auto py-[12px] px-[5px]" style={{ border: '2px solid rgb(77,164,164)' }}>
-                                        <div className="cursor-pointer flex items-end justify-end">
-                                            {level > 1 && <CiCirclePlus className="text-slate-950 font-bold text-[20px]" onClick={() => setShowAddModal(true)} />}
-                                        </div>
-
-                                        {showAddModal ? (
-                                            <>
-                                                <div className="">
-                                                    <div
-                                                        className=" justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none"
-                                                    >
-                                                        <div className="relative my-6 mx-auto w-[800px]">
-
-                                                            <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-green-50 outline-none focus:outline-none">
-
-                                                                <div className="flex items-start justify-between p-5 ">
-                                                                    <h3 className="text-3xl font-semibold text-black">
-                                                                        Create
-                                                                    </h3>
-                                                                    <button
-                                                                        className="p-1 ml-auto bg-transparent border-0 text-black opacity-5 float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
-                                                                        onClick={() => setShowAddModal(false)}
-                                                                    >
-                                                                        <span className="bg-transparent text-black opacity-5 h-6 w-6 text-2xl block outline-none focus:outline-none">
-                                                                            ×
-                                                                        </span>
-                                                                    </button>
-                                                                </div>
-                                                                <div className="mb-4">
-                                                                    <label htmlFor="name" className="block text-sm font-medium text-gray-700 ml-[-660px]">
-                                                                        Name:
-                                                                    </label>
-                                                                    <input
-                                                                        type="text"
-                                                                        id="name"
-                                                                        name="name"
-                                                                        value={formData.name}
-                                                                        onChange={handleChangeCreate}
-                                                                        className="mt-1 ml-[-10px] p-2 border border-gray-300 rounded-md w-[735px] h-[35px] text-black"
-                                                                    />
-                                                                </div>
-                                                                <div className="mb-4 mt-2">
-                                                                    <label htmlFor="name" className="block text-sm font-medium text-gray-700 ml-[-660px]">
-                                                                        Description:
-                                                                    </label>
-                                                                    <input
-                                                                        type="text"
-                                                                        id="description"
-                                                                        name="description"
-                                                                        value={formData.description}
-                                                                        onChange={handleChangeCreate}
-                                                                        className="mt-1 ml-[-10px] p-2 border border-gray-300 rounded-md w-[735px] h-[35px] text-black"
-                                                                    />
-                                                                </div>
+                            </div>
+                            <div className='w-[100%] h-[99%] px-2'>
+                                <div className="text-center text-xl text-white bg-[rgb(215,235,230)] rounded-2xl h-[85%] max-h-[86%] py-[12px] overflow-y-scroll " style={{ outline: '2px solid rgb(77,164,164)' }}>
+                                    <div className="cursor-pointer flex items-end justify-end">
+                                        {level > 1 && <CiCirclePlus className="text-slate-950 font-bold text-[20px]" onClick={() => setShowAddModal(true)} />}
+                                    </div>
 
 
-                                                                <div className="mb-4 mt-2">
-                                                                    <label htmlFor="system" className="block text-sm font-medium text-gray-700 ml-[-690px]">
-                                                                        System:
-                                                                    </label>
-                                                                    <select
-                                                                        id="system"
-                                                                        name="system"
-                                                                        value={formData.system}
-                                                                        onChange={handleChangeCreate}
-                                                                        //value={system}
-                                                                        //onChange={(e) => setName(e.target.value)}
-                                                                        className="mt-1 ml-[-10px] p-1 border border-gray-300 rounded-md w-[735px] h-[35px] text-black"
-                                                                    >
-                                                                        <option value="primary">primary</option>
-                                                                        {/* <option value="primary">Primary</option> */}
-                                                                    </select>
-                                                                </div>
+                                    {showAddModal ? (
+                                        <>
+                                            <div className="">
+                                                <div
+                                                    className=" justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none"
+                                                >
+                                                    <div className="relative my-6 mx-auto w-[800px]">
 
-                                                                <div className="flex items-center justify-end p-6">
-                                                                    <button
-                                                                        className="text-red-500 background-transparent font-bold uppercase px-6 py-2 text-sm outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150 h-10"
-                                                                        type="button"
-                                                                        onClick={() => setShowAddModal(false)}
-                                                                    >
-                                                                        Cancel
-                                                                    </button>
-                                                                    <button
-                                                                        className="bg-emerald-500 text-white active:bg-emerald-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
-                                                                        type="button"
-                                                                        onClick={handleCreate}
-                                                                    >
-                                                                        Create
-                                                                    </button>
-                                                                </div>
+                                                        <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-green-50 outline-none focus:outline-none">
+
+                                                            <div className="flex items-start justify-between p-5 ">
+                                                                <h3 className="text-3xl font-semibold text-black">
+                                                                    Create
+                                                                </h3>
+                                                                <button
+                                                                    className="p-1 ml-auto bg-transparent border-0 text-black opacity-5 float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
+                                                                    onClick={() => setShowAddModal(false)}
+                                                                >
+                                                                    <span className="bg-transparent text-black opacity-5 h-6 w-6 text-2xl block outline-none focus:outline-none">
+                                                                        ×
+                                                                    </span>
+                                                                </button>
+                                                            </div>
+                                                            <div className="mb-4">
+                                                                <label htmlFor="name" className="block text-sm font-medium text-gray-700 ml-[-660px]">
+                                                                    Name:
+                                                                </label>
+                                                                <input
+                                                                    type="text"
+                                                                    id="name"
+                                                                    name="name"
+                                                                    value={formData.name}
+                                                                    onChange={handleChangeCreate}
+                                                                    className="mt-1 ml-[-10px] p-2 border border-gray-300 rounded-md w-[735px] h-[35px] text-black"
+                                                                />
+                                                            </div>
+                                                            <div className="mb-4 mt-2">
+                                                                <label htmlFor="name" className="block text-sm font-medium text-gray-700 ml-[-660px]">
+                                                                    Description:
+                                                                </label>
+                                                                <input
+                                                                    type="text"
+                                                                    id="description"
+                                                                    name="description"
+                                                                    value={formData.description}
+                                                                    onChange={handleChangeCreate}
+                                                                    className="mt-1 ml-[-10px] p-2 border border-gray-300 rounded-md w-[735px] h-[35px] text-black"
+                                                                />
+                                                            </div>
+
+
+                                                            <div className="mb-4 mt-2">
+                                                                <label htmlFor="system" className="block text-sm font-medium text-gray-700 ml-[-690px]">
+                                                                    System:
+                                                                </label>
+                                                                <select
+                                                                    id="system"
+                                                                    name="system"
+                                                                    value={formData.system}
+                                                                    onChange={handleChangeCreate}
+                                                                    //value={system}
+                                                                    //onChange={(e) => setName(e.target.value)}
+                                                                    className="mt-1 ml-[-10px] p-1 border border-gray-300 rounded-md w-[735px] h-[35px] text-black"
+                                                                >
+                                                                    <option value="primary">primary</option>
+                                                                    {/* <option value="primary">Primary</option> */}
+                                                                </select>
+                                                            </div>
+
+                                                            <div className="flex items-center justify-end p-6">
+                                                                <button
+                                                                    className="text-red-500 background-transparent font-bold uppercase px-6 py-2 text-sm outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150 h-10"
+                                                                    type="button"
+                                                                    onClick={() => setShowAddModal(false)}
+                                                                >
+                                                                    Cancel
+                                                                </button>
+                                                                <button
+                                                                    className="bg-emerald-500 text-white active:bg-emerald-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+                                                                    type="button"
+                                                                    onClick={handleCreate}
+                                                                >
+                                                                    Create
+                                                                </button>
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div className="opacity-25 fixed inset-0 z-40 bg-black"></div>
                                                 </div>
-                                            </>
-                                        ) : null}
+                                                <div className="opacity-25 fixed inset-0 z-40 bg-black"></div>
+                                            </div>
+                                        </>
+                                    ) : null}
 
-                                        <div className="flex flex-wrap justify-center items-center gap-4">
-                                            {drillDownData.map((item) => (
-                                                <div key={item._id}>
-                                                    <Draggable key={item._id}>
-                                                        <div key={item._id} className=" rounded-6xl bg-cornflowerblue h-[215px] overflow-hidden shrink-0 mt-2"
-                                                        >
+                                    <div className="flex flex-wrap justify-center items-center gap-4">
+                                        {drillDownData.map((item) => (
+                                            <div key={item._id}>
+                                                <Draggable key={item._id}>
+                                                    <div key={item._id} className=" rounded-6xl bg-cornflowerblue h-[215px] overflow-hidden shrink-0 mt-2"
+                                                    >
 
-                                                            <div className="relative w-[250px] h-[150px] mt-3 cursor-pointer">
-                                                                {/* <input
-                                                        type="text"
-                                                        value={filterTerm}
-                                                        onChange={handleFilterChange}
-                                                        placeholder="Filter by name or description"
-                                                        className="p-2 border rounded-md"
-                                                    />
-                                                     {filteredData.map((item) => (
-                                                        <div key={item._id}>
-                                                            
-                                                        </div>))} */}
-                                                                <div
-                                                                    className="flex justify-center items-center bg-[#3773ca] rounded-xl font-light w-full h-full text-[15px]"
+                                                        <div className="relative w-[250px] h-[150px] mt-3 cursor-pointer">
+                                                            <div
+                                                                className="flex justify-center items-center bg-[#3773ca] rounded-xl font-light w-full h-full text-[15px]"
 
-                                                                >
-                                                                    <div className="font-semibold text-[15px] overflow-hidden" onClick={() => handleItemClick(item._id, item.level, item.parent)}>
-                                                                        <p className="m-0 text-white mt-3 ">{item.name}</p>
-                                                                        <p
-                                                                            className="m-0 text-white whitespace-nowrap mb-3 overflow-ellipsis"
-                                                                            style={{ whiteSpace: 'pre-line', wordWrap: 'break-word' }}
-                                                                        >
-                                                                            {item.description}
-                                                                        </p>
-                                                                    </div>
+                                                            >
+                                                                <div className="font-semibold text-[15px] overflow-hidden" onClick={() => handleItemClick(item._id, item.level, item.parent)}>
+                                                                    <p className="m-0 text-white mt-3 ">{item.name}</p>
+                                                                    <p
+                                                                        className="m-0 text-white whitespace-nowrap mb-3 overflow-ellipsis"
+                                                                        style={{ whiteSpace: 'pre-line', wordWrap: 'break-word' }}
+                                                                    >
+                                                                        {item.description}
+                                                                    </p>
                                                                 </div>
-
-                                                                {level > 1 && <div
-                                                                    className="absolute top-0 right-0 p-2 text-slate-400 cursor-pointer "
-                                                                    onClick={() => handlePlusSPlantSFacClick(item._id)}
-                                                                >
-                                                                    <BsThreeDots className="font-lighter text-[20px]" />
-                                                                </div>}
-
-                                                                {showDropDownSPlantSFac[item._id] && (
-                                                                    <div className="text-slate-400  absolute top-0 right-0 mt-8 mr-2 dropContent show">
-                                                                        {/* <div className="dropdown"> */}
-                                                                        <p className="m-0  whitespace-nowrap cursor-pointer p-tooltip" onClick={() => handleDeleteModalView(item._id)}
-                                                                            style={{ '--i': 0 }}
-                                                                        >
-                                                                            <MdDeleteOutline />
-                                                                            <span className="tooltip">Delete</span>
-                                                                        </p>
-                                                                        <p className="m-0  whitespace-nowrap cursor-pointer p-tooltip" onClick={() => { setShowEditSPlantSFacModal(true); setFormData(item); }}
-                                                                            style={{ '--i': 1 }}
-                                                                        >
-                                                                            <CiEdit className='mt-2' />
-                                                                            <span className="tooltip">Edit</span>
-                                                                        </p>
-                                                                        <p className="m-0  whitespace-nowrap cursor-pointer p-tooltip" onClick={() => handleDuplicate(item._id)}
-                                                                            style={{ '--i': 2 }}
-                                                                        >
-                                                                            <HiOutlineDocumentDuplicate className='mt-2' />
-                                                                            <span className="tooltip">Duplicate</span>
-                                                                        </p>
-                                                                        {/* </div> */}
-                                                                    </div>
-                                                                )}
                                                             </div>
 
+                                                            {level > 1 && <div
+                                                                className="absolute top-0 right-0 p-2 text-white cursor-pointer "
+                                                                onClick={() => handlePlusSPlantSFacClick(item._id)}
+                                                            >
+                                                                <BsThreeDots className="font-lighter text-[20px]" />
+                                                            </div>}
 
-                                                            {/* <div className=" font-light relative flex justify-center items-center bg-blue-800 rounded-xl w-[250px] h-[150px] text-[15px] mt-3 cursor-pointer">
+                                                            {showDropDownSPlantSFac[item._id] && (
+                                                                <div className="text-white  absolute top-0 right-0 mt-8 mr-2 dropContent show">
+                                                                    {/* <div className="dropdown"> */}
+                                                                    <p className="m-0  whitespace-nowrap cursor-pointer p-tooltip" onClick={() => handleDeleteModalView(item._id)}
+                                                                        style={{ '--i': 0 }}
+                                                                    >
+                                                                        <MdDeleteOutline />
+                                                                        <span className="tooltip">Delete</span>
+                                                                    </p>
+                                                                    <p className="m-0  whitespace-nowrap cursor-pointer p-tooltip" onClick={() => { setShowEditSPlantSFacModal(true); setFormData(item); }}
+                                                                        style={{ '--i': 1 }}
+                                                                    >
+                                                                        <CiEdit className='mt-2' />
+                                                                        <span className="tooltip">Edit</span>
+                                                                    </p>
+                                                                    <p className="m-0  whitespace-nowrap cursor-pointer p-tooltip" onClick={() => handleDuplicate(item._id)}
+                                                                        style={{ '--i': 2 }}
+                                                                    >
+                                                                        <HiOutlineDocumentDuplicate className='mt-2' />
+                                                                        <span className="tooltip">Duplicate</span>
+                                                                    </p>
+                                                                    {/* </div> */}
+                                                                </div>
+                                                            )}
+                                                        </div>
+
+
+                                                        {/* <div className=" font-light relative flex justify-center items-center bg-blue-800 rounded-xl w-[250px] h-[150px] text-[15px] mt-3 cursor-pointer">
                                                             <div className="absolute top-0 right-0 p-2 text-slate-500 cursor-pointer" onClick={() => handlePlusSPlantSFacClick(item._id)}>
                                                                 <CiCirclePlus className="font-lighter text-[20px]" />
                                                             </div>
@@ -518,194 +511,194 @@ const DummyComp = () => {
                                                                 </>
                                                             )}
                                                         </div> */}
+                                                    </div>
+                                                </Draggable>
+                                                {deleteModal[item._id] ? (
+                                                    <>
+                                                        <div >
+                                                            <div
+                                                                className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none"
+                                                            >
+                                                                <div className=" my-6 mx-auto">
+
+                                                                    <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-green-50 outline-none focus:outline-none">
+
+                                                                        <div className="flex items-start justify-between p-5 ">
+                                                                            <h3 className="text-3xl font-semibold text-black">
+                                                                                Delete - {item.name}
+                                                                            </h3>
+                                                                            <button
+                                                                                className="p-1 ml-auto bg-transparent border-0 text-black opacity-5 float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
+                                                                                onClick={() => handleDeleteModalView(item._id)}
+                                                                            >
+                                                                                <span className="bg-transparent text-black opacity-5 h-6 w-6 text-2xl block outline-none focus:outline-none">
+                                                                                    ×
+                                                                                </span>
+                                                                            </button>
+                                                                        </div>
+
+                                                                        <div className="relative p-6 flex-auto">
+                                                                            <p className="my-4 text-blueGray-500 text-lg leading-relaxed text-black">
+                                                                                Are you sure you want to delete?
+                                                                            </p>
+                                                                        </div>
+
+                                                                        <div className="flex items-center justify-end p-6">
+                                                                            <button
+                                                                                className="text-red-500 background-transparent font-bold uppercase px-6 py-2 text-sm outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150 h-10"
+                                                                                type="button"
+                                                                                onClick={() => handleDeleteModalView(item._id)}
+                                                                            >
+                                                                                No
+                                                                            </button>
+                                                                            <button
+                                                                                className="bg-emerald-500 text-white active:bg-emerald-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+                                                                                type="button"
+                                                                                onClick={() => handleDelete(item._id, item.parent)}
+                                                                            >
+                                                                                Yes
+                                                                            </button>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div className="opacity-25 fixed inset-0 z-40 bg-black"></div>
                                                         </div>
-                                                    </Draggable>
-                                                    {deleteModal[item._id] ? (
-                                                        <>
-                                                            <div >
-                                                                <div
-                                                                    className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none"
-                                                                >
-                                                                    <div className=" my-6 mx-auto">
+                                                    </>
+                                                ) : null}
+                                                {showEditSPlantSFacModal ? (
+                                                    <>
+                                                        <div className={`bg-slate-900 z-50 ${showUpdateConfirmation ? 'modal-overlay' : ''}`}>
+                                                            <div
+                                                                className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none"
+                                                            >
+                                                                <div className="relative my-6 mx-auto w-[800px]">
 
-                                                                        <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-green-50 outline-none focus:outline-none">
+                                                                    <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-green-50 outline-none focus:outline-none">
 
-                                                                            <div className="flex items-start justify-between p-5 ">
-                                                                                <h3 className="text-3xl font-semibold text-black">
-                                                                                    Delete - {item.name}
-                                                                                </h3>
-                                                                                <button
-                                                                                    className="p-1 ml-auto bg-transparent border-0 text-black opacity-5 float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
-                                                                                    onClick={() => handleDeleteModalView(item._id)}
-                                                                                >
-                                                                                    <span className="bg-transparent text-black opacity-5 h-6 w-6 text-2xl block outline-none focus:outline-none">
-                                                                                        ×
-                                                                                    </span>
-                                                                                </button>
-                                                                            </div>
+                                                                        <div className="flex items-start justify-between p-5 ">
+                                                                            <h3 className="text-3xl font-semibold text-black">
+                                                                                Edit
+                                                                            </h3>
+                                                                            <button
+                                                                                className="p-1 ml-auto bg-transparent border-0 text-black opacity-5 float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
+                                                                                onClick={() => { setShowEditSPlantSFacModal(false) }}
+                                                                            >
+                                                                                <span className="bg-transparent text-black opacity-5 h-6 w-6 text-2xl block outline-none focus:outline-none">
+                                                                                    ×
+                                                                                </span>
+                                                                            </button>
+                                                                        </div>
+                                                                        <div className="mb-4">
+                                                                            <label htmlFor="name" className="block text-sm font-medium text-gray-700 ml-[-690px]">
+                                                                                Name:
+                                                                            </label>
+                                                                            <input
+                                                                                type="text"
+                                                                                id="name-1"
+                                                                                name="name"
+                                                                                value={formData.name}
+                                                                                onChange={handleChangeCreate}
+                                                                                className="mt-1 ml-[-10px] p-2 border border-gray-300 rounded-md w-[740px] h-[35px] text-black"
+                                                                            />
+                                                                        </div>
+                                                                        <div className="mb-4 mt-2">
+                                                                            <label htmlFor="name" className="block text-sm font-medium text-gray-700 ml-[-660px]">
+                                                                                Description:
+                                                                            </label>
+                                                                            <input
+                                                                                type="text"
+                                                                                id="description"
+                                                                                name="description"
+                                                                                value={formData.description}
+                                                                                onChange={handleChangeCreate}
+                                                                                className="mt-1 ml-[-10px] p-2 border border-gray-300 rounded-md w-[740px] h-[35px] text-black"
+                                                                            />
+                                                                        </div>
+                                                                        <div className="mb-4 mt-2">
+                                                                            <label htmlFor="system" className="block text-sm font-medium text-gray-700 ml-[-690px]">
+                                                                                System:
+                                                                            </label>
+                                                                            <select
+                                                                                //type="text"
+                                                                                id="system"
+                                                                                name="system"
+                                                                                value={formData.system}
+                                                                                onChange={handleChangeCreate}
+                                                                                //value={system}
+                                                                                //onChange={(e) => setName(e.target.value)}
+                                                                                className="mt-1 ml-[-10px] p-1 border border-gray-300 rounded-md w-[740px] h-[35px] text-black"
+                                                                            >
+                                                                                <option value="primary">primary</option>
+                                                                            </select>
+                                                                        </div>
 
-                                                                            <div className="relative p-6 flex-auto">
-                                                                                <p className="my-4 text-blueGray-500 text-lg leading-relaxed text-black">
-                                                                                    Are you sure you want to delete?
-                                                                                </p>
-                                                                            </div>
+                                                                        <div className="flex items-center justify-end p-6">
+                                                                            <button
+                                                                                className="text-red-500 background-transparent font-bold uppercase px-6 py-2 text-sm outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150 h-10"
+                                                                                type="button"
+                                                                                onClick={() => setShowEditSPlantSFacModal(false)}
+                                                                            >
+                                                                                Cancel
+                                                                            </button>
+                                                                            <button
+                                                                                className="bg-emerald-500 text-white active:bg-emerald-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+                                                                                type="button"
+                                                                                //onClick={handleEditSubmit}
+                                                                                onClick={() => {
+                                                                                    handleUpdateConfirmationView();
 
-                                                                            <div className="flex items-center justify-end p-6">
-                                                                                <button
-                                                                                    className="text-red-500 background-transparent font-bold uppercase px-6 py-2 text-sm outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150 h-10"
-                                                                                    type="button"
-                                                                                    onClick={() => handleDeleteModalView(item._id)}
-                                                                                >
-                                                                                    No
-                                                                                </button>
-                                                                                <button
-                                                                                    className="bg-emerald-500 text-white active:bg-emerald-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
-                                                                                    type="button"
-                                                                                    onClick={() => handleDelete(item._id, item.parent)}
-                                                                                >
-                                                                                    Yes
-                                                                                </button>
-                                                                            </div>
+                                                                                }}
+                                                                            >
+                                                                                Update
+                                                                            </button>
                                                                         </div>
                                                                     </div>
                                                                 </div>
-                                                                <div className="opacity-25 fixed inset-0 z-40 bg-black"></div>
                                                             </div>
-                                                        </>
-                                                    ) : null}
-                                                    {showEditSPlantSFacModal ? (
-                                                        <>
-                                                            <div className={`bg-slate-900 z-50 ${showUpdateConfirmation ? 'modal-overlay' : ''}`}>
-                                                                <div
-                                                                    className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none"
-                                                                >
-                                                                    <div className="relative my-6 mx-auto w-[800px]">
+                                                            <div className="opacity-25 fixed inset-0 z-40 bg-black"></div>
+                                                        </div>
 
-                                                                        <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-green-50 outline-none focus:outline-none">
+                                                        {showUpdateConfirmation && (
 
-                                                                            <div className="flex items-start justify-between p-5 ">
-                                                                                <h3 className="text-3xl font-semibold text-black">
-                                                                                    Edit
-                                                                                </h3>
-                                                                                <button
-                                                                                    className="p-1 ml-auto bg-transparent border-0 text-black opacity-5 float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
-                                                                                    onClick={() => { setShowEditSPlantSFacModal(false) }}
-                                                                                >
-                                                                                    <span className="bg-transparent text-black opacity-5 h-6 w-6 text-2xl block outline-none focus:outline-none">
-                                                                                        ×
-                                                                                    </span>
-                                                                                </button>
-                                                                            </div>
-                                                                            <div className="mb-4">
-                                                                                <label htmlFor="name" className="block text-sm font-medium text-gray-700 ml-[-690px]">
-                                                                                    Name:
-                                                                                </label>
-                                                                                <input
-                                                                                    type="text"
-                                                                                    id="name-1"
-                                                                                    name="name"
-                                                                                    value={formData.name}
-                                                                                    onChange={handleChangeCreate}
-                                                                                    className="mt-1 ml-[-10px] p-2 border border-gray-300 rounded-md w-[740px] h-[35px] text-black"
-                                                                                />
-                                                                            </div>
-                                                                            <div className="mb-4 mt-2">
-                                                                                <label htmlFor="name" className="block text-sm font-medium text-gray-700 ml-[-660px]">
-                                                                                    Description:
-                                                                                </label>
-                                                                                <input
-                                                                                    type="text"
-                                                                                    id="description"
-                                                                                    name="description"
-                                                                                    value={formData.description}
-                                                                                    onChange={handleChangeCreate}
-                                                                                    className="mt-1 ml-[-10px] p-2 border border-gray-300 rounded-md w-[740px] h-[35px] text-black"
-                                                                                />
-                                                                            </div>
-                                                                            <div className="mb-4 mt-2">
-                                                                                <label htmlFor="system" className="block text-sm font-medium text-gray-700 ml-[-690px]">
-                                                                                    System:
-                                                                                </label>
-                                                                                <select
-                                                                                    //type="text"
-                                                                                    id="system"
-                                                                                    name="system"
-                                                                                    value={formData.system}
-                                                                                    onChange={handleChangeCreate}
-                                                                                    //value={system}
-                                                                                    //onChange={(e) => setName(e.target.value)}
-                                                                                    className="mt-1 ml-[-10px] p-1 border border-gray-300 rounded-md w-[740px] h-[35px] text-black"
-                                                                                >
-                                                                                    <option value="primary">primary</option>
-                                                                                </select>
-                                                                            </div>
-
-                                                                            <div className="flex items-center justify-end p-6">
-                                                                                <button
-                                                                                    className="text-red-500 background-transparent font-bold uppercase px-6 py-2 text-sm outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150 h-10"
-                                                                                    type="button"
-                                                                                    onClick={() => setShowEditSPlantSFacModal(false)}
-                                                                                >
-                                                                                    Cancel
-                                                                                </button>
-                                                                                <button
-                                                                                    className="bg-emerald-500 text-white active:bg-emerald-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
-                                                                                    type="button"
-                                                                                    //onClick={handleEditSubmit}
-                                                                                    onClick={() => {
-                                                                                        handleUpdateConfirmationView();
-
-                                                                                    }}
-                                                                                >
-                                                                                    Update
-                                                                                </button>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
+                                                            <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50 bg-white ml-[-138px]" style={{ border: '2px solid rgb(65,73,115)' }}>
+                                                                <div className="relative p-6 flex-auto">
+                                                                    <p className="my-4 text-blueGray-500 text-lg leading-relaxed text-black">
+                                                                        Are you sure you want to update?
+                                                                    </p>
                                                                 </div>
-                                                                <div className="opacity-25 fixed inset-0 z-40 bg-black"></div>
+                                                                <div className="bg-white p-6 shadow-md rounded-md">
+                                                                    <button
+                                                                        className="text-red-500 background-transparent font-bold uppercase px-6 py-2 text-sm outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150 h-10"
+                                                                        type="button"
+                                                                        onClick={() => {
+                                                                            setShowUpdateConfirmation(false);
+                                                                            handleUpdateConfirmationClose();
+                                                                        }}
+                                                                    >
+                                                                        Cancel
+                                                                    </button>
+                                                                    <button
+                                                                        className="bg-emerald-500 text-white active:bg-emerald-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+                                                                        type="button"
+                                                                        onClick={() => {
+                                                                            handleUpdateConfirmationClose();
+                                                                            handleEditSubmit();
+                                                                        }}
+                                                                    >
+                                                                        Confirm Update
+                                                                    </button>
+                                                                </div>
                                                             </div>
-
-                                                            {showUpdateConfirmation && (
-
-                                                                <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50 bg-white ml-[-138px]" style={{ border: '2px solid rgb(65,73,115)' }}>
-                                                                    <div className="relative p-6 flex-auto">
-                                                                        <p className="my-4 text-blueGray-500 text-lg leading-relaxed text-black">
-                                                                            Are you sure you want to update?
-                                                                        </p>
-                                                                    </div>
-                                                                    <div className="bg-white p-6 shadow-md rounded-md">
-                                                                        <button
-                                                                            className="text-red-500 background-transparent font-bold uppercase px-6 py-2 text-sm outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150 h-10"
-                                                                            type="button"
-                                                                            onClick={() => {
-                                                                                setShowUpdateConfirmation(false);
-                                                                                handleUpdateConfirmationClose();
-                                                                            }}
-                                                                        >
-                                                                            Cancel
-                                                                        </button>
-                                                                        <button
-                                                                            className="bg-emerald-500 text-white active:bg-emerald-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
-                                                                            type="button"
-                                                                            onClick={() => {
-                                                                                handleUpdateConfirmationClose();
-                                                                                handleEditSubmit();
-                                                                            }}
-                                                                        >
-                                                                            Confirm Update
-                                                                        </button>
-                                                                    </div>
-                                                                </div>
-                                                            )}
-                                                        </>
-                                                    ) : null}
-                                                </div>
-                                            ))}
-                                        </div>
+                                                        )}
+                                                    </>
+                                                ) : null}
+                                            </div>
+                                        ))}
                                     </div>
                                 </div>
                             </div>
+
                         </div>
                     )}
                 </div>

@@ -6,7 +6,7 @@ const AssetsComponenet = () => {
     return (
         <div className="bg-white p-4 h-[87.1vh] rounded-lg shadow-md">
             <div className="top-0 left-0 m-4 cursor-pointer">
-                <Link to='/assets'>
+                <Link to='/'>
                     <FaArrowLeft className="text-slate-500 font-lighter text-[20px]"/>
                 </Link>
             </div>
@@ -20,7 +20,7 @@ const AssetsComponenet = () => {
                             <div className="text-center text-xl text-white ">
                             <div className="flex">
                            
-                                    <div className=" rounded-6xl bg-cornflowerblue h-[215px] overflow-hidden shrink-0 ml-[1%] mt-2">
+                                    <div className="rounded-6xl bg-cornflowerblue h-[215px] overflow-hidden shrink-0 ml-[1%] mt-2">
                                         <Link to='/asset'>
                                             <div className="font-semibold bg-[rgb(55,115,202)] rounded-xl w-[200px] h-[100px] text-[15px] mt-14 flex items-center justify-center">
                                                 <p className="m-0 text-white mt-[-20px] ">East</p>
