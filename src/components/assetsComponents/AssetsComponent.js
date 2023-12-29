@@ -29,7 +29,7 @@ const AssetsComponenet = () => {
                                         </Link>
                                     </div>
                               
-                                    <div className=" rounded-6xl bg-cornflowerblue h-[215px] overflow-hidden shrink-0 ml-[5%] mt-2">
+                                    <div className=" rounded-6xl bg-cornflowerblue h-[215px] overflow-hidden shrink-0 ml-[-40%] mt-2">
                                         <div className="font-semibold bg-[rgb(55,115,202)] rounded-xl w-[200px] h-[100px] text-[15px] mt-14 flex items-center justify-center">
                                             <p className="m-0 text-white mt-[-20px]">West</p>
                                             <p className="m-0 text-white mt-8 ml-[-45px]">Assets</p>
@@ -46,7 +46,7 @@ const AssetsComponenet = () => {
                                            
                                         </div>
                                     </div>
-                                    <div className=" rounded-6xl bg-cornflowerblue h-[215px] overflow-hidden shrink-0 ml-[5%] mt-2">
+                                    <div className=" rounded-6xl bg-cornflowerblue h-[215px] overflow-hidden shrink-0 ml-[-40%] mt-2">
                                         <div className="font-semibold bg-[rgb(55,115,202)] rounded-xl w-[200px] h-[100px] text-[15px]  mt-[-1px] flex items-center justify-center">
                                             <p className="m-0 text-white mt-[-20px]  ">South</p>
                                             <p className="m-0 text-white mt-8 ml-[-46px]">Assets</p>
