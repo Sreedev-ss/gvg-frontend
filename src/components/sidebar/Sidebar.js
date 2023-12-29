@@ -148,7 +148,7 @@ const Sidebar = () => {
                     <p className='text-black'>Assets</p> */}
                 </div>
                 </Link>
-                <div className="flex items-center text-[14px] mt-1 text-black ml-2">
+                <div className="flex items-center text-[14px] mt-[0px] text-black ml-1">
                     {/* <IoIosPlay className="text-black" /> */}
                     {/* <Link to="/dashboardMain" style={linkStyle}>
                         East Assets
@@ -156,14 +156,14 @@ const Sidebar = () => {
                     
                     <ul className="hierarchical-path">
                         {hierarchicalPath.map((pathItem, index) => (
-                            <span key={index} style={{ marginLeft: `${index * 10}px` }} className={`flex items-center mt-2`}>
+                            <span key={index} style={{ marginLeft: `${index * 5}px` }} className={`flex items-center mt-2`}>
                                 { index === hierarchicalPath.length - 1 ? (
-                                    <PiArrowBendDownRightLight className={`text-black`}/>
+                                    <PiArrowBendDownRightLight className={`text-black `}/>
                                 ):(
 
-                                <IoIosPlay className={`text-black `} />
+                                <IoIosPlay className={`text-black`} />
                                 )}
-                                <li title={pathItem?.name} className='liPath w-28 cursor-pointer overflow-hidden text-ellipsis whitespace-nowrap ml-2' onClick={() => handleLiClick(pathItem?._id)} key={index} >{pathItem?.name}</li>
+                                <li title={pathItem?.name} className='liPath w-28 cursor-pointer overflow-hidden text-ellipsis whitespace-nowrap ml-1' onClick={() => handleLiClick(pathItem?._id)} key={index} >{pathItem?.name}</li>
                             </span>
                         ))}
                     </ul>
