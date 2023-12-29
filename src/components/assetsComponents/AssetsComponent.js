@@ -1,6 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { FaArrowLeft } from "react-icons/fa";
+import { CiCirclePlus } from "react-icons/ci";
 
 const AssetsComponenet = () => {
     return (
@@ -11,6 +12,9 @@ const AssetsComponenet = () => {
                 </Link>
             </div>
             <div className="h-[78%] max-h-[80%] bg-[rgb(245,249,255)] m-6 rounded-2xl" style={{ border: '2px solid rgb(17,110,255)'}}>
+                <div className="cursor-pointer flex items-end justify-end m-4">
+                    <CiCirclePlus className="text-slate-950 font-bold text-[20px]"  />
+                </div>
                 <div className='m-15'>
                     <b className="text-4xl cursor-pointer flex items-center justify-center">
                         Assets
