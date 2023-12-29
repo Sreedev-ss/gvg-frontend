@@ -43,32 +43,6 @@ const DummyComp = () => {
         system: 'primary',
         parent: ''
     })
-    console.log(level, mainRegion)
-
-
-    // const handleExport = () => {
-    //     const fields = ['name', 'description', 'system']; 
-
-    //     try {
-    //       const csv = Papa.unparse({
-    //         fields: fields,
-    //         data: drillDownData,
-    //       });
-    //       console.log("drillll:",drillDownData);
-
-    //       const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
-    //       const link = document.createElement('a');
-    //       const url = URL.createObjectURL(blob);
-
-    //       link.href = url;
-    //       link.setAttribute('download', 'exported_data.csv');
-    //       document.body.appendChild(link);
-    //       link.click();
-    //       document.body.removeChild(link);
-    //     } catch (error) {
-    //       console.error('Error exporting data:', error);
-    //     }
-    //   };
 
     const [deleteModal, setDeleteModal] = useState({})
     const handleDeleteModalView = (itemId) => {
@@ -134,17 +108,30 @@ const DummyComp = () => {
                 setParentName(parentResponse.data);
                 updateParent(parentResponse.data._id)
                 updateLevel(parentResponse.data.level + 1)
-                const existingIndex = hierarchicalPath.findIndex(item => item._id === parentResponse.data?._id);
+                const existingIndex = hierarchicalPath.findIndex(item => item._id === parentResponse.data?._id );
 
                 // If the _id exists, slice the array up to that index (exclusive)
                 // If it doesn't exist, add the new object to the path
                 updatePath((prevPath) => {
+                    const existingIndex = prevPath.findIndex(item => item._id === parentResponse.data?._id);
+                    
                     if (existingIndex !== -1) {
                         return prevPath.slice(0, existingIndex + 1);
                     } else {
-                        return [...prevPath, { _id: parentResponse.data?._id, name: parentResponse.data?.name }];
+                        // Check if there are existing items with the same level
+                        const itemsWithSameLevel = prevPath.filter(item => item.level === parentResponse.data?.level);
+                
+                        if (itemsWithSameLevel.length > 0) {
+                            // Remove all items with the same level
+                            const newPath = prevPath.filter(item => item.level !== parentResponse.data?.level);
+                            // Add the new object
+                            return [...newPath, { _id: parentResponse.data?._id, name: parentResponse.data?.name, level: parentResponse.data?.level }];
+                        } else {
+                            return [...prevPath, { _id: parentResponse.data?._id, name: parentResponse.data?.name, level: parentResponse.data?.level }];
+                        }
                     }
                 });
+                
                 if (parentResponse.data.parent !== null) {
                     const grandparentResponse = await instance.get(`/assets/asset/${parentResponse.data.parent}`);
                     setGrandparentName(grandparentResponse.data);
@@ -333,8 +320,8 @@ const DummyComp = () => {
                                         </div>
                                     </div>
                                 ) :
-                                    <div className="rounded-6xl flex justify-between py-2 px-[15px] box-border rounded-2xl w-[400px]" >
-                                        {mainRegion && mainRegion.map((item, index) => (<div key={index}>
+                                    <div className="rounded-6xl flex justify-evenly py-2 px-[15px] box-border rounded-2xl w-[400px]" >
+                                        {mainRegion && mainRegion.map((item, index) => (<div key={index} onClick={()=>fetchData(item._id)} style={{backgroundColor : parentName?.name?.trim() == item?.name?.trim() ?  'rgb(215,235,230)':'', border : parentName?.name?.trim() == item?.name?.trim() ?  '2px solid rgb(77,164,164)':'', borderRadius : parentName?.name?.trim() == item?.name?.trim() ?'7px' :'',padding:'3px'}}>
                                             <p className="m-0 text-black justify-center items-center flex font-semibold">{item?.name?.length !== 1 && item?.name}</p>
                                             <p className="m-0 text-black justify-center items-center flex font-semibold">{item?.description?.slice(0, 35)}</p>
                                         </div>))}
@@ -343,7 +330,7 @@ const DummyComp = () => {
                                 <div className=''>
                                     <div className="text-center text-xl text-white bg-[rgb(215,235,230)] rounded-2xl  mt-[20px] w-[127vh] min-h-[49vh]" style={{ border: '2px solid rgb(77,164,164)', overflowY: 'auto', maxHeight: '49vh' }}>
                                         <div className="cursor-pointer flex items-end justify-end">
-                                            {level > 2 && <CiCirclePlus className="text-slate-950 font-bold text-[20px]" onClick={() => setShowAddModal(true)} />}
+                                            {level > 1 && <CiCirclePlus className="text-slate-950 font-bold text-[20px]" onClick={() => setShowAddModal(true)} />}
                                         </div>
 
                                         {showAddModal ? (
@@ -473,12 +460,12 @@ const DummyComp = () => {
                                                                     </div>
                                                                 </div>
 
-                                                                <div
+                                                                {level > 1 && <div
                                                                     className="absolute top-0 right-0 p-2 text-slate-400 cursor-pointer "
                                                                     onClick={() => handlePlusSPlantSFacClick(item._id)}
                                                                 >
                                                                     <BsThreeDots className="font-lighter text-[20px]" />
-                                                                </div>
+                                                                </div>}
 
                                                                 {showDropDownSPlantSFac[item._id] && (
                                                                     <div className="text-slate-400  absolute top-0 right-0 mt-8 mr-2 dropContent show">
