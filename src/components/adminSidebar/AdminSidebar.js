@@ -74,7 +74,6 @@ const AdminSidebar = () => {
     const fileInputRef = useRef(null);
 
     const handleFileChange = (event) => {
-        const levelofAsset = parseInt(level + 1)
         const file = event.target.files[0];
         Papa.parse(file, {
             header: true,
