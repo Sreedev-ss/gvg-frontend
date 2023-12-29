@@ -326,7 +326,7 @@ const DummyComp = () => {
                                     </div>
                                 }
                                 <div className='w-[98%] '>
-                                    <div className="text-center text-xl text-white bg-[rgb(215,235,230)] rounded-2xl mt-[20px] h-[56vh] overflow-y-auto py-[12px] px-[5px]" style={{ border: '2px solid rgb(77,164,164)' }}>
+                                    <div className="text-center text-xl text-white bg-[rgb(215,235,230)] rounded-2xl mt-[20px] h-[50vh] overflow-y-auto py-[12px] px-[5px]" style={{ border: '2px solid rgb(77,164,164)' }}>
                                         <div className="cursor-pointer flex items-end justify-end">
                                             {level > 1 && <CiCirclePlus className="text-slate-950 font-bold text-[20px]" onClick={() => setShowAddModal(true)} />}
                                         </div>
