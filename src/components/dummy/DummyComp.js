@@ -108,19 +108,19 @@ const DummyComp = () => {
                 setParentName(parentResponse.data);
                 updateParent(parentResponse.data._id)
                 updateLevel(parentResponse.data.level + 1)
-                const existingIndex = hierarchicalPath.findIndex(item => item._id === parentResponse.data?._id );
+                const existingIndex = hierarchicalPath.findIndex(item => item._id === parentResponse.data?._id);
 
                 // If the _id exists, slice the array up to that index (exclusive)
                 // If it doesn't exist, add the new object to the path
                 updatePath((prevPath) => {
                     const existingIndex = prevPath.findIndex(item => item._id === parentResponse.data?._id);
-                    
+
                     if (existingIndex !== -1) {
                         return prevPath.slice(0, existingIndex + 1);
                     } else {
                         // Check if there are existing items with the same level
                         const itemsWithSameLevel = prevPath.filter(item => item.level === parentResponse.data?.level);
-                
+
                         if (itemsWithSameLevel.length > 0) {
                             // Remove all items with the same level
                             const newPath = prevPath.filter(item => item.level !== parentResponse.data?.level);
@@ -131,7 +131,7 @@ const DummyComp = () => {
                         }
                     }
                 });
-                
+
                 if (parentResponse.data.parent !== null) {
                     const grandparentResponse = await instance.get(`/assets/asset/${parentResponse.data.parent}`);
                     setGrandparentName(grandparentResponse.data);
@@ -280,7 +280,7 @@ const DummyComp = () => {
             <div className="bg-white p-4 h-[89.4vh] rounded-lg shadow-md">
                 <ToastContainer />
 
-                <div className="w-[95%] h-[90%] bg-[rgb(235,245,244)] m-6 rounded-2xl" style={{ border: '2px solid rgb(65,73,115)' }}>
+                <div className="w-[96%] h-[94%] bg-[rgb(235,245,244)] m-6 rounded-2xl" style={{ border: '2px solid rgb(65,73,115)' }}>
                     <CiFilter className='ml-[98%] m-4' />
 
                     {/* <div className='flex items-end justify-end'>
@@ -300,8 +300,7 @@ const DummyComp = () => {
                             </div>
                         </div>
                     ) : (
-                        <div className='mt-4'>
-
+                        <div className='mt-4 h-[40%]'>
                             {grandparentName && grandparentName?.name?.length === 1 ? (
                                 <b className="text-2xl cursor-pointer flex items-center justify-center" onClick={() => handleFetchData(grandparentName?.parent)}>
                                     {grandparentName?.description?.slice(0, 35)}
@@ -321,14 +320,14 @@ const DummyComp = () => {
                                     </div>
                                 ) :
                                     <div className="rounded-6xl flex justify-evenly py-2 px-[15px] box-border rounded-2xl w-[400px]" >
-                                        {mainRegion && mainRegion.map((item, index) => (<div key={index} onClick={()=>fetchData(item._id)} style={{backgroundColor : parentName?.name?.trim() == item?.name?.trim() ?  'rgb(215,235,230)':'', border : parentName?.name?.trim() == item?.name?.trim() ?  '2px solid rgb(77,164,164)':'', borderRadius : parentName?.name?.trim() == item?.name?.trim() ?'7px' :'',padding:'3px'}}>
+                                        {mainRegion && mainRegion.map((item, index) => (<div key={index} onClick={() => fetchData(item._id)} style={{ backgroundColor: parentName?.name?.trim() == item?.name?.trim() ? 'rgb(215,235,230)' : '', border: parentName?.name?.trim() == item?.name?.trim() ? '2px solid rgb(77,164,164)' : '', borderRadius: parentName?.name?.trim() == item?.name?.trim() ? '7px' : '', padding: '3px' }}>
                                             <p className="m-0 text-black justify-center items-center flex font-semibold">{item?.name?.length !== 1 && item?.name}</p>
                                             <p className="m-0 text-black justify-center items-center flex font-semibold">{item?.description?.slice(0, 35)}</p>
                                         </div>))}
                                     </div>
                                 }
-                                <div className=''>
-                                    <div className="text-center text-xl text-white bg-[rgb(215,235,230)] rounded-2xl  mt-[20px] w-[127vh] min-h-[49vh]" style={{ border: '2px solid rgb(77,164,164)', overflowY: 'auto', maxHeight: '49vh' }}>
+                                <div className='w-[98%] '>
+                                    <div className="text-center text-xl text-white bg-[rgb(215,235,230)] rounded-2xl mt-[20px] h-[56vh] overflow-y-auto py-[12px] px-[5px]" style={{ border: '2px solid rgb(77,164,164)' }}>
                                         <div className="cursor-pointer flex items-end justify-end">
                                             {level > 1 && <CiCirclePlus className="text-slate-950 font-bold text-[20px]" onClick={() => setShowAddModal(true)} />}
                                         </div>
@@ -447,9 +446,9 @@ const DummyComp = () => {
                                                         </div>))} */}
                                                                 <div
                                                                     className="flex justify-center items-center bg-[#3773ca] rounded-xl font-light w-full h-full text-[15px]"
-                                                                    onClick={() => handleItemClick(item._id, item.level, item.parent)}
+
                                                                 >
-                                                                    <div className="font-semibold text-[15px] overflow-hidden">
+                                                                    <div className="font-semibold text-[15px] overflow-hidden" onClick={() => handleItemClick(item._id, item.level, item.parent)}>
                                                                         <p className="m-0 text-white mt-3 ">{item.name}</p>
                                                                         <p
                                                                             className="m-0 text-white whitespace-nowrap mb-3 overflow-ellipsis"
