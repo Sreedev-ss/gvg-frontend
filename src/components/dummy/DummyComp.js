@@ -261,10 +261,10 @@ const DummyComp = () => {
         setFilterTerm(event.target.value);
     };
 
-    const filteredData = drillDownData.filter((item) => {
-        return item.name.toLowerCase().includes(filterTerm.toLowerCase()) ||
-               item.description.toLowerCase().includes(filterTerm.toLowerCase());
-    });
+    // const filteredData = drillDownData.filter((item) => {
+    //     return item.name.toLowerCase().includes(filterTerm.toLowerCase()) ||
+    //            item.description.toLowerCase().includes(filterTerm.toLowerCase());
+    // });
 
 
     return (
