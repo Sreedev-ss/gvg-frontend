@@ -139,11 +139,21 @@ const Sidebar = () => {
                     <GiPathDistance className="text-black" />
                     <b className="text-[15px] underline text-black m-2">Path</b>
                 </div>
-                <div className="flex items-center text-[14px] mt-5 text-black">
+                <Link to='/assets'>
+                <div className=" text-black text-[14px] cursor-pointer flex items-start justify-start">
+                    <IoIosPlay style={{marginRight:'10px', marginTop:'2px'}}/>
+                    ASSETS
+                
+                    {/* <span><IoIosPlay className={`text-black `} /></span>
+                    <p className='text-black'>Assets</p> */}
+                </div>
+                </Link>
+                <div className="flex items-center text-[14px] mt-1 text-black ml-2">
                     {/* <IoIosPlay className="text-black" /> */}
                     {/* <Link to="/dashboardMain" style={linkStyle}>
                         East Assets
                     </Link> */}
+                    
                     <ul className="hierarchical-path">
                         {hierarchicalPath.map((pathItem, index) => (
                             <span key={index} style={{ marginLeft: `${index * 10}px` }} className={`flex items-center mt-2`}>

@@ -1,4 +1,4 @@
-import React, {useRef} from 'react'
+import React, {useRef, useState} from 'react'
 // import './Sidebar.scss',
 import { GiPathDistance } from "react-icons/gi";
 import { Link, useNavigate } from 'react-router-dom';
@@ -13,7 +13,11 @@ import Papa from 'papaparse';
 import { instance } from '../../api';
 import { useHierarchy } from '../../context/HierarchyContext';
 
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 const AdminSidebar = () => {
+    const [loading, setLoading] = useState(false);
     const { hierarchicalPath, selectItem, parentid, level } = useHierarchy();
     const navigate = useNavigate();
 
@@ -25,8 +29,10 @@ const AdminSidebar = () => {
         const fields = ['name', 'description', 'system', 'parent', 'level'];
 
         try {
+            //setLoading(true)
             const exportedData = [];
             instance.get(`/assets/allAsset`).then((res) => {
+                toast.success("Exported Successfully");
                 res.data.forEach(async (item) => {
                     await flattenHierarchy(item, exportedData);
                 });
@@ -45,7 +51,8 @@ const AdminSidebar = () => {
                 link.click();
                 document.body.removeChild(link);
             }).catch(err => {
-                console.log(err)
+                console.log(err);
+                //setLoading(false);
             })
             function flattenHierarchy(item, exportedData) {
                 exportedData.push({
@@ -91,6 +98,7 @@ const AdminSidebar = () => {
 
                 extractedData.forEach((element, index) => {
                     instance.post(`/assets/addAssetImport`, element).then((res) => {
+                        toast.success("Imported Successfully");
                         if (res.data) {
                             console.log(res.data)
                             handleLiClick("657d9cc91a95c5b61f5d90b5")
@@ -113,6 +121,7 @@ const AdminSidebar = () => {
 
     return (
         <aside className="bg-white p-4 text-white rounded-lg mr-4 w-60">
+            <ToastContainer />
             <div className=" font-bold text-[25px]  text-[rgb(157,49,113)] flex justify-center items-center">
                 GVG - Plant
             </div>
@@ -154,7 +163,17 @@ const AdminSidebar = () => {
                     <button className="rounded-31xl flex items-center justify-center py-2.5 px-5 gap-[9px] text-center text-[14px] text-white cursor-pointer rounded  bg-[rgb(254,0,144)] border-[rgb(254,0,144)] hover:bg-[rgb(254,116,194)] mt-4"
                         onClick={handleExport}
                     >
+                        {loading ? (
+                        <div className="flex justify-center items-center h-[80%]">
+                            <div className="animate-spin rounded-full h-10 w-10 border-t-4 border-blue-500 border-solid">
+
+                            </div>
+                        </div>
+                    ):(
+                        <>
                         <CiExport />Export
+                        </>
+                        )}
                     </button>
                 </div>
                 <div>
