@@ -26,7 +26,7 @@ const AdminSidebar = () => {
 
         try {
             const exportedData = [];
-            instance.get(`/assets/drill-asset/null`).then((res) => {
+            instance.get(`/assets/allAsset`).then((res) => {
                 res.data.forEach(async (item) => {
                     await flattenHierarchy(item, exportedData);
                 });
@@ -101,13 +101,13 @@ const AdminSidebar = () => {
                             //onChange={handleFileChange}
                             style={{ display: 'none' }}
                         />
-                        <button className="rounded-31xl flex items-center justify-center py-2.5 px-5 gap-[9px] text-[14px] text-white  cursor-pointer text-center rounded  bg-[rgb(254,0,144)] border-[rgb(254,0,144)]  "
+                        <button className="rounded-31xl flex items-center justify-center py-2.5 px-5 gap-[9px] text-[14px] text-white  cursor-pointer text-center rounded  bg-[rgb(254,0,144)] border-[rgb(254,0,144)] hover:bg-[rgb(254,116,194)]  "
                             //onClick={handleImportButtonClick}
                         >
                             <CiImport />Import
                         </button>
                     </div>
-                    <button className="rounded-31xl flex items-center justify-center py-2.5 px-5 gap-[9px] text-center text-[14px] text-white cursor-pointer rounded  bg-[rgb(254,132,183)] border-[rgb(254,132,183)] mt-4"
+                    <button className="rounded-31xl flex items-center justify-center py-2.5 px-5 gap-[9px] text-center text-[14px] text-white cursor-pointer rounded  bg-[rgb(254,0,144)] border-[rgb(254,0,144)] hover:bg-[rgb(254,116,194)] mt-4"
                         onClick={handleExport}
                     >
                         <CiExport />Export
