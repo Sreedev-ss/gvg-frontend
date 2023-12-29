@@ -509,7 +509,7 @@ const DummyComp = () => {
                                                                         <HiOutlineDocumentDuplicate className='mt-2' />
                                                                         <span className="tooltip">Duplicate</span>
                                                                     </p>
-                                                                    <Modal className='w-[30%] h-[25%] mt-[10%] ml-[50%] flex items-center justify-center '  style={{ border: '2px solid rgb(65,73,115)' }}
+                                                                    <Modal className=' flex items-center justify-center '  
                                                                         isOpen={showConfirmationModal}
                                                                         onRequestClose={() => setShowConfirmationModal(false)}
                                                                     >
@@ -519,7 +519,7 @@ const DummyComp = () => {
                                                                             >
                                                                                 <div className=" my-6 mx-auto">
 
-                                                                                    <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-green-50 outline-none focus:outline-none">
+                                                                                    <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-[150%] bg-green-50 outline-none focus:outline-none" style={{ border: '2px solid rgb(65,73,115)' }}>
 
                                                                                         <div className="flex items-start justify-between p-5 ">
                                                                                             <h3 className="text-3xl font-semibold text-black">
@@ -537,7 +537,7 @@ const DummyComp = () => {
                                                                                         </div>
 
                                                                                         <div className="relative p-1 flex-auto">
-                                                                                            <p className="my-4 text-blueGray-500 text-lg leading-relaxed text-black">
+                                                                                            <p className="my-4 text-blueGray-500 text-lg leading-relaxed text-black ml-4">
                                                                                                 Are you sure you want to clone?
                                                                                             </p>
                                                                                         </div>
@@ -563,13 +563,6 @@ const DummyComp = () => {
                                                                             </div>
                                                                             <div className="opacity-25 fixed inset-0 z-40 bg-black"></div>
                                                                         </div>
-
-                                                                        
-                                                                        {/* <div>
-                                                                        <p>Do you want to clone it?</p>
-                                                                        <button onClick={handleConfirmDuplicate}>Yes</button>
-                                                                        <button onClick={handleCancelDuplicate}>No</button>
-                                                                        </div> */}
                                                                     </Modal>
                                                                     {/* </div> */}
                                                                 </div>
