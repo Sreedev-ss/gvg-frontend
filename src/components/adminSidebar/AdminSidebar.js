@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useRef} from 'react'
 // import './Sidebar.scss',
 import { GiPathDistance } from "react-icons/gi";
 import { Link, useNavigate } from 'react-router-dom';
@@ -14,7 +14,7 @@ import { instance } from '../../api';
 import { useHierarchy } from '../../context/HierarchyContext';
 
 const AdminSidebar = () => {
-    // const { hierarchicalPath, selectItem, parentid, level } = useHierarchy();
+    const { hierarchicalPath, selectItem, parentid, level } = useHierarchy();
     const navigate = useNavigate();
 
     const handleLogout = () => {
@@ -67,6 +67,51 @@ const AdminSidebar = () => {
         }
     };
 
+    const handleLiClick = (id) => {
+        selectItem(id)
+    }
+
+    const fileInputRef = useRef(null);
+
+    const handleFileChange = (event) => {
+        const levelofAsset = parseInt(level + 1)
+        const file = event.target.files[0];
+        Papa.parse(file, {
+            header: true,
+            dynamicTyping: true,
+            complete: (result) => {
+                const parsedData = result?.data;
+
+                const extractedData = parsedData.map((item) => ({
+                    name: item.name,
+                    description: item.description,
+                    system: item.system,
+                    parent: item.parent,
+                    level:item.level
+                }));
+
+                extractedData.forEach((element, index) => {
+                    instance.post(`/assets/addAssetImport`, element).then((res) => {
+                        if (res.data) {
+                            console.log(res.data)
+                            handleLiClick("657d9cc91a95c5b61f5d90b5")
+                        } else {
+                            console.log('Error adding data')
+                        }
+                    }).catch((err) => {
+                        console.log(err)
+                    })
+                })
+            }
+        });
+        window.location.reload()
+    };
+
+    const handleImportButtonClick = () => {
+        // Trigger click event of the hidden input element
+        fileInputRef.current.click();
+    };
+
     return (
         <aside className="bg-white p-4 text-white rounded-lg mr-4 w-60">
             <div className=" font-bold text-[25px]  text-[rgb(157,49,113)] flex justify-center items-center">
@@ -97,13 +142,13 @@ const AdminSidebar = () => {
                     <div>
                         <input
                             type="file"
-                            //ref={fileInputRef}
-                            //onChange={handleFileChange}
+                            ref={fileInputRef}
+                            onChange={handleFileChange}
                             style={{ display: 'none' }}
                         />
                         <button className="rounded-31xl flex items-center justify-center py-2.5 px-5 gap-[9px] text-[14px] text-white  cursor-pointer text-center rounded  bg-[rgb(254,0,144)] border-[rgb(254,0,144)] hover:bg-[rgb(254,116,194)]  "
-                            //onClick={handleImportButtonClick}
-                        >
+                            onClick={handleImportButtonClick}
+
                             <CiImport />Import
                         </button>
                     </div>
