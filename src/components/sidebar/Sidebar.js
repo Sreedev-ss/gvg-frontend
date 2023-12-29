@@ -10,6 +10,9 @@ import { IoIosLogOut } from "react-icons/io";
 import Papa from 'papaparse';
 import { useHierarchy } from '../../context/HierarchyContext';
 import { instance } from '../../api';
+import { BsArrowReturnRight } from "react-icons/bs";
+import { PiArrowBendDownRightLight } from "react-icons/pi";
+
 
 const Sidebar = () => {
     const { hierarchicalPath, selectItem, parentid, level } = useHierarchy();
@@ -144,8 +147,13 @@ const Sidebar = () => {
                     <ul className="hierarchical-path">
                         {hierarchicalPath.map((pathItem, index) => (
                             <span key={index} style={{ marginLeft: `${index * 10}px` }} className={`flex items-center mt-2`}>
+                                { index === hierarchicalPath.length - 1 ? (
+                                    <PiArrowBendDownRightLight className={`text-black`}/>
+                                ):(
+
                                 <IoIosPlay className={`text-black `} />
-                                <li title={pathItem?.name} className='liPath w-28 cursor-pointer overflow-hidden text-ellipsis whitespace-nowrap' onClick={() => handleLiClick(pathItem?._id)} key={index} >{pathItem?.name}</li>
+                                )}
+                                <li title={pathItem?.name} className='liPath w-28 cursor-pointer overflow-hidden text-ellipsis whitespace-nowrap ml-2' onClick={() => handleLiClick(pathItem?._id)} key={index} >{pathItem?.name}</li>
                             </span>
                         ))}
                     </ul>
