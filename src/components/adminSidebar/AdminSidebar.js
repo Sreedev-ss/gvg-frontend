@@ -122,7 +122,7 @@ const AdminSidebar = () => {
     };
 
     return (
-        <aside className="bg-white p-4 text-white rounded-lg mr-4 w-60 h-[100%] max-h-[100%]">
+        <aside className="bg-white p-4 text-white rounded-lg mr-4 w-60 ">
             <ToastContainer />
             <div className=" font-bold text-[25px]  text-[rgb(157,49,113)] flex justify-center items-center">
                 GVG - Plant
