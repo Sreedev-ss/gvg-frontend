@@ -8,7 +8,6 @@ import { CiEdit } from "react-icons/ci";
 import { MdDeleteOutline } from "react-icons/md";
 import { HiOutlineDocumentDuplicate } from "react-icons/hi";
 import { useHierarchy } from '../../context/HierarchyContext';
-import './Dummy.scss';
 import './Dummy.css';
 import Draggable from 'react-draggable';
 import { CiFilter } from "react-icons/ci";
@@ -30,7 +29,7 @@ const DummyComp = () => {
     const [showDeleteModal, setShowDeleteModal] = useState(false);
     const [showEditSPlantSFacModal, setShowEditSPlantSFacModal] = useState(false);
     const [selectedEditSystem, setSelectedEditSystem] = useState('Primary');
-    const [parent, setParent] = useState(null)
+    const [parent, setParent] = useState('657d9cc91a95c5b61f5d90b5')
     // const [level, setLevel] = useState(1)
     const [useEffectCall, setUseEffectCall] = useState(false)
     const [exportData, setExportData] = useState([]);
@@ -59,7 +58,6 @@ const DummyComp = () => {
     }
 
     useEffect(() => {
-        console.log(selectedItemId)
         if (selectedItemId != null) {
             fetchData(selectedItemId)
         }
@@ -83,11 +81,13 @@ const DummyComp = () => {
     }, []);
 
     useEffect(() => {
+        console.log(parent)
         setFormData((prevData) => ({
             ...prevData,
             parent: parent
         }))
     }, [parent])
+
     useEffect(() => {
         setFormData((prevData) => ({
             ...prevData,
@@ -273,6 +273,16 @@ const DummyComp = () => {
         }
     }
 
+    const handleCreateView = () => {
+        setFormData({
+            name: '',
+            description: '',
+            system: 'primary',
+            parent: parent
+        })
+        setShowAddModal(true)
+    }
+
     return (
         <>
             <div className="bg-white p-4 h-[89.4vh] rounded-lg shadow-md">
@@ -330,7 +340,7 @@ const DummyComp = () => {
                             <div className='w-[100%] h-[99%] px-2'>
                                 <div className="text-center text-xl text-white bg-[rgb(215,235,230)] rounded-2xl h-[78%] max-h-[80%] py-[12px] overflow-y-scroll " style={{ outline: '2px solid rgb(77,164,164)' }}>
                                     <div className="cursor-pointer flex items-end justify-end">
-                                        <CiCirclePlus className="text-slate-950 font-bold text-[20px]" onClick={() => setShowAddModal(true)} />
+                                        <CiCirclePlus className="text-slate-950 font-bold text-[20px]" onClick={handleCreateView} />
                                     </div>
 
 
