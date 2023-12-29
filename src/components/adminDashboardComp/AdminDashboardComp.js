@@ -64,13 +64,16 @@
 
 // export default AdminDashboardComp;
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { FaEdit } from "react-icons/fa";
 import { CiCirclePlus } from "react-icons/ci";
 
 const AdminDashboardComp = () => {
-    const [boxes, setBoxes] = useState([{ id: 1, name: "" }]);
+    const [boxes, setBoxes] = useState(() => {
+        const storedBoxes = localStorage.getItem("boxes");
+        return storedBoxes ? JSON.parse(storedBoxes) : [{ id: 1, name: "" }];
+    });
 
     const handleAddBox = () => {
         const newBox = { id: boxes.length + 1, name: "" };
@@ -82,6 +85,10 @@ const AdminDashboardComp = () => {
         updatedBoxes[index].name = newName;
         setBoxes(updatedBoxes);
     };
+
+    useEffect(() => {
+        localStorage.setItem("boxes", JSON.stringify(boxes));
+    }, [boxes]);
 
       
     return (
