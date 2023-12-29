@@ -8,8 +8,7 @@ export const HierarchyProvider = ({ children }) => {
     const [hierarchicalPath, setHierarchicalPath] = useState([]);
     const [selectedItemId, setSelectedItemId] = useState(null);
     const [parentid, setParentId] = useState(null)
-    const [level, setLevel] = useState(null)
-
+    const [level, setLevel] = useState(1)
     const selectItem = (itemId) => {
         setSelectedItemId(itemId);
     };
