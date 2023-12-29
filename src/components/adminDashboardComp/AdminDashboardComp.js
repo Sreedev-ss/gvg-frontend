@@ -13,13 +13,13 @@ const AdminDashboardComp = () => {
                             <div className="">
                                 <div className=" rounded-2xl bg-cornflowerblue  overflow-hidden shrink-0 m-8 w-[200px] ">
                                     <Link to='/assets'>
-                                        <div className="font-semibold bg-[rgb(254,132,183)] rounded-2xl  h-[150px] text-[15px]  flex items-center justify-center">
-                                            <p className="m-0 text-white mt-[-50px] ">Plants</p>                         
+                                        <div className="font-semibold bg-[rgb(254,132,183)] rounded-2xl  h-[100px] text-[15px]  flex items-center justify-center">
+                                            <p className="m-0 text-white mt-[-10px] ">Plants</p>                         
                                        
                                         </div>
                                     </Link>
-                                        <span><CiCirclePlus className="text-slate-950 font-bold text-[20px] mt-[-80px] ml-[250px]"  /></span>
                                 </div>
+                                        <span><CiCirclePlus className="text-slate-950 font-bold text-[20px] mt-[-90px] ml-[250px]"  /></span>
                             </div>
                         </div>
                     </div>
