@@ -147,7 +147,7 @@ const AdminSidebar = () => {
                             style={{ display: 'none' }}
                         />
                         <button className="rounded-31xl flex items-center justify-center py-2.5 px-5 gap-[9px] text-[14px] text-white  cursor-pointer text-center rounded  bg-[rgb(254,0,144)] border-[rgb(254,0,144)] hover:bg-[rgb(254,116,194)]  "
-                            onClick={handleImportButtonClick}
+                            onClick={handleImportButtonClick}>
 
                             <CiImport />Import
                         </button>
