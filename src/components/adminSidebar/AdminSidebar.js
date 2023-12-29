@@ -1,4 +1,4 @@
-import React, {useRef, useState} from 'react'
+import React, { useRef, useState } from 'react'
 // import './Sidebar.scss',
 import { GiPathDistance } from "react-icons/gi";
 import { Link, useNavigate } from 'react-router-dom';
@@ -93,12 +93,11 @@ const AdminSidebar = () => {
                     description: item.description,
                     system: item.system,
                     parent: item.parent,
-                    level:item.level
+                    level: item.level
                 }));
 
                 extractedData.forEach((element, index) => {
                     instance.post(`/assets/addAssetImport`, element).then((res) => {
-                        toast.success("Imported Successfully");
                         if (res.data) {
                             console.log(res.data)
                             handleLiClick("657d9cc91a95c5b61f5d90b5")
@@ -107,11 +106,14 @@ const AdminSidebar = () => {
                         }
                     }).catch((err) => {
                         console.log(err)
+                    }).finally(() => {
+                        toast.success("Imported Successfully");
+                        window.location.reload()
                     })
                 })
             }
         });
-        window.location.reload()
+
     };
 
     const handleImportButtonClick = () => {
@@ -131,11 +133,11 @@ const AdminSidebar = () => {
 
             <div className='mt-12'>
                 <div className=" text-zinc-900 text-[14px] flex items-start justify-start">
-                    <HiBuildingLibrary style={{marginRight:'8px', marginTop:'4px'}}/>
+                    <HiBuildingLibrary style={{ marginRight: '8px', marginTop: '4px' }} />
                     Dashboard
                 </div>
                 <div className="mt-5 text-zinc-900 text-[14px] cursor-pointer flex items-start justify-start">
-                    <SiGoogleanalytics style={{marginRight:'8px', marginTop:'4px'}} />
+                    <SiGoogleanalytics style={{ marginRight: '8px', marginTop: '4px' }} />
                     Reporting & Analytics
                 </div>
                 {/* <div className="m-5 text-zinc-900 text-[14px] flex items-center justify-center">
@@ -164,27 +166,27 @@ const AdminSidebar = () => {
                         onClick={handleExport}
                     >
                         {loading ? (
-                        <div className="flex justify-center items-center h-[80%]">
-                            <div className="animate-spin rounded-full h-10 w-10 border-t-4 border-blue-500 border-solid">
+                            <div className="flex justify-center items-center h-[80%]">
+                                <div className="animate-spin rounded-full h-10 w-10 border-t-4 border-blue-500 border-solid">
 
+                                </div>
                             </div>
-                        </div>
-                    ):(
-                        <>
-                        <CiExport />Export
-                        </>
+                        ) : (
+                            <>
+                                <CiExport />Export
+                            </>
                         )}
                     </button>
                 </div>
                 <div>
-                <div className="mt-16  text-zinc-900 text-[14px] cursor-pointer flex items-center justify-center">
-                    <IoMdSettings style={{marginRight:'10px'}}/>
-                    Settings
-                </div>
-                <div className="mt-4 text-zinc-900 text-[14px] cursor-pointer flex items-center justify-center" onClick={handleLogout}>
-                    <IoIosLogOut style={{marginRight:'10px'}}/>
-                    Logout
-                </div>
+                    <div className="mt-16  text-zinc-900 text-[14px] cursor-pointer flex items-center justify-center">
+                        <IoMdSettings style={{ marginRight: '10px' }} />
+                        Settings
+                    </div>
+                    <div className="mt-4 text-zinc-900 text-[14px] cursor-pointer flex items-center justify-center" onClick={handleLogout}>
+                        <IoIosLogOut style={{ marginRight: '10px' }} />
+                        Logout
+                    </div>
 
                 </div>
             </div>

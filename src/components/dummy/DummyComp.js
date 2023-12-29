@@ -441,10 +441,16 @@ const DummyComp = () => {
 
                                                             >
                                                                 <div className="font-semibold text-[15px] overflow-hidden" onClick={() => handleItemClick(item._id, item.level, item.parent)}>
-                                                                    <p className="m-0 text-white mt-3 ">{item.name}</p>
+                                                                    <p className="m-0 text-white mt-3 p-2 ">{item.name}</p>
                                                                     <p
-                                                                        className="m-0 text-white whitespace-nowrap mb-3 overflow-ellipsis"
-                                                                        style={{ whiteSpace: 'pre-line', wordWrap: 'break-word' }}
+                                                                        className="m-0 text-white overflow-hidden text-ellipsis"
+                                                                        style={{
+                                                                            display: '-webkit-box',
+                                                                            WebkitBoxOrient: 'vertical',
+                                                                            overflow: 'hidden',
+                                                                            WebkitLineClamp: 2, // Number of lines to show
+                                                                            marginBottom: '0.5rem', // Adjust as needed
+                                                                        }}
                                                                     >
                                                                         {item.description}
                                                                     </p>
