@@ -1,0 +1,13 @@
+.circular-menu {
+    display: flex;
+    flex-direction: column;
+}
+
+.circular-menu p {
+    transform: rotate(var(--i) * 60deg);
+    transition: transform 0.3s ease-in-out;
+}
+
+.circular-menu:hover p {
+    transform: rotate(0);
+}
