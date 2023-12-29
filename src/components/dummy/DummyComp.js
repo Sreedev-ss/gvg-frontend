@@ -54,7 +54,6 @@ const DummyComp = () => {
 
     const handlePlusSPlantSFacClick = (itemId) => {
         setShowDropDownSPlantSFac(prevState => ({
-            ...prevState,
             [itemId]: !prevState[itemId]
         }));
     }
@@ -331,7 +330,7 @@ const DummyComp = () => {
                             <div className='w-[100%] h-[99%] px-2'>
                                 <div className="text-center text-xl text-white bg-[rgb(215,235,230)] rounded-2xl h-[78%] max-h-[80%] py-[12px] overflow-y-scroll " style={{ outline: '2px solid rgb(77,164,164)' }}>
                                     <div className="cursor-pointer flex items-end justify-end">
-                                        {level > 1 && <CiCirclePlus className="text-slate-950 font-bold text-[20px]" onClick={() => setShowAddModal(true)} />}
+                                        <CiCirclePlus className="text-slate-950 font-bold text-[20px]" onClick={() => setShowAddModal(true)} />
                                     </div>
 
 
@@ -457,12 +456,12 @@ const DummyComp = () => {
                                                                 </div>
                                                             </div>
 
-                                                            {level > 1 && <div
+                                                            <div
                                                                 className="absolute top-0 right-0 p-2 text-white cursor-pointer  rounded-xl shadow-lg"
                                                                 onClick={() => handlePlusSPlantSFacClick(item._id)}
                                                             >
                                                                 <BsThreeDots className="font-lighter text-[20px]" />
-                                                            </div>}
+                                                            </div>
 
                                                             {showDropDownSPlantSFac[item._id] && (
                                                                 <div className="text-white bg-[#3773ca] rounded-xl shadow-lg px-2 absolute top-0 right-0 mt-8 mr-2 dropContent show">
