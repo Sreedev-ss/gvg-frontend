@@ -128,7 +128,7 @@ const Sidebar = () => {
     }
 
     return (
-        <aside className="bg-white p-4 text-white rounded-lg mr-4 w-60 flex flex-col justify-between">
+        <aside className="bg-white p-4 text-white rounded-lg mr-4 w-60 flex flex-col justify-between sidebar-container bg-bottom">
             <div className='overflow-hidden'>
                 <Link to='/'>
                     <div className=" font-bold text-[25px]  text-[rgb(157,49,113)] flex justify-center items-center">

@@ -5,13 +5,13 @@ import { CiCirclePlus } from "react-icons/ci";
 
 const AssetsComponenet = () => {
     return (
-        <div className="bg-white p-4 h-[89.4vh] rounded-lg shadow-md">
+        <div className="bg-white p-4 h-[89.4vh] rounded-lg shadow-md main-container">
             <div className="top-0 left-0 m-4 cursor-pointer">
                 <Link to='/'>
                     <FaArrowLeft className="text-slate-500 font-lighter text-[20px]"/>
                 </Link>
             </div>
-            <div className="h-[78%] max-h-[80%] bg-[rgb(245,249,255)] m-6 rounded-2xl" style={{ border: '2px solid rgb(17,110,255)'}}>
+            <div className="h-[78%] max-h-[80%]  m-6 rounded-2xl" style={{ border: '2px solid rgb(17,110,255)', backgroundColor: 'rgba(255, 255, 255, 0.8)'}}>
                 <div className="cursor-pointer flex items-end justify-end m-4">
                     <CiCirclePlus className="text-slate-950 font-bold text-[20px]"  />
                 </div>

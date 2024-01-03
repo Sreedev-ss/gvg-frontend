@@ -12,6 +12,7 @@ import { SiGoogleanalytics } from "react-icons/si";
 import Papa from 'papaparse';
 import { instance } from '../../api';
 import { useHierarchy } from '../../context/HierarchyContext';
+import './AdminSidebar.css';
 
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -122,7 +123,7 @@ const AdminSidebar = () => {
     };
 
     return (
-        <aside className="bg-white p-4 text-white rounded-lg mr-4 w-60 ">
+        <aside className="bg-white bg-bottom p-4 text-white rounded-lg mr-4 w-60 sidebar-container">
             <ToastContainer />
             <div className=" font-bold text-[25px]  text-[rgb(157,49,113)] flex justify-center items-center">
                 GVG - Plant

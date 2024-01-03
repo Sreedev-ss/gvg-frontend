@@ -1,0 +1,5 @@
+.sidebar-container{
+    background-image: linear-gradient(rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.5)), url('../../../public/img/sidebarWave.png');
+    background-size: 100%;
+    background-repeat: no-repeat; 
+}

@@ -13,4 +13,10 @@
   width: 265px;
   height: 200px;
   border-radius: 10px;
-}/*# sourceMappingURL=AssetsComponent.css.map */
+}
+
+.main-container {
+  background-image: url('../../../public/img/mainWave.png');
+  background-size: 100%;
+  background-repeat: no-repeat; 
+}

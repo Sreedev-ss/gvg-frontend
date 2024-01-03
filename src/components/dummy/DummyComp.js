@@ -300,10 +300,10 @@ const DummyComp = () => {
 
     return (
         <>
-            <div className="bg-white p-4 h-[89.4vh] rounded-lg shadow-md">
+            <div className="bg-white p-4 h-[89.4vh] rounded-lg shadow-md main-container">
                 <ToastContainer />
 
-                <div className="w-[96%] h-[94%] bg-[rgb(235,245,244)] m-6 rounded-2xl" style={{ border: '2px solid rgb(65,73,115)' }}>
+                <div className="w-[96%] h-[94%]  m-6 rounded-2xl" style={{ border: '2px solid rgb(65,73,115)', backgroundColor: 'rgba(255, 255, 255, 0.8)' }} >
                     <CiFilter className='ml-[98%] m-4' />
 
                     {/* <div className='flex items-end justify-end'>
