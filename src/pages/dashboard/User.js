@@ -1,12 +1,12 @@
 import React from "react";
 import UserComp from "../../components/userComp/UserComp";
-import Sidebar from "../../components/sidebar/Sidebar";
 import Navbar from "../../components/navbar/Navbar";
+import AdminSidebar from "../../components/adminSidebar/AdminSidebar";
 
 const User = () => {
     return (
         <div className="flex h-[96vh] overflow-y-hidden">
-            <Sidebar />
+            <AdminSidebar />
 
             <div className="flex-1 flex flex-col overflow-hidden">
                 <Navbar />

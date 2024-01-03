@@ -1,7 +1,6 @@
 import React, { useRef, useState, Fragment } from "react";
 import { Dialog } from '@headlessui/react'
 import { IoIosCloseCircleOutline } from "react-icons/io";
-import { FaArrowCircleRight } from "react-icons/fa";
 import './Drpdown';
 import Dropdown from "./Drpdown";
 
@@ -10,7 +9,7 @@ const UserComp = () => {
     const [open, setOpen] = useState(false);
 
 
-  const cancelButtonRef = useRef(null)
+    const cancelButtonRef = useRef(null)
 
     return (
         <>
@@ -96,7 +95,7 @@ const UserComp = () => {
                 <h1 className="flex items-center justify-center text-xl"><strong>USERS</strong></h1>
                 <div class="relative overflow-x-auto shadow-md sm:rounded-lg m-7">
                     <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-                        <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-[rgb(187,76,113)] dark:text-white">
+                        <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-[rgb(236,140,165)] dark:text-white">
                             <tr>
                                 <th scope="col" class="px-6 py-3">Sl. No.</th>
                                 <th scope="col" class="px-6 py-3">
@@ -116,7 +115,7 @@ const UserComp = () => {
                         </thead>
                         <tbody>
                             
-                            <tr class="bg-white dark:bg-white hover:bg-gray-50 dark:hover:bg-gray-600">
+                            <tr class="bg-white dark:bg-white hover:bg-gray-50 dark:hover:bg-[rgb(223,232,251)]">
                                 <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-gray-900">1</th>
                                 <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-gray-900">
                                     Sree Dev
@@ -129,7 +128,7 @@ const UserComp = () => {
                                     <Dropdown/>
                                 </td>
                             </tr>
-                            <tr class="bg-white dark:bg-white hover:bg-gray-50 dark:hover:bg-gray-600">
+                            <tr class="bg-white dark:bg-white hover:bg-gray-50 dark:hover:bg-[rgb(223,232,251)]">
                                 <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-gray-900">2</th>
                                 <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-gray-900">
                                     Akhila Vijayan

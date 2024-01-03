@@ -126,12 +126,15 @@ const AdminSidebar = () => {
     return (
         <aside className="bg-white bg-bottom p-4 text-white rounded-lg mr-4 w-60 sidebar-container">
             <ToastContainer />
+            <Link to='/'>
             <div className=" font-bold text-[25px]  text-[rgb(157,49,113)] flex justify-center items-center">
                 GVG - Plant
             </div>
+            </Link>
             <div className=" font-bold text-[15px]  text-[rgb(157,49,113)] flex justify-center items-center">
                 Admin Dashboard
             </div>
+            
 
             <div className='mt-12 h-[90%]'>
                 <div className=" text-zinc-900 text-[14px] flex items-start justify-start">
