@@ -1,10 +1,14 @@
 import React, { useRef, useState, Fragment } from "react";
 import { Dialog } from '@headlessui/react'
 import { IoIosCloseCircleOutline } from "react-icons/io";
+import { FaArrowCircleRight } from "react-icons/fa";
+import './Drpdown';
+import Dropdown from "./Drpdown";
 
 
 const UserComp = () => {
-    const [open, setOpen] = useState(true)
+    const [open, setOpen] = useState(false);
+
 
   const cancelButtonRef = useRef(null)
 
@@ -71,7 +75,7 @@ const UserComp = () => {
                             <div className="mt-4 flex justify-end">
                             <button
                                 type="button"
-                                className="mr-2 inline-flex justify-center px-4 py-2 text-sm font-semibold text-white bg-red-600 rounded-md hover:bg-red-500 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-red-500"
+                                className="mr-2 inline-flex justify-center px-4 py-2 text-sm font-semibold text-white bg-[rgb(133,160,238)] rounded-md hover:bg-[rgb(133,160,238)] focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-red-500"
                                 onClick={() => setOpen(false)}
                             >
                                 Create
@@ -103,11 +107,11 @@ const UserComp = () => {
                                 </th>
                                 
                                 <th scope="col" class="px-6 py-3">
-                                    <span class="sr-only">Edit</span>
+                                    <span class="sr-only">Updates</span>
                                 </th>
-                                <th scope="col" class="px-6 py-3">
+                                {/* <th scope="col" class="px-6 py-3">
                                     <span class="sr-only">Delete</span>
-                                </th>
+                                </th> */}
                             </tr>
                         </thead>
                         <tbody>
@@ -122,10 +126,20 @@ const UserComp = () => {
                                 </td>
                             
                                 <td class="px-6 py-4 text-right">
-                                    <a href="/edit" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
+                                    <Dropdown/>
                                 </td>
+                            </tr>
+                            <tr class="bg-white dark:bg-white hover:bg-gray-50 dark:hover:bg-gray-600">
+                                <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-gray-900">2</th>
+                                <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-gray-900">
+                                    Akhila Vijayan
+                                </th>
+                                <td class="px-6 py-4">
+                                    akhila@gmail.com
+                                </td>
+                            
                                 <td class="px-6 py-4 text-right">
-                                    <a href="/delete" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Delete</a>
+                                    <Dropdown/>
                                 </td>
                             </tr>
                         </tbody>

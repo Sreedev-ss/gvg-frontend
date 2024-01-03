@@ -13,6 +13,7 @@ import Papa from 'papaparse';
 import { instance } from '../../api';
 import { useHierarchy } from '../../context/HierarchyContext';
 import './AdminSidebar.css';
+import { FaRegUser } from "react-icons/fa";
 
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -141,6 +142,12 @@ const AdminSidebar = () => {
                     <SiGoogleanalytics style={{ marginRight: '8px', marginTop: '4px' }} />
                     Reporting & Analytics
                 </div>
+                <Link to='/user'>
+                <div className="mt-5 text-zinc-900 text-[14px] cursor-pointer flex items-start justify-start">
+                    <FaRegUser style={{ marginRight: '8px', marginTop: '4px' }} />
+                    Users
+                </div>
+                </Link>
                 {/* <div className="m-5 text-zinc-900 text-[14px] flex items-center justify-center">
                     <HiBuildingLibrary style={{marginRight:'10px'}}/>
                     Dashboard
