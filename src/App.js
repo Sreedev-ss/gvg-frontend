@@ -10,6 +10,7 @@ import Login from './pages/dashboard/Login';
 import AdminDashboard from './pages/dashboard/AdminDashboard';
 import { HierarchyProvider } from './context/HierarchyContext';
 import ProtectedRoute from './authentication/ProtectedRoute';
+import User from './pages/dashboard/User';
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
         <Route path='/s-plant-sat-com-compression' element={<SPlantSatComCompression />} /> */}
         <Route path='/asset' element={<ProtectedRoute><Dummy /></ProtectedRoute>} />
         <Route path='/assets' element={<Assets />} />
+        <Route path='/user' element={<ProtectedRoute><User /></ProtectedRoute>} />
 
         
       </Routes>
