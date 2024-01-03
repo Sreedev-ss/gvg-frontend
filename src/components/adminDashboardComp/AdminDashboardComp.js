@@ -68,6 +68,7 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { FaEdit } from "react-icons/fa";
 import { CiCirclePlus } from "react-icons/ci";
+import './AdminDashboard.css';
 
 const AdminDashboardComp = () => {
     const [boxes, setBoxes] = useState(() => {
@@ -92,8 +93,8 @@ const AdminDashboardComp = () => {
 
       
     return (
-        <div className="bg-white p-4 h-[89.4vh] rounded-2xl shadow-md">
-           <div className="h-[40%] bg-white rounded-2xl">
+        <div className="bg-white p-4 h-[89.4vh] rounded-2xl shadow-md main-container">
+           <div className="h-[40%]  rounded-2xl" style={{  backgroundColor: 'rgba(255, 255, 255, 0.5)' }}>
                 <div className="flex items-center">
                     <span onClick={handleAddBox}>
                         <CiCirclePlus className="text-slate-950 font-bold text-[20px] mt-[10px] ml-[40px]" />
@@ -122,7 +123,7 @@ const AdminDashboardComp = () => {
                 </div>
             </div>
 
-            <div className="h-[45%] bg-white mt-5  rounded-2xl " >
+            <div className="h-[45%] mt-5  rounded-2xl " style={{  backgroundColor: 'rgba(255, 255, 255, 0.5)' }}>
                 <div className="m-8">
                     <h1 className="ml-5"><strong>Recent Activities</strong></h1>
                     <div className='m-6'>

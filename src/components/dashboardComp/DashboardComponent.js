@@ -34,7 +34,7 @@ const DashboardComponent = () => {
       }
 
     return (
-        <div className="bg-white p-4 h-[87.1vh] rounded-lg shadow-md">
+        <div className="bg-white p-4 h-[87.1vh] rounded-lg shadow-md ">
             <div className="top-0 left-0 m-4 cursor-pointer">
                 <Link to='/assets'>
                     <FaArrowLeft className="text-slate-500 font-lighter text-[20px]"/>
