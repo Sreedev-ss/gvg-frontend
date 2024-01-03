@@ -137,10 +137,12 @@ const AdminSidebar = () => {
             
 
             <div className='mt-12 h-[90%]'>
+                <Link to='/'>
                 <div className=" text-zinc-900 text-[14px] flex items-start justify-start">
                     <HiBuildingLibrary style={{ marginRight: '8px', marginTop: '4px' }} />
                     Dashboard
                 </div>
+                </Link>
                 <div className="mt-5 text-zinc-900 text-[14px] cursor-pointer flex items-start justify-start">
                     <SiGoogleanalytics style={{ marginRight: '8px', marginTop: '4px' }} />
                     Reporting & Analytics
