@@ -5,12 +5,13 @@ import AdminSidebar from '../../components/adminSidebar/AdminSidebar';
 import { useHierarchy } from '../../context/HierarchyContext';
 
 const AdminDashboard = () => {
-  const { updatePath, updateParent, updateLevel, selectItem } = useHierarchy();
+  const { updatePath, updateParent, updateLevel, selectItem,updatePlant } = useHierarchy();
   useEffect(() => {
     selectItem(null)
     updatePath([])
     updateParent(null)
     updateLevel(1)
+    updatePlant("")
   }, [])
   return (
     <div className="flex h-[96vh] overflow-y-hidden">
