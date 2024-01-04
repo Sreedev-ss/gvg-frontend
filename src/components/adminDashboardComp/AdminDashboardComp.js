@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { FaEdit } from "react-icons/fa";
 import { CiCirclePlus } from "react-icons/ci";
 import './AdminDashboard.css';
+import { BsThreeDots } from "react-icons/bs";
 
 const AdminDashboardComp = () => {
     const [showAddModal, setShowAddModal] = useState(false);
@@ -155,10 +156,23 @@ const AdminDashboardComp = () => {
                 ) : null}
 
                 <div className="flex items-center">
+                    <div className="bg-[rgb(254,132,183)] p-4 rounded-lg">
+                    <div
+                                        className="top-0 right-0 p-2 text-red cursor-pointer w-0"
+                                        //onClick={() => handlePlusSPlantSFacClick(item._id)}
+                                    >
+                                        <BsThreeDots className="font-lighter text-[10px] mt-[-26px]  h-5  ml-[90px] text-red-700" />
+                                    </div>
+                        <Link to='/assets'>
+                        <div className="font-semibold bg-[rgb(254,132,183)] rounded-2xl h-[80px] w-[100px] text-[15px] flex items-center justify-center mt-[-15px]">
+                            <p className="m-0 text-white mt-[-10px] ">Plants</p>
+                        </div>
+                        </Link>
+                    </div>
                     {/* <span onClick={handleAddBox}>
                         <CiCirclePlus className="text-slate-950 font-bold text-[20px] mt-[10px] ml-[40px]" />
                     </span> */}
-                    <div className="m-6 ml-3 flex">      
+                    {/* <div className="m-6 ml-3 flex">      
                         {boxes.map((box, index) => (
                             <div key={box.id} className="text-zinc-900 text-[14px] flex  mt-3 ">
                                 <Link to='/assets'>
@@ -173,7 +187,7 @@ const AdminDashboardComp = () => {
                                 </Link>
                             </div>
                         ))}
-                    </div>
+                    </div> */}
                 </div>
             </div>
 
