@@ -23,6 +23,7 @@ const AdminSidebar = () => {
     const { hierarchicalPath, selectItem, parentid, level } = useHierarchy();
     const navigate = useNavigate();
     const [showAddModal, setShowAddModal] = useState(false);
+    const [selectedFile, setSelectedFile] = useState(null);
     const [formData, setFormData] = useState({
         name: '',
         description: '',
@@ -168,6 +169,16 @@ const AdminSidebar = () => {
         }))
     };
 
+    const handleChangeFile = (event) => {
+        const file = event.target.files[0];
+        const allowedTypes = ['text/csv'];
+        if (file && allowedTypes.includes(file.type)) {
+          setSelectedFile(file); 
+        } else {
+          setSelectedFile(null);
+        }
+      };
+
     return (
         
         <aside className="bg-white overflow-hidden text-white py-5 rounded-lg mr-4 w-60 sidebar-container flex flex-col justify-between items-center bg-bottom">
@@ -229,7 +240,7 @@ const AdminSidebar = () => {
 
                                         <div className="flex items-start justify-between p-5 ">
                                             <h3 className="text-3xl font-semibold text-black">
-                                                Create Plant
+                                                Import Plant
                                             </h3>
                                             <button
                                                 className="p-1 ml-auto bg-transparent border-0 text-black opacity-5 float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
@@ -266,7 +277,32 @@ const AdminSidebar = () => {
                                                 className="mt-1 ml-[25px] p-2 border border-gray-300 rounded-md w-[735px] h-[35px] text-black"
                                             />
                                         </div>
-
+                                        <div>
+                                            <div>
+                                                <label htmlFor="csvFile" style={{ fontSize: '13px' }}>
+                                                Upload Your CSV File:
+                                                </label>
+                                            </div>
+                                            <div className="flex items-center mt-2">
+                                                <input
+                                                    type="file"
+                                                    id="csvFile"
+                                                    name="csvFile"
+                                                    accept=".csv"
+                                                    onChange={handleChangeFile}
+                                                    className="hidden"
+                                                />
+                                                <label
+                                                    htmlFor="csvFile"
+                                                    className="cursor-pointer border border-gray-300 py-2 px-4 rounded-md bg-[rgb(183,211,249)] hover:bg-gray-100 ml-7"
+                                                >
+                                                    Upload
+                                                </label>
+                                                {selectedFile && (
+                                                <div className="ml-3 text-gray-700">{selectedFile.name}</div>
+                                                )}
+                                            </div>
+                                            </div>
                                         <div className="flex items-center justify-end p-6">
                                             <button
                                                 className="text-red-500 background-transparent font-bold uppercase px-6 py-2 text-sm outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150 h-10"
@@ -278,10 +314,10 @@ const AdminSidebar = () => {
                                             <button
                                                 className="bg-[rgb(138,168,249)] text-white active:bg-[rgb(138,168,249)] font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
                                                 type="button"
-                                                // onClick={handleCreate}
-                                                onClick={handleImportButtonClick}
+                                                onClick={handleCreate}
+                                                //onClick={handleImportButtonClick}
                                             >
-                                                Create
+                                                Import
                                             </button>
                                         </div>
                                     </div>
