@@ -1,15 +1,38 @@
-import React, { useRef, useState, Fragment } from "react";
+import React, { useRef, useState, Fragment, useEffect } from "react";
 import { Dialog } from '@headlessui/react'
 import { IoIosCloseCircleOutline } from "react-icons/io";
 import './Drpdown';
 import Dropdown from "./Drpdown";
+import { instance } from "../../api";
 
 
 const UserComp = () => {
     const [open, setOpen] = useState(false);
+    const [allUserData, setAllUserData] = useState([]);
+    const [useEffectCall, setUseEffectCall] = useState(false);
+    const [formData, setFormData] = useState({
+        name: "",
+        email: "",
+        password:"",
+      });
 
 
-    const cancelButtonRef = useRef(null)
+    const cancelButtonRef = useRef(null);
+
+    useEffect(() => {
+        instance.get(`/users/all-user`)
+        .then((res) => {
+            console.log("resss:", res);
+            // if(res.data.status == "SUCCESS") {
+            //     setAllUserData(res.data);
+            // } else {
+            //     console.error("Failed");
+            // }
+        })
+        .catch((e) => {
+            console.log(e);;
+        });
+    }, [useEffectCall]);
 
     return (
         <>
