@@ -13,6 +13,7 @@ const AdminDashboardComp = () => {
     const [isHovered, setIsHovered] = useState(false);
     const [isHoveredDelete, setIsHoveredDelete] = useState(false);
     const [isHoveredClone, setIsHoveredClone] = useState(false);
+    const [deleteModal, setDeleteModal] = useState(false)
 
   const toggleDropdown = () => {
     setIsDropdownOpen(!isDropdownOpen);
@@ -23,12 +24,10 @@ const AdminDashboardComp = () => {
   };
 
   const handleEdit = () => {
-    // Implement your edit logic here
     closeDropdown();
   };
 
   const handleDelete = () => {
-    // Implement your delete logic here
     closeDropdown();
   };
     const [boxes, setBoxes] = useState(() => {
@@ -98,6 +97,7 @@ const AdminDashboardComp = () => {
         setShowAddModal(true)
     };
 
+    //edit
     const handleMouseEnter = () => {
         setIsHovered(true);
       };
@@ -106,6 +106,7 @@ const AdminDashboardComp = () => {
         setIsHovered(false);
       };
 
+      //delete
       const handleMouseEnterDelete = () => {
         setIsHoveredDelete(true);
       };
@@ -114,6 +115,15 @@ const AdminDashboardComp = () => {
         setIsHoveredDelete(false);
       };
 
+      const handleDeleteModalView = () => {
+        setDeleteModal(!deleteModal)
+    };
+
+    const handleDeleteModal = () => {
+        handleDeleteModalView();
+      };
+
+      //clone
       const handleMouseEnterClone = () => {
         setIsHoveredClone(true);
       };
@@ -121,7 +131,6 @@ const AdminDashboardComp = () => {
       const handleMouseLeaveClone = () => {
         setIsHoveredClone(false);
       };
-
       
     return (
         <div className="bg-white p-4 h-[89.4vh] rounded-2xl shadow-md main-container">
@@ -213,38 +222,95 @@ const AdminDashboardComp = () => {
                             <BsThreeDots className="font-lighter text-[10px] mt-[-26px]  h-5  ml-[90px] text-red-700" />
                         </div>
                         {isDropdownOpen && (
-                        <div className="absolute top-0 right-0 left-20 shadow-lg mt-4  border-gray-300 rounded  ">
+                        <div className="absolute top-0 right-0 left-20 shadow-lg mt-4  border-gray-300 rounded">
                             <button
-                            className="block px-4 py-2 text-[12px] text-gray-700 "
-                            onClick={handleEdit}
-                            onMouseEnter={handleMouseEnter}
-                            onMouseLeave={handleMouseLeave}
+                                className="block px-4 py-2 text-[12px] text-gray-700 "
+                                onClick={handleEdit}
+                                onMouseEnter={handleMouseEnter}
+                                onMouseLeave={handleMouseLeave}
                             >
-                            {isHovered ? 'Edit' : <FaEdit />}
+                                {isHovered ? 'Edit' : <FaEdit />}
                             </button>
+
                             <button
                             className="block px-4 py-2 text-[12px] text-gray-700 "
-                            onClick={handleDelete}
+                            onClick={handleDeleteModal}
                             onMouseEnter={handleMouseEnterDelete}
                             onMouseLeave={handleMouseLeaveDelete}
                             >
                                 {isHoveredDelete ? 'Delete' : <MdDelete />}
                             
                             </button>
+                            {deleteModal && (
+                                <>
+                                    <div >
+                                        <div
+                                            className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none"
+                                        >
+                                            <div className=" my-6 mx-auto">
+
+                                                <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-green-50 outline-none focus:outline-none">
+
+                                                    <div className="flex items-start justify-between p-5 ">
+                                                        <h3 className="text-3xl font-semibold text-black">
+                                                            Delete - 
+                                                        </h3>
+                                                        <button
+                                                            className="p-1 ml-auto bg-transparent border-0 text-black opacity-5 float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
+                                                            onClick={() => handleDeleteModalView()}
+                                                        >
+                                                            <span className="bg-transparent text-black opacity-5 h-6 w-6 text-2xl block outline-none focus:outline-none">
+                                                                ×
+                                                            </span>
+                                                        </button>
+                                                    </div>
+
+                                                    <div className="relative p-6 flex-auto">
+                                                        <p className="my-4 text-blueGray-500 text-lg leading-relaxed text-black">
+                                                            Are you sure you want to delete?
+                                                        </p>
+                                                    </div>
+
+                                                    <div className="flex items-center justify-end p-6">
+                                                        <button
+                                                            className="text-red-500 background-transparent font-bold uppercase px-6 py-2 text-sm outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150 h-10"
+                                                            type="button"
+                                                            onClick={handleDeleteModalView}
+                                                            //onClick={() => handleDeleteModalView(item._id)}
+                                                        >
+                                                            No
+                                                        </button>
+                                                        <button
+                                                            className="bg-[rgb(186,212,249)] text-white active:bg-[rgb(186,212,249)] font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+                                                            type="button"
+                                                            onClick={handleDeleteModal}
+                                                            //onClick={() => handleDelete(item._id, item.parent)}
+                                                        >
+                                                            Yes
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div className="opacity-25 fixed inset-0 z-40 bg-black"></div>
+                                    </div>
+                                </>
+                            )}
+
                             <button
-                            className="block px-4 py-2 text-[12px] text-gray-700 "
-                            onClick={handleDelete}
-                            onMouseEnter={handleMouseEnterClone}
-                            onMouseLeave={handleMouseLeaveClone}
+                                className="block px-4 py-2 text-[12px] text-gray-700 "
+                                onClick={handleDelete}
+                                onMouseEnter={handleMouseEnterClone}
+                                onMouseLeave={handleMouseLeaveClone}
                             >
                                 {isHoveredClone ? 'Clone' : <FaClone />}
                             </button>
                         </div>
                         )}
                         <Link to='/assets'>
-                        <div className="font-semibold bg-[rgb(254,132,183)] rounded-2xl h-[80px] w-[100px] text-[15px] flex items-center justify-center mt-[-15px]">
-                            <p className="m-0 text-white mt-[-10px] ">Plants</p>
-                        </div>
+                            <div className="font-semibold bg-[rgb(254,132,183)] rounded-2xl h-[80px] w-[100px] text-[15px] flex items-center justify-center mt-[-15px]">
+                                <p className="m-0 text-white mt-[-10px] ">Plants</p>
+                            </div>
                         </Link>
                     </div>
                     {/* <span onClick={handleAddBox}>

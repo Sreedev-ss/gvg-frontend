@@ -47,6 +47,7 @@ const DummyComp = () => {
     })
 
     const [deleteModal, setDeleteModal] = useState({})
+    
     const handleDeleteModalView = (itemId) => {
         setDeleteModal(prevState => ({
             ...prevState,
