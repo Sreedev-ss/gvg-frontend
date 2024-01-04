@@ -10,7 +10,6 @@ const UserComp = () => {
     const [open, setOpen] = useState(false);
     const [allUserData, setAllUserData] = useState([]);
     const [useEffectCall, setUseEffectCall] = useState(false);
-    const mountedRef = useRef(true);
     const [formData, setFormData] = useState({
         name: "",
         email: "",
@@ -32,7 +31,42 @@ const UserComp = () => {
         };
 
         fetchData();
+
     },[useEffectCall]);
+
+    const handleChangeAddUser = (e) => {
+        const { name, value } = e.target;
+       
+          setFormData((prevData) => ({
+            ...prevData,
+            [name]: value,
+          }));
+    };
+
+    const handleSubmitAddUser = async (e) => {
+        console.log(formData, "formData is submitted");
+        e.preventDefault();
+    
+        try {
+          const res = await instance.post(`/auth/user/signup`, formData);
+    
+          if (res.data ) {
+            console.log("Submission successful");
+            setUseEffectCall(!useEffectCall);
+            setFormData({
+              name: "",
+              email: "",
+              password: "",
+            });
+            setOpen(false);
+          } else {
+            console.error("Submission failed:", res.data.errorResponse);
+          }
+        } catch (err) {
+          console.error(err);
+        }
+      };
+     
 
     return (
         <>
@@ -69,28 +103,28 @@ const UserComp = () => {
                                         <label class="block text-gray-700 text-sm font-bold mb-2" for="username">
                                             Name
                                         </label>
-                                        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="username" type="text" placeholder="Enter Name" />
+                                        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="name" name="name" type="text" placeholder="Enter Name" value={formData.name} onChange={handleChangeAddUser} />
                                     </div>
                                     <div class="mb-4">
                                         <label class="block text-gray-700 text-sm font-bold mb-2" for="username">
                                             Email
                                         </label>
-                                        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="username" type="text" placeholder="Enter Email" />
+                                        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="email" name="email" type="text" placeholder="Enter Email" value={formData.email} onChange={handleChangeAddUser}  />
                                     </div>
                                     <div class="mb-6">
                                         <label class="block text-gray-700 text-sm font-bold mb-2" for="password">
                                             Password
                                         </label>
-                                        <input class="shadow appearance-none border border-red-500 rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline" id="password" type="password" placeholder="******************" />
+                                        <input class="shadow appearance-none border border-red-500 rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline" id="password" name="password" type="password" placeholder="******************"  value={formData.password} onChange={handleChangeAddUser}  />
                                         <p class="text-red-500 text-xs italic">Please choose a password.</p>
                                     </div>
-                                    <div class="mb-6">
+                                    {/* <div class="mb-6">
                                         <label class="block text-gray-700 text-sm font-bold mb-2" for="password">
                                             Confirm Password
                                         </label>
                                         <input class="shadow appearance-none border border-red-500 rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline" id="password" type="password" placeholder="******************" />
                                         <p class="text-red-500 text-xs italic">Please re-write the password.</p>
-                                    </div>
+                                    </div> */}
                                 </form>
                                 </div>
                             </div>
@@ -98,7 +132,7 @@ const UserComp = () => {
                             <button
                                 type="button"
                                 className="mr-2 inline-flex justify-center px-4 py-2 text-sm font-semibold text-white bg-[rgb(133,160,238)] rounded-md hover:bg-[rgb(133,160,238)] focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-red-500"
-                                onClick={() => setOpen(false)}
+                                onClick={handleSubmitAddUser}
                             >
                                 Create
                             </button>
