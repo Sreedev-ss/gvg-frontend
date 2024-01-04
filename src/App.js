@@ -11,6 +11,7 @@ import AdminDashboard from './pages/dashboard/AdminDashboard';
 import { HierarchyProvider } from './context/HierarchyContext';
 import ProtectedRoute from './authentication/ProtectedRoute';
 import User from './pages/dashboard/User';
+import ReportingAndAnalytics from './pages/dashboard/ReportingAnalytics';
 
 function App() {
   return (
@@ -25,6 +26,7 @@ function App() {
         <Route path='/asset' element={<ProtectedRoute><Dummy /></ProtectedRoute>} />
         <Route path='/assets/:plantId' element={<Assets />} />
         <Route path='/user' element={<ProtectedRoute><User /></ProtectedRoute>} />
+        <Route path='/reports' element={<ProtectedRoute><ReportingAndAnalytics /></ProtectedRoute>} />
 
         
       </Routes>

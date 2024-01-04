@@ -200,10 +200,12 @@ const AdminSidebar = () => {
                             Dashboard
                         </div>
                     </Link>
+                    <Link to='/reports'>
                     <div className="mt-5 text-zinc-900 text-[14px] cursor-pointer flex items-start justify-start">
                         <SiGoogleanalytics style={{ marginRight: '8px', marginTop: '4px' }} />
                         Reporting & Analytics
                     </div>
+                    </Link>
                     <Link to='/user'>
                         <div className="mt-5 text-zinc-900 text-[14px] cursor-pointer flex items-start justify-start">
                             <FaRegUser style={{ marginRight: '8px', marginTop: '4px' }} />
