@@ -6,6 +6,7 @@ import './AdminDashboard.css';
 import { BsThreeDots } from "react-icons/bs";
 import { MdDelete } from "react-icons/md";
 import { FaClone } from "react-icons/fa";
+import Modal from 'react-modal'; 
 
 const AdminDashboardComp = () => {
     const [showAddModal, setShowAddModal] = useState(false);
@@ -16,6 +17,7 @@ const AdminDashboardComp = () => {
     const [deleteModal, setDeleteModal] = useState(false);
     const [showUpdateConfirmation, setShowUpdateConfirmation] = useState(false);
     const [editModal, setEditModal] = useState(false);
+    const [showConfirmationModal, setShowConfirmationModal] = useState(false);
 
   const toggleDropdown = () => {
     setIsDropdownOpen(!isDropdownOpen);
@@ -151,6 +153,18 @@ const AdminDashboardComp = () => {
         setIsHoveredClone(false);
       };
 
+      const handleConfirmDuplicate = () => {
+            setShowConfirmationModal(false);
+        };
+
+        const handleCancelDuplicate = () => {
+            setShowConfirmationModal(false);
+          };
+
+          const handleDuplicate = () => {
+            //setItemIdToDuplicate(id);
+            setShowConfirmationModal(true);
+          };
 
       
     return (
@@ -431,12 +445,68 @@ const AdminDashboardComp = () => {
 
                             <button
                                 className="block px-4 py-2 text-[12px] text-gray-700 "
-                                onClick={handleDelete}
+                                onClick={handleDuplicate}
                                 onMouseEnter={handleMouseEnterClone}
                                 onMouseLeave={handleMouseLeaveClone}
                             >
                                 {isHoveredClone ? 'Clone' : <FaClone />}
                             </button>
+                            <Modal className='flex items-center justify-center'  
+                                isOpen={showConfirmationModal}
+                                onRequestClose={() => setShowConfirmationModal(false)}
+                            >
+                                <div className='z-50'>
+                                    <div
+                                        className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none mt-[25px] "
+                                    >
+                                        <div className=" my-6 mx-auto">
+
+                                            <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-[150%] bg-green-50 outline-none focus:outline-none" style={{ border: '2px solid rgb(65,73,115)' }}>
+
+                                                <div className="flex items-start justify-between p-5 ">
+                                                    <h3 className="text-3xl font-semibold text-black">
+                                                        Clone -
+                                                    </h3>
+                                                    <button
+                                                        className="p-1 ml-auto bg-transparent border-0 text-black opacity-5 float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
+                                                        isOpen={showConfirmationModal}
+                                                        onRequestClose={() => setShowConfirmationModal(false)}
+                                                    >
+                                                        <span className="bg-transparent text-black opacity-5 h-6 w-6 text-2xl block outline-none focus:outline-none">
+                                                            ×
+                                                        </span>
+                                                    </button>
+                                                </div>
+
+                                                <div className="relative p-1 flex-auto">
+                                                    <p className="my-4 text-blueGray-500 text-lg leading-relaxed text-black ml-4">
+                                                        Are you sure you want to clone?
+                                                    </p>
+                                                </div>
+
+                                                <div className="flex items-center justify-end p-6">
+                                                    <button
+                                                        className="text-red-500 background-transparent font-bold uppercase px-6 py-2 text-sm outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150 h-10"
+                                                        type="button"
+                                                        onClick={handleCancelDuplicate}
+                                                    >
+                                                        No
+                                                    </button>
+                                                    <button
+                                                        className="bg-[rgb(186,212,249)] text-black active:bg-[rgb(186,212,249)] font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+                                                        type="button"
+                                                        onClick={handleConfirmDuplicate}
+                                                    >
+                                                        Yes
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="opacity-25 fixed inset-0 z-40 bg-black"></div>
+                                </div>
+                            </Modal>
+
                         </div>
                         )}
                         <Link to='/assets'>
