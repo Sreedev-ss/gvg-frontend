@@ -13,7 +13,9 @@ const AdminDashboardComp = () => {
     const [isHovered, setIsHovered] = useState(false);
     const [isHoveredDelete, setIsHoveredDelete] = useState(false);
     const [isHoveredClone, setIsHoveredClone] = useState(false);
-    const [deleteModal, setDeleteModal] = useState(false)
+    const [deleteModal, setDeleteModal] = useState(false);
+    const [showUpdateConfirmation, setShowUpdateConfirmation] = useState(false);
+    const [editModal, setEditModal] = useState(false);
 
   const toggleDropdown = () => {
     setIsDropdownOpen(!isDropdownOpen);
@@ -106,6 +108,19 @@ const AdminDashboardComp = () => {
         setIsHovered(false);
       };
 
+      const handleUpdateConfirmationView = () => {
+        setShowUpdateConfirmation(true);
+    };
+
+    const handleEditModalView = () => {
+        setEditModal(!editModal)
+    };
+
+    const handleEditModal = () => {
+        handleEditModalView();
+      };
+
+
       //delete
       const handleMouseEnterDelete = () => {
         setIsHoveredDelete(true);
@@ -123,6 +138,10 @@ const AdminDashboardComp = () => {
         handleDeleteModalView();
       };
 
+      const handleUpdateConfirmationClose = () => {
+        setShowUpdateConfirmation(false);
+    };
+
       //clone
       const handleMouseEnterClone = () => {
         setIsHoveredClone(true);
@@ -131,6 +150,8 @@ const AdminDashboardComp = () => {
       const handleMouseLeaveClone = () => {
         setIsHoveredClone(false);
       };
+
+
       
     return (
         <div className="bg-white p-4 h-[89.4vh] rounded-2xl shadow-md main-container">
@@ -225,18 +246,129 @@ const AdminDashboardComp = () => {
                         <div className="absolute top-0 right-0 left-20 shadow-lg mt-4  border-gray-300 rounded">
                             <button
                                 className="block px-4 py-2 text-[12px] text-gray-700 "
-                                onClick={handleEdit}
+                                onClick={handleEditModal}
                                 onMouseEnter={handleMouseEnter}
                                 onMouseLeave={handleMouseLeave}
                             >
                                 {isHovered ? 'Edit' : <FaEdit />}
                             </button>
 
+                            {editModal ? (
+                                <>
+                                    <div className={`bg-slate-900 z-50 ${showUpdateConfirmation ? 'modal-overlay' : ''}`}>
+                                        <div
+                                            className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none"
+                                        >
+                                            <div className="relative my-6 mx-auto w-[800px]">
+
+                                                <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-green-50 outline-none focus:outline-none">
+
+                                                    <div className="flex items-start justify-between p-5 ">
+                                                        <h3 className="text-3xl font-semibold text-black">
+                                                            Edit Plant
+                                                        </h3>
+                                                        <button
+                                                            className="p-1 ml-auto bg-transparent border-0 text-black opacity-5 float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
+                                                            //onClick={() => { setShowEditSPlantSFacModal(false) }}
+                                                        >
+                                                            <span className="bg-transparent text-black opacity-5 h-6 w-6 text-2xl block outline-none focus:outline-none">
+                                                                ×
+                                                            </span>
+                                                        </button>
+                                                    </div>
+                                                    <div className="mb-4">
+                                                        <label htmlFor="name" className="block text-sm font-medium text-gray-700 ml-[22px]">
+                                                            Plant Name:
+                                                        </label>
+                                                        <input
+                                                            type="text"
+                                                            id="name-1"
+                                                            name="name"
+                                                            value={formData.name}
+                                                            onChange={handleChangeCreate}
+                                                            className="mt-1 ml-[25px] p-2 border border-gray-300 rounded-md w-[740px] h-[35px] text-black"
+                                                        />
+                                                    </div>
+                                                    <div className="mb-4 mt-2">
+                                                        <label htmlFor="name" className="block text-sm font-medium text-gray-700 ml-[22px]">
+                                                            Description:
+                                                        </label>
+                                                        <input
+                                                            type="text"
+                                                            id="description"
+                                                            name="description"
+                                                            value={formData.description}
+                                                            onChange={handleChangeCreate}
+                                                            className="mt-1 ml-[25px] p-2 border border-gray-300 rounded-md w-[740px] h-[35px] text-black"
+                                                        />
+                                                    </div>
+
+                                                    <div className="flex items-center justify-end p-6">
+                                                        <button
+                                                            className="text-red-500 background-transparent font-bold uppercase px-6 py-2 text-sm outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150 h-10"
+                                                            type="button"
+                                                            onClick={() => setEditModal(false)}
+                                                        >
+                                                            Cancel
+                                                        </button>
+                                                        <button
+                                                            className="bg-[rgb(186,212,249)] text-black active:bg-[rgb(186,212,249)] font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+                                                            type="button"
+                                                            //onClick={handleEditSubmit}
+                                                            onClick={() => {
+                                                                handleUpdateConfirmationView();
+
+                                                            }}
+                                                        >
+                                                            Update
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div className="opacity-25 fixed inset-0 z-40 bg-black"></div>
+                                    </div>
+
+                                    {showUpdateConfirmation && (
+
+                                        <div className="absolute mt-[150px] left-40 transform -translate-x-1/2 -translate-y-1/2 z-50 bg-white ml-[208px] w-[370px]" style={{ border: '2px solid rgb(65,73,115)' }}>
+                                            <div className="relative p-6 flex-auto">
+                                                <p className="my-4 text-blueGray-500 text-lg leading-relaxed text-black">
+                                                    Are you sure you want to update?
+                                                </p>
+                                            </div>
+                                            <div className="bg-white p-6 shadow-md rounded-md">
+                                                <button
+                                                    className="text-red-500 background-transparent font-bold uppercase px-6 py-2 text-sm outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150 h-10"
+                                                    type="button"
+                                                    onClick={() => {
+                                                        setShowUpdateConfirmation(false);
+                                                        handleUpdateConfirmationClose();
+                                                    }}
+                                                >
+                                                    Cancel
+                                                </button>
+                                                <button
+                                                    className="bg-emerald-500 text-white active:bg-emerald-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+                                                    type="button"
+                                                    onClick={() => {
+                                                        handleUpdateConfirmationClose();
+                                                        //handleEditSubmit();
+                                                    }}
+                                                >
+                                                    Confirm Update
+                                                </button>
+                                            </div>
+                                        </div>
+                                    )}
+                                </>
+                            ) : null}
+
                             <button
-                            className="block px-4 py-2 text-[12px] text-gray-700 "
-                            onClick={handleDeleteModal}
-                            onMouseEnter={handleMouseEnterDelete}
-                            onMouseLeave={handleMouseLeaveDelete}
+                                className="block px-4 py-2 text-[12px] text-gray-700 "
+                                onClick={handleDeleteModal}
+                                onMouseEnter={handleMouseEnterDelete}
+                                onMouseLeave={handleMouseLeaveDelete}
                             >
                                 {isHoveredDelete ? 'Delete' : <MdDelete />}
                             
@@ -281,7 +413,7 @@ const AdminDashboardComp = () => {
                                                             No
                                                         </button>
                                                         <button
-                                                            className="bg-[rgb(186,212,249)] text-white active:bg-[rgb(186,212,249)] font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+                                                            className="bg-[rgb(186,212,249)] text-black active:bg-[rgb(186,212,249)] font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
                                                             type="button"
                                                             onClick={handleDeleteModal}
                                                             //onClick={() => handleDelete(item._id, item.parent)}
