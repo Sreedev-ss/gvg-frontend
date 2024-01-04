@@ -336,14 +336,14 @@ const DummyComp = () => {
                             )}
                             <div className='flex flex-col items-center mt-4'>
                                 {parentName?.name && level !== 2 ? (
-                                    <div className="flex justify-between z-0 box-border rounded-2xl w-[100%]" onClick={() => handleFetchData(parentName?.parent)}>
+                                    <div className="flex justify-between z-0 box-border rounded-2xl w-[100%] cursor-pointer" onClick={() => handleFetchData(parentName?.parent)}>
                                         <div className='' style={{ backgroundColor: 'rgb(215,235,230)', border: '2px solid rgb(77,164,164)', borderRadius: '7px 7px 0 0', padding: '3px', borderBottom: 'none' }}>
                                             <p className="m-0 px-4 text-black justify-center items-center flex font-semibold">{parentName?.name?.length !== 1 && parentName?.name}</p>
                                             <p className="m-0 px-4 text-black justify-center items-center flex font-semibold">{parentName?.description?.slice(0, 35)}</p>
                                         </div>
                                     </div>
                                 ) :
-                                    <div className="flex justify-evenly z-0 gap-10 align-middle box-border rounded-2xl w-[100%]" >
+                                    <div className="flex justify-evenly z-0 gap-10 align-middle box-border rounded-2xl w-[100%] cursor-pointer" >
                                         {mainRegion && mainRegion.map((item, index) => (
                                             <div key={index} onClick={() => fetchData(item._id)} style={{ backgroundColor: parentName?.name?.trim() == item?.name?.trim() ? 'rgb(215,235,230)' : '', border: parentName?.name?.trim() == item?.name?.trim() ? '2px solid rgb(77,164,164)' : '', borderRadius: parentName?.name?.trim() == item?.name?.trim() ? '7px 7px 0 0' : '', padding: '3px', borderBottom: 'none' }}>
                                                 <p className="m-0 px-4 text-black justify-center items-center flex font-semibold">{item?.name?.length !== 1 && item?.name}</p>
