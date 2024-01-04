@@ -22,6 +22,11 @@ const AdminSidebar = () => {
     const [loading, setLoading] = useState(false);
     const { hierarchicalPath, selectItem, parentid, level } = useHierarchy();
     const navigate = useNavigate();
+    const [showAddModal, setShowAddModal] = useState(false);
+    const [formData, setFormData] = useState({
+        name: '',
+        description: '',
+    })
 
     const handleLogout = () => {
         navigate('/authentication/login')
@@ -123,6 +128,46 @@ const AdminSidebar = () => {
         fileInputRef.current.click();
     };
 
+    const handleCreateView = () => {
+        setFormData({
+            name: '',
+            description: '',
+
+        })
+        setShowAddModal(true)
+    };
+
+    const handleCreate = (e) => {
+        e.preventDefault();
+
+        if (formData.name === "" || formData.description === "" || formData.system === "") {
+            console.log('Fill data')
+        } else {
+            // instance.post(`/assets/addAsset/${level}`, formData).then((res) => {
+            //     toast.success("Created successfully");
+            //     console.log(res)
+            //     setFormData({
+            //         name: '',
+            //         description: '',
+            //         system: 'primary',
+            //         parent: parent
+            //     })
+            //     fetchData(res.data?.parent)
+            // }).catch((err) => {
+            //     console.log(err)
+            // })
+            // setShowAddModal(false)
+        }
+
+    };
+    const handleChangeCreate = (e) => {
+        const { name, value } = e.target
+        setFormData((prevData) => ({
+            ...prevData,
+            [name]: value
+        }))
+    };
+
     return (
         
         <aside className="bg-white overflow-hidden text-white py-5 rounded-lg mr-4 w-60 sidebar-container flex flex-col justify-between items-center bg-bottom">
@@ -165,10 +210,89 @@ const AdminSidebar = () => {
                         style={{ display: 'none' }}
                     />
                     <button className="rounded-31xl flex items-center justify-center py-2.5 px-5 gap-[9px] text-[14px] text-white  cursor-pointer text-center rounded  bg-[rgb(254,0,144)] border-[rgb(254,0,144)] hover:bg-[rgb(254,116,194)]  "
-                        onClick={handleImportButtonClick}>
+                        //onClick={handleImportButtonClick}
+                        onClick={handleCreateView}
+                        >
 
                         <CiImport />Import
                     </button>
+
+                    {showAddModal ? (
+                    <>
+                        <div className="">
+                            <div
+                                className=" justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none"
+                            >
+                                <div className="relative my-6 mx-auto w-[800px]">
+
+                                    <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-green-50 outline-none focus:outline-none">
+
+                                        <div className="flex items-start justify-between p-5 ">
+                                            <h3 className="text-3xl font-semibold text-black">
+                                                Create Plant
+                                            </h3>
+                                            <button
+                                                className="p-1 ml-auto bg-transparent border-0 text-black opacity-5 float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
+                                                onClick={() => setShowAddModal(false)}
+                                            >
+                                                <span className="bg-transparent text-black opacity-5 h-6 w-6 text-2xl block outline-none focus:outline-none">
+                                                    ×
+                                                </span>
+                                            </button>
+                                        </div>
+                                        <div className="mb-4">
+                                            <label htmlFor="name" className="block text-sm font-medium text-gray-700 ml-[25px]">
+                                                Plant Name:
+                                            </label>
+                                            <input
+                                                type="text"
+                                                id="name"
+                                                name="name"
+                                                value={formData.name}
+                                                onChange={handleChangeCreate}
+                                                className="mt-1 ml-[25px] p-2 border border-gray-300 rounded-md w-[735px] h-[35px] text-black"
+                                            />
+                                        </div>
+                                        <div className="mb-4 mt-2">
+                                            <label htmlFor="name" className="block text-sm font-medium text-gray-700 ml-[25px]">
+                                                Description:
+                                            </label>
+                                            <input
+                                                type="text"
+                                                id="description"
+                                                name="description"
+                                                value={formData.description}
+                                                onChange={handleChangeCreate}
+                                                className="mt-1 ml-[25px] p-2 border border-gray-300 rounded-md w-[735px] h-[35px] text-black"
+                                            />
+                                        </div>
+
+                                        <div className="flex items-center justify-end p-6">
+                                            <button
+                                                className="text-red-500 background-transparent font-bold uppercase px-6 py-2 text-sm outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150 h-10"
+                                                type="button"
+                                                onClick={() => setShowAddModal(false)}
+                                            >
+                                                Cancel
+                                            </button>
+                                            <button
+                                                className="bg-[rgb(138,168,249)] text-white active:bg-[rgb(138,168,249)] font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+                                                type="button"
+                                                // onClick={handleCreate}
+                                                onClick={handleImportButtonClick}
+                                            >
+                                                Create
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="opacity-25 fixed inset-0 z-40 bg-black"></div>
+                        </div>
+                    </>
+                ) : null}
+
+
                 </div>
                 <button className="rounded-31xl flex items-center justify-center py-2.5 px-5 gap-[9px] text-center text-[14px] text-white cursor-pointer rounded  bg-[rgb(254,0,144)] border-[rgb(254,0,144)] hover:bg-[rgb(254,116,194)] mt-4"
                     onClick={handleExport}
