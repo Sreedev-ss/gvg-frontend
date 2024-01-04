@@ -4,9 +4,33 @@ import { FaEdit } from "react-icons/fa";
 import { CiCirclePlus } from "react-icons/ci";
 import './AdminDashboard.css';
 import { BsThreeDots } from "react-icons/bs";
+import { MdDelete } from "react-icons/md";
+import { FaClone } from "react-icons/fa";
 
 const AdminDashboardComp = () => {
     const [showAddModal, setShowAddModal] = useState(false);
+    const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+    const [isHovered, setIsHovered] = useState(false);
+    const [isHoveredDelete, setIsHoveredDelete] = useState(false);
+    const [isHoveredClone, setIsHoveredClone] = useState(false);
+
+  const toggleDropdown = () => {
+    setIsDropdownOpen(!isDropdownOpen);
+  };
+
+  const closeDropdown = () => {
+    setIsDropdownOpen(false);
+  };
+
+  const handleEdit = () => {
+    // Implement your edit logic here
+    closeDropdown();
+  };
+
+  const handleDelete = () => {
+    // Implement your delete logic here
+    closeDropdown();
+  };
     const [boxes, setBoxes] = useState(() => {
         const storedBoxes = localStorage.getItem("boxes");
         return storedBoxes ? JSON.parse(storedBoxes) : [{ id: 1, name: "" }];
@@ -72,7 +96,31 @@ const AdminDashboardComp = () => {
             
         })
         setShowAddModal(true)
-    }
+    };
+
+    const handleMouseEnter = () => {
+        setIsHovered(true);
+      };
+    
+      const handleMouseLeave = () => {
+        setIsHovered(false);
+      };
+
+      const handleMouseEnterDelete = () => {
+        setIsHoveredDelete(true);
+      };
+    
+      const handleMouseLeaveDelete = () => {
+        setIsHoveredDelete(false);
+      };
+
+      const handleMouseEnterClone = () => {
+        setIsHoveredClone(true);
+      };
+    
+      const handleMouseLeaveClone = () => {
+        setIsHoveredClone(false);
+      };
 
       
     return (
@@ -156,13 +204,43 @@ const AdminDashboardComp = () => {
                 ) : null}
 
                 <div className="flex items-center">
-                    <div className="bg-[rgb(254,132,183)] p-4 rounded-lg">
-                    <div
-                                        className="top-0 right-0 p-2 text-red cursor-pointer w-0"
-                                        //onClick={() => handlePlusSPlantSFacClick(item._id)}
-                                    >
-                                        <BsThreeDots className="font-lighter text-[10px] mt-[-26px]  h-5  ml-[90px] text-red-700" />
-                                    </div>
+                    <div className="bg-[rgb(254,132,183)] p-4 rounded-lg relative">
+                        <div
+                            className="top-0 right-0 p-2 text-red cursor-pointer w-0"
+                            onClick={toggleDropdown}
+                            //onClick={() => handlePlusSPlantSFacClick(item._id)}
+                        >
+                            <BsThreeDots className="font-lighter text-[10px] mt-[-26px]  h-5  ml-[90px] text-red-700" />
+                        </div>
+                        {isDropdownOpen && (
+                        <div className="absolute top-0 right-0 left-20 shadow-lg mt-4  border-gray-300 rounded  ">
+                            <button
+                            className="block px-4 py-2 text-[12px] text-gray-700 "
+                            onClick={handleEdit}
+                            onMouseEnter={handleMouseEnter}
+                            onMouseLeave={handleMouseLeave}
+                            >
+                            {isHovered ? 'Edit' : <FaEdit />}
+                            </button>
+                            <button
+                            className="block px-4 py-2 text-[12px] text-gray-700 "
+                            onClick={handleDelete}
+                            onMouseEnter={handleMouseEnterDelete}
+                            onMouseLeave={handleMouseLeaveDelete}
+                            >
+                                {isHoveredDelete ? 'Delete' : <MdDelete />}
+                            
+                            </button>
+                            <button
+                            className="block px-4 py-2 text-[12px] text-gray-700 "
+                            onClick={handleDelete}
+                            onMouseEnter={handleMouseEnterClone}
+                            onMouseLeave={handleMouseLeaveClone}
+                            >
+                                {isHoveredClone ? 'Clone' : <FaClone />}
+                            </button>
+                        </div>
+                        )}
                         <Link to='/assets'>
                         <div className="font-semibold bg-[rgb(254,132,183)] rounded-2xl h-[80px] w-[100px] text-[15px] flex items-center justify-center mt-[-15px]">
                             <p className="m-0 text-white mt-[-10px] ">Plants</p>
