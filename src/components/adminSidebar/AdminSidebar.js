@@ -124,7 +124,8 @@ const AdminSidebar = () => {
     };
 
     return (
-        <aside className="bg-white bg-bottom p-4 text-white rounded-lg mr-4 w-60 sidebar-container">
+        <aside className="bg-white p-4 text-white rounded-lg mr-4 w-60 flex flex-col justify-between sidebar-container bg-bottom">
+            <div className='overflow-hidden'>
             <ToastContainer />
             <Link to='/'>
             <div className=" font-bold text-[25px]  text-[rgb(157,49,113)] flex justify-center items-center">
@@ -136,7 +137,7 @@ const AdminSidebar = () => {
             </div>
             
 
-            <div className='mt-12 h-[90%]'>
+            <div className='mt-12'>
                 <Link to='/'>
                 <div className=" text-zinc-900 text-[14px] flex items-start justify-start">
                     <HiBuildingLibrary style={{ marginRight: '8px', marginTop: '4px' }} />
@@ -161,7 +162,7 @@ const AdminSidebar = () => {
                     <IoIosLogOut style={{marginRight:'10px'}}/>
                     Dashboard
                 </div> */}
-                <div className='mt-32 ml-12'>
+                <div className='flex flex-col mt-[40%] justify-between items-center'>
                     <div>
                         <input
                             type="file"
@@ -192,16 +193,18 @@ const AdminSidebar = () => {
                     </button>
                 </div>
                 <div>
-                    <div className="mt-20 text-zinc-900 text-[14px] cursor-pointer flex items-center justify-center">
-                        <IoMdSettings style={{ marginRight: '10px' }} />
-                        Settings
+                    <div className=''>
+                        <div className="mt-16 text-zinc-900 text-[14px] cursor-pointer flex items-center justify-center">
+                            <IoMdSettings style={{ marginRight: '10px' }} />
+                            Settings
+                        </div>
+                        <div className="mt-4 text-zinc-900 text-[14px] cursor-pointer flex items-center justify-center" onClick={handleLogout}>
+                            <IoIosLogOut style={{ marginRight: '10px' }} />
+                            Logout
+                        </div>
                     </div>
-                    <div className="mt-4 text-zinc-900 text-[14px] cursor-pointer flex items-center justify-center" onClick={handleLogout}>
-                        <IoIosLogOut style={{ marginRight: '10px' }} />
-                        Logout
-                    </div>
-
                 </div>
+            </div>
             </div>
         </aside>
     )
