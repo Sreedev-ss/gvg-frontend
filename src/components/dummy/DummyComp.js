@@ -11,7 +11,7 @@ import { useHierarchy } from '../../context/HierarchyContext';
 import './Dummy.css';
 import Draggable from 'react-draggable';
 import { CiFilter } from "react-icons/ci";
-import Modal from 'react-modal'; 
+import Modal from 'react-modal';
 
 
 import { ToastContainer, toast } from "react-toastify";
@@ -19,7 +19,7 @@ import "react-toastify/dist/ReactToastify.css";
 
 const DummyComp = () => {
     const [loading, setLoading] = useState(null);
-    const { hierarchicalPath, updatePath, selectedItemId, updateParent, updateLevel, level, parentid } = useHierarchy();
+    const { hierarchicalPath, updatePath, selectedItemId, updateParent, updateLevel, level, parentid, plantId } = useHierarchy();
     const [selectedItems, setSelectedItems] = useState([]);
     const [drillDownData, setDrillDownData] = useState([]);
     const [parentName, setParentName] = useState('');
@@ -47,7 +47,7 @@ const DummyComp = () => {
     })
 
     const [deleteModal, setDeleteModal] = useState({})
-    
+
     const handleDeleteModalView = (itemId) => {
         setDeleteModal(prevState => ({
             ...prevState,
@@ -99,10 +99,10 @@ const DummyComp = () => {
         }))
     }, [parentid])
 
-    const fetchData = async (parentId) => {
+    const fetchData = async (parentId, plant) => {
         try {
             setLoading(true);
-            const response = await instance.get(`/assets/children/${parentId}`);
+            const response = await instance.get(`/assets/children/${parentId}/${plantId}`);
             setDrillDownData(response.data);
 
             if (parentId !== 'null') {
@@ -155,7 +155,7 @@ const DummyComp = () => {
         }
     };
 
-    const handleItemClick = (itemId, level, parentId) => {
+    const handleItemClick = (itemId, level, parentId, plant) => {
         // setLevel(level + 1)
         // // Update the selected items array based on user clicks
         // const updatedItems = selectedItems.slice(0, level);
@@ -164,7 +164,7 @@ const DummyComp = () => {
         setParent(itemId)
 
         // Fetch data for the next level based on the selected items
-        fetchData(itemId);
+        fetchData(itemId, plant);
     };
 
     const handleSystemChange = (e) => {
@@ -256,7 +256,7 @@ const DummyComp = () => {
     const handleDuplicate = (id) => {
         setItemIdToDuplicate(id);
         setShowConfirmationModal(true);
-      };
+    };
 
     const handleConfirmDuplicate = () => {
         instance.post(`/assets/duplicate/${itemIdToDuplicate}`).then((res) => {
@@ -272,7 +272,7 @@ const DummyComp = () => {
 
     const handleCancelDuplicate = () => {
         setShowConfirmationModal(false);
-      };
+    };
 
     const handleFilterChange = (event) => {
         setFilterTerm(event.target.value);
@@ -465,7 +465,7 @@ const DummyComp = () => {
                                                                 className="flex justify-center items-center bg-[#3773ca] rounded-xl font-light w-full h-full text-[15px]"
 
                                                             >
-                                                                <div className="font-semibold text-[15px] overflow-hidden" onClick={() => handleItemClick(item._id, item.level, item.parent)}>
+                                                                <div className="font-semibold text-[15px] overflow-hidden" onClick={() => handleItemClick(item._id, item.level, item.parent, item.plant)}>
                                                                     <p className="m-0 text-white mt-3 p-2 ">{item.name}</p>
                                                                     <p
                                                                         className="m-0 text-white overflow-hidden text-ellipsis"
@@ -510,7 +510,7 @@ const DummyComp = () => {
                                                                         <HiOutlineDocumentDuplicate className='mt-2' />
                                                                         <span className="tooltip">Duplicate</span>
                                                                     </p>
-                                                                    <Modal className='flex items-center justify-center'  
+                                                                    <Modal className='flex items-center justify-center'
                                                                         isOpen={showConfirmationModal}
                                                                         onRequestClose={() => setShowConfirmationModal(false)}
                                                                     >

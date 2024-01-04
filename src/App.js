@@ -23,7 +23,7 @@ function App() {
         {/* <Route path='/s-plant-facilities' element={<SPlantFacilities />} />
         <Route path='/s-plant-sat-com-compression' element={<SPlantSatComCompression />} /> */}
         <Route path='/asset' element={<ProtectedRoute><Dummy /></ProtectedRoute>} />
-        <Route path='/assets' element={<Assets />} />
+        <Route path='/assets/:plantId' element={<Assets />} />
         <Route path='/user' element={<ProtectedRoute><User /></ProtectedRoute>} />
 
         
