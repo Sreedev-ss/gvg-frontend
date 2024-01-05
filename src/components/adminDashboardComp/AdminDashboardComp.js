@@ -202,7 +202,15 @@ const AdminDashboardComp = () => {
         setIsHoveredClone(false);
     };
 
-    const handleConfirmDuplicate = () => {
+    const handleConfirmDuplicate = (id) => {
+        instance.post(`/plants/clone-plant/${id}`).then((res) => {
+            console.log(res)
+            setUseEffectCall(!useEffectCall)
+            setShowConfirmationModal(false);
+        }).catch((err) => {
+            console.log(err)
+            setShowConfirmationModal(false);
+        })
         setShowConfirmationModal(false);
     };
 
@@ -513,7 +521,7 @@ const AdminDashboardComp = () => {
 
                                                         <div className="flex items-start justify-between p-5 ">
                                                             <h3 className="text-3xl font-semibold text-black">
-                                                                Clone -
+                                                                Clone - {item.name}
                                                             </h3>
                                                             <button
                                                                 className="p-1 ml-auto bg-transparent border-0 text-black opacity-5 float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
@@ -543,7 +551,7 @@ const AdminDashboardComp = () => {
                                                             <button
                                                                 className="bg-[rgb(186,212,249)] text-black active:bg-[rgb(186,212,249)] font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
                                                                 type="button"
-                                                                onClick={handleConfirmDuplicate}
+                                                                onClick={()=>handleConfirmDuplicate(item._id)}
                                                             >
                                                                 Yes
                                                             </button>
