@@ -4,6 +4,8 @@ import { Link } from 'react-router-dom';
 import { Dialog } from '@headlessui/react'
 import { IoIosCloseCircleOutline } from "react-icons/io";
 import { instance } from "../../api";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Dropdown = ({ userId, parentSetUseEffectCall, userData }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -16,7 +18,7 @@ const Dropdown = ({ userId, parentSetUseEffectCall, userData }) => {
   const [formData, setFormData] = useState({
     name: userData.name || "",
     email: userData.email ||"",
-    password:"",
+    // password:"",
   });
 
   const toggleDropdown = () => {
@@ -31,6 +33,7 @@ const Dropdown = ({ userId, parentSetUseEffectCall, userData }) => {
   const deleteUserModal = async () => {
     try {
         const response = await instance.delete(`/users/delete-user/${userId}`);
+        toast.success("Deleted Successfully");
         console.log("ressss",response);
         setUseEffectCall(!useEffectCall);
         parentSetUseEffectCall((prev) => !prev);
@@ -54,12 +57,14 @@ const handleSubmitEditUser = () => {
     console.log(formData);
     instance
       .put(`/users/edit-user/${userData._id}`, formData)
+
       .then((res) => {
-        console.log("Edit userrrrr", res);
+          toast.success("Edited successfully");
+            console.log("Edit userrrrr", res);
           setFormData({
             name: "",
             email: "",
-            password: "",
+            // password: "",
           });
           setEditOpen(false);
           parentSetUseEffectCall((prev) => !prev);
@@ -72,6 +77,7 @@ const handleSubmitEditUser = () => {
 
   return (
     <div className="relative inline-block ">
+        <ToastContainer/>
       <Link
         href=""
         onClick={toggleDropdown}
@@ -122,19 +128,20 @@ const handleSubmitEditUser = () => {
                                     </label>
                                     <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="email" type="text" placeholder="Enter Email" name='email' value={formData.email} onChange={handleChangeAddUser}  />
                                 </div>
-                                <div class="mb-6">
+                                {/* <div class="mb-6">
                                     <label class="block text-gray-700 text-sm font-bold mb-2" for="password">
                                         Password
                                     </label>
                                     <input class="shadow appearance-none border border-red-500 rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline" id="password" type="password" placeholder="******************" name='password' value={formData.password} onChange={handleChangeAddUser}  />
                                     <p class="text-red-500 text-xs italic">Please choose a password.</p>
-                                </div>
+                                </div> */}
                             </form>
                             </div>
                         </div>
-                        <div className="mt-4 flex justify-end">
+                        <div className="mt-4 flex justify-end ">
                         <button
                             type="button"
+                            className="mr-2 inline-flex justify-center px-4 py-2 text-sm font-semibold text-white bg-[rgb(133,160,238)] rounded-md hover:bg-[rgb(133,160,238)] focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-red-500"
                             onClick={handleSubmitEditUser}
                         >
                             Update

@@ -4,6 +4,8 @@ import { IoIosCloseCircleOutline } from "react-icons/io";
 import './Drpdown';
 import Dropdown from "./Drpdown";
 import { instance } from "../../api";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 
 const UserComp = () => {
@@ -47,7 +49,7 @@ const UserComp = () => {
     
         try {
           const res = await instance.post(`/auth/user/signup`, formData);
-    
+          toast.success("Created successfully");
           if (res.data ) {
             console.log("Submission successful");
             setUseEffectCall(!useEffectCall);
@@ -70,6 +72,7 @@ const UserComp = () => {
     return (
         <>
             <div className="bg-white p-4 h-[89.4vh] rounded-lg shadow-md main-container">
+                <ToastContainer/>
                 <div className="flex items-end justify-end ">
                     <button className="bg-[rgb(185,213,251)] w-16 h-10 rounded-lg text-black" onClick={() => setOpen(true)}>
                         Add
@@ -114,8 +117,8 @@ const UserComp = () => {
                                         <label class="block text-gray-700 text-sm font-bold mb-2" for="password">
                                             Password
                                         </label>
-                                        <input class="shadow appearance-none border border-red-500 rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline" id="password" name="password" type="password" placeholder="******************"  value={formData.password} onChange={handleChangeAddUser}  />
-                                        <p class="text-red-500 text-xs italic">Please choose a password.</p>
+                                        <input class="shadow appearance-none border  rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline" id="password" name="password" type="password" placeholder="******************"  value={formData.password} onChange={handleChangeAddUser}  />
+                                        {/* <p class="text-red-500 text-xs italic">Please choose a password.</p> */}
                                     </div>
                                     {/* <div class="mb-6">
                                         <label class="block text-gray-700 text-sm font-bold mb-2" for="password">
