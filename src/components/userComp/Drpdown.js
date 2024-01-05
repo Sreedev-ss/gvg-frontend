@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { FaArrowCircleRight } from 'react-icons/fa'; 
 import { Link } from 'react-router-dom';
 import { Dialog } from '@headlessui/react'
@@ -14,12 +14,27 @@ const Dropdown = ({ userId, parentSetUseEffectCall, userData }) => {
   const [permissionOpen, setPermissionOpen] = useState(false);
   const cancelButtonRef = useRef(null);
   const [useEffectCall, setUseEffectCall] = useState(false);
+  const [plants, setPlants] = useState([]);
 
   const [formData, setFormData] = useState({
     name: userData.name || "",
     email: userData.email ||"",
     // password:"",
   });
+
+  useEffect(() => {
+    const fetchPlant = async () => {
+        try {
+            const response = await instance.get('/plants/all-plant')
+            console.log(response.data)
+            setPlants(response.data)
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    fetchPlant()
+}, [useEffectCall])
 
   const toggleDropdown = () => {
     setIsOpen(!isOpen);
@@ -250,6 +265,9 @@ const handleSubmitEditUser = () => {
                                     </tr>
                                 </thead>
                                 <tbody>
+                                {plants.length !== 0 ? (
+                                    plants?.map((item, index) => (
+                                        <React.Fragment key={item._id}>
                                     <tr class="bg-white dark:bg-white hover:bg-gray-50 dark:hover:bg-[rgb(223,232,251)]">
                                         <th scope="col" class="p-4">
                                             <div class="flex items-center">
@@ -257,9 +275,9 @@ const handleSubmitEditUser = () => {
                                                 <label for="checkbox-all-search" class="sr-only">checkbox</label>
                                             </div>
                                         </th>
-                                        <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-gray-900">1</th>
+                                        <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-gray-900">{index+1}</th>
                                         <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-gray-900">
-                                            Plant A
+                                            {item.name}
                                         </th>
                                         <td class="px-6 py-4">                                    
                                             <ul class="items-center w-full text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg sm:flex dark:bg-white dark:border-gray-600 dark:text-white">
@@ -290,6 +308,15 @@ const handleSubmitEditUser = () => {
                                             </ul> 
                                         </td>
                                     </tr> 
+                                    </React.Fragment>
+                                    ))
+                                ):(
+                                    <div className="flex flex-col items-center justify-center w-full mt-150">
+                                <div className="flex justify-center items-center w-full">
+                                    <p className="ml-450">No Data</p>
+                                </div>
+                            </div>
+                                )}
                                 </tbody>
                             </table>
                         </div>
