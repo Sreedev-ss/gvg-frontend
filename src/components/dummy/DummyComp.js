@@ -16,6 +16,7 @@ import { SketchPicker } from 'react-color';
 
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import debounce from 'lodash.debounce';
 
 const DummyComp = () => {
     const { id } = useParams()
@@ -42,13 +43,24 @@ const DummyComp = () => {
     const [showConfirmationModal, setShowConfirmationModal] = useState(false);
     const [itemIdToDuplicate, setItemIdToDuplicate] = useState(null);
     const [showColorPicker, setShowColorPicker] = useState(false);
-    const [selectedColor, setSelectedColor] = useState('#ffffff');
+    const [selectedColor, setSelectedColor] = useState();
     const [formData, setFormData] = useState({
         description: '',
         system: 'primary',
         parent: id,
         plant: plantId
     })
+    const [userData, setUserData] = useState(JSON.parse(localStorage.getItem("loginData")))
+    const [accessState, setAccessState] = useState({})
+    useEffect(() => {
+        if (userData.role == "admin") {
+            setAccessState({ edit: true, delete: true, create: true, duplicate: true })
+        } else if (userData.plant) {
+            const data = userData.plant.find((item) => item?.plant == plantId)
+            console.log(data)
+            setAccessState(data.access)
+        }
+    }, [])
 
     const [deleteModal, setDeleteModal] = useState({})
 
@@ -106,12 +118,13 @@ const DummyComp = () => {
         }))
     }, [parentid])
 
-    console.log(formData)
-
     const fetchData = async (parentId, level) => {
         try {
             setLoading(true);
             const response = await instance.get(`/assets/children/${parentId}/${plant}`);
+            if (response.data.length) {
+                setSelectedColor(response.data[0]?.color)
+            }
             setDrillDownData(response.data);
             if (level == 1 && response.data.length < 5) {
                 setMainRegion(response.data)
@@ -304,12 +317,22 @@ const DummyComp = () => {
 
     const handleFilterClick = () => {
         setShowColorPicker(!showColorPicker);
-      };
-    
-      const handleColorChange = (color) => {
+    };
+
+    const debouncedApiCall = debounce((color) => {
+        // console.log(color, level, plantId)
+        instance.put(`/assets/update-color/${level}/${plantId}`, { color: color }).then((res) => {
+            console.log(res.data)
+            setShowColorPicker(false)
+        }).catch((err) => {
+            console.log(err)
+        })
+    }, 3000);
+
+    const handleColorChange = (color) => {
         setSelectedColor(color.hex);
-       
-      };
+        debouncedApiCall(color.hex)
+    };
 
     return (
         <>
@@ -317,12 +340,12 @@ const DummyComp = () => {
                 <ToastContainer />
 
                 <div className="w-[96%] h-[94%]  m-6 rounded-2xl" style={{ border: '2px solid rgb(65,73,115)', backgroundColor: 'rgba(255, 255, 255, 0.8)' }} >
-                    <CiFilter className='ml-[98%] m-4' onClick={handleFilterClick}/>
+                    <CiFilter className='ml-[98%] m-4' onClick={handleFilterClick} />
                     {showColorPicker && (
                         <SketchPicker
-                        className='absolute right-4 mt-4'
-                        color={selectedColor}
-                        onChangeComplete={(color) => handleColorChange(color)}
+                            className='absolute right-4 mt-4 z-50'
+                            color={selectedColor}
+                            onChangeComplete={(color) => handleColorChange(color)}
                         />
                     )}
 
@@ -383,7 +406,7 @@ const DummyComp = () => {
                             <div className='w-[100%] h-[99%] px-2'>
                                 <div className="text-center text-xl text-white bg-[rgb(215,235,230)] rounded-2xl h-[78%] max-h-[80%] py-[12px] overflow-y-scroll " style={{ outline: '2px solid rgb(77,164,164)' }}>
                                     <div className="cursor-pointer flex items-end justify-end">
-                                        <CiCirclePlus className="text-slate-950 font-bold text-[20px]" onClick={handleCreateView} />
+                                    {accessState?.create &&<CiCirclePlus className="text-slate-950 font-bold text-[20px]" onClick={handleCreateView} />}
                                     </div>
 
 
@@ -489,7 +512,8 @@ const DummyComp = () => {
 
                                                         <div className="relative w-[250px] h-[150px] mt-3 cursor-pointer">
                                                             <div
-                                                                className="flex justify-center items-center bg-[#3773ca] rounded-xl font-light w-full h-full text-[15px]"
+                                                                style={{ backgroundColor: `${selectedColor}` }}
+                                                                className={`flex justify-center items-center rounded-xl font-light w-full h-full text-[15px]`}
 
                                                             >
                                                                 <div className="font-semibold text-[15px] overflow-hidden" onClick={() => handleItemClick(item.name.trim(), item.level, item.parent, item.plant)}>
@@ -517,26 +541,26 @@ const DummyComp = () => {
                                                             </div>
 
                                                             {showDropDownSPlantSFac[item._id] && (
-                                                                <div className="text-white bg-[#3773ca] rounded-xl shadow-lg px-2 absolute top-0 right-0 mt-8 mr-2 dropContent show">
+                                                                <div style={{ backgroundColor: `${selectedColor}` }} className={`text-white rounded-xl shadow-lg px-2 absolute top-0 right-0 mt-8 mr-2 dropContent show`}>
                                                                     {/* <div className="dropdown"> */}
-                                                                    <p className="m-0  whitespace-nowrap cursor-pointer p-tooltip" onClick={() => handleDeleteModalView(item._id)}
+                                                                    {accessState?.delete &&<p className="m-0  whitespace-nowrap cursor-pointer p-tooltip" onClick={() => handleDeleteModalView(item._id)}
                                                                         style={{ '--i': 0 }}
                                                                     >
                                                                         <MdDeleteOutline />
                                                                         <span className="tooltip">Delete</span>
-                                                                    </p>
-                                                                    <p className="m-0  whitespace-nowrap cursor-pointer p-tooltip" onClick={() => { setShowEditSPlantSFacModal(true); setFormData(item); }}
+                                                                    </p>}
+                                                                    {accessState?.edit &&<p className="m-0  whitespace-nowrap cursor-pointer p-tooltip" onClick={() => { setShowEditSPlantSFacModal(true); setFormData(item); }}
                                                                         style={{ '--i': 1 }}
                                                                     >
                                                                         <CiEdit className='mt-2' />
                                                                         <span className="tooltip">Edit</span>
-                                                                    </p>
-                                                                    <p className="m-0  whitespace-nowrap cursor-pointer p-tooltip" onClick={() => handleDuplicate(item._id)}
+                                                                    </p>}
+                                                                    {accessState?.duplicate &&<p className="m-0  whitespace-nowrap cursor-pointer p-tooltip" onClick={() => handleDuplicate(item._id)}
                                                                         style={{ '--i': 2 }}
                                                                     >
                                                                         <HiOutlineDocumentDuplicate className='mt-2' />
                                                                         <span className="tooltip">Duplicate</span>
-                                                                    </p>
+                                                                    </p>}
                                                                     <Modal className='flex items-center justify-center'
                                                                         isOpen={showConfirmationModal}
                                                                         onRequestClose={() => setShowConfirmationModal(false)}

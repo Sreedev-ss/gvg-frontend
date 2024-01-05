@@ -18,9 +18,11 @@ const AdminDashboardComp = () => {
     const [deleteModal, setDeleteModal] = useState(false);
     const [showUpdateConfirmation, setShowUpdateConfirmation] = useState(false);
     const [editModal, setEditModal] = useState(false);
+    const [userData, setUserData] = useState(JSON.parse(localStorage.getItem("loginData")))
     const [showConfirmationModal, setShowConfirmationModal] = useState(false);
     const [plants, setPlants] = useState([])
     const [useEffectCall, setUseEffectCall] = useState(false)
+
     const [formData, setFormData] = useState({
         _id: '',
         name: '',
@@ -28,12 +30,20 @@ const AdminDashboardComp = () => {
     })
     useEffect(() => {
         const fetchPlant = async () => {
-            try {
+            if (userData.role == "admin") {
                 const response = await instance.get('/plants/all-plant')
-                console.log(response.data)
                 setPlants(response.data)
-            } catch (error) {
-                console.log(error)
+            } else {
+                if (userData.plant.length !== 0) {
+                    userData.plant.forEach(async (item) => {
+                        instance.get(`/plants/get-plant-byId/${item.plant}`).then((res) => {
+                            setPlants((prevPlants) => [...prevPlants, res.data]);
+                           console.log(plants,res.data)
+                        }).catch((err) => {
+                            console.log(err)
+                        })
+                    })
+                }
             }
         }
 
@@ -76,26 +86,6 @@ const AdminDashboardComp = () => {
     const handleDelete = () => {
         closeDropdown();
     };
-    const [boxes, setBoxes] = useState(() => {
-        const storedBoxes = localStorage.getItem("boxes");
-        return storedBoxes ? JSON.parse(storedBoxes) : [{ id: 1, name: "" }];
-    });
-
-    const handleAddBox = () => {
-        const newBox = { id: boxes.length + 1, name: "" };
-        setBoxes([...boxes, newBox]);
-    };
-
-    const handleNameChange = (index, newName) => {
-        const updatedBoxes = [...boxes];
-        updatedBoxes[index].name = newName;
-        setBoxes(updatedBoxes);
-    };
-
-    useEffect(() => {
-        localStorage.setItem("boxes", JSON.stringify(boxes));
-    }, [boxes]);
-
 
 
     const handleChangeCreate = (e) => {
@@ -305,18 +295,18 @@ const AdminDashboardComp = () => {
                 ) : null} */}
 
                 <div className="flex items-center gap-5">
-                    {plants?.map((item, index) => (
+                    {plants.length !== 0 ? plants.map((item, index) => (
 
                         <div key={item._id} className="bg-[rgb(254,132,183)] p-4 rounded-lg relative">
-                            <div
-                                className="top-0 right-0 p-2 text-red cursor-pointer w-0"
+                            {userData.role == "admin" && <div
+                                className="absolute top-0 right-0 p-2 text-red cursor-pointer"
                                 onClick={() => toggleDropdown(item._id, item)}
                             //onClick={() => handlePlusSPlantSFacClick(item._id)}
                             >
-                                <BsThreeDots className="font-lighter text-[10px] mt-[-26px]  h-5  ml-[90px] text-red-700" />
-                            </div>
+                                <BsThreeDots className="font-lighter text-[10px] h-5  ml-[90px] text-red-700" />
+                            </div>}
                             {isDropdownOpen[item._id] && (
-                                <div className="absolute top-0 right-0 left-20 shadow-lg mt-4 z-100 border-gray-300 rounded">
+                                <div className="absolute top-2 right-0 left-20 shadow-lg mt-4 z-100 border-gray-300 rounded">
                                     <button
                                         className="block px-4 py-2 text-[12px] text-gray-700 "
                                         onClick={handleEditModal}
@@ -551,7 +541,7 @@ const AdminDashboardComp = () => {
                                                             <button
                                                                 className="bg-[rgb(186,212,249)] text-black active:bg-[rgb(186,212,249)] font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
                                                                 type="button"
-                                                                onClick={()=>handleConfirmDuplicate(item._id)}
+                                                                onClick={() => handleConfirmDuplicate(item._id)}
                                                             >
                                                                 Yes
                                                             </button>
@@ -566,35 +556,17 @@ const AdminDashboardComp = () => {
                                 </div>
                             )}
                             <Link to={`/assets/${item._id}`}>
-                                <div className="font-semibold bg-[rgb(254,132,183)] rounded-2xl h-[80px] w-[100px] text-[15px] flex items-center justify-center mt-[-15px]">
+                                <div className="font-semibold bg-[rgb(254,132,183)] rounded-2xl h-[80px] w-[100px] text-[15px] flex items-center justify-center ">
                                     <p className="m-0 text-white mt-[-10px] ">{item.name}</p>
                                 </div>
                             </Link>
                         </div>
-                    ))}
-                    {/* <span onClick={handleAddBox}>
-                        <CiCirclePlus className="text-slate-950 font-bold text-[20px] mt-[10px] ml-[40px]" />
-                    </span> */}
-                    {/* <div className="m-6 ml-3 flex">      
-                        {boxes.map((box, index) => (
-                            <div key={box.id} className="text-zinc-900 text-[14px] flex  mt-3 ">
-                                <Link to='/assets'>
-                                <div className="font-semibold bg-[rgb(254,132,183)] rounded-2xl h-[80px] w-[100px] text-[15px] flex items-center justify-center ">
-                                    <p className="m-0 text-white mt-[-10px] ">Plants</p>
-                                </div>
-                                <input
-                                    type="text"
-                                    value={box.name}
-                                    onChange={(e) => handleNameChange(index, e.target.value)}
-                                />
-                                </Link>
-                            </div>
-                        ))}
-                    </div> */}
+                    )) : <div className="flex justify-center w-full"><h1 className="font-bold text-3xl text-center">No plant found</h1></div>}
+
                 </div>
             </div>
 
-            <div className="h-[45%] mt-5  rounded-2xl " style={{ backgroundColor: 'rgba(255, 255, 255, 0.5)' }}>
+            {/* <div className="h-[45%] mt-5  rounded-2xl " style={{ backgroundColor: 'rgba(255, 255, 255, 0.5)' }}>
                 <div className="m-8">
                     <h1 className="ml-5"><strong>Recent Activities</strong></h1>
                     <div className='m-6'>
@@ -608,7 +580,7 @@ const AdminDashboardComp = () => {
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> */}
         </div>
     )
 }

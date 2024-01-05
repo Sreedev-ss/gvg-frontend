@@ -24,11 +24,11 @@ function App() {
         {/* <Route path='/s-plant-facilities' element={<SPlantFacilities />} />
         <Route path='/s-plant-sat-com-compression' element={<SPlantSatComCompression />} /> */}
         <Route path='/asset/:id/:plantId' element={<ProtectedRoute><Dummy /></ProtectedRoute>} />
-        <Route path='/assets/:plantId' element={<Assets />} />
+        <Route path='/assets/:plantId' element={<ProtectedRoute><Assets /></ProtectedRoute>} />
         <Route path='/user' element={<ProtectedRoute><User /></ProtectedRoute>} />
         <Route path='/reports' element={<ProtectedRoute><ReportingAndAnalytics /></ProtectedRoute>} />
 
-        
+
       </Routes>
     </HierarchyProvider>
   );

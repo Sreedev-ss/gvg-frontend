@@ -124,6 +124,7 @@ const Sidebar = () => {
     };
 
     const handleLogout = () => {
+        localStorage.removeItem("loginData")
         navigate('/authentication/login')
     }
 
