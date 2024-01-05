@@ -64,6 +64,7 @@ const UserComp = () => {
           console.error(err);
         }
       };
+
      
 
     return (
@@ -179,7 +180,7 @@ const UserComp = () => {
                             </td>
 
                             <td class="px-6 py-4 text-right">
-                                <Dropdown userId = {item._id} parentSetUseEffectCall={setUseEffectCall} />
+                                <Dropdown userId = {item._id} parentSetUseEffectCall={setUseEffectCall} userData = { item } />
                             </td>
                             </tr>  
                         </React.Fragment>

@@ -1,31 +1,23 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { FaArrowCircleRight } from 'react-icons/fa'; 
 import { Link } from 'react-router-dom';
 import { Dialog } from '@headlessui/react'
 import { IoIosCloseCircleOutline } from "react-icons/io";
 import { instance } from "../../api";
 
-const Dropdown = ({ userId, parentSetUseEffectCall }) => {
+const Dropdown = ({ userId, parentSetUseEffectCall, userData }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [editOpen, setEditOpen] = useState(false);
   const [deleteOpen, setDeleteOpen] = useState(false);
   const [permissionOpen, setPermissionOpen] = useState(false);
   const cancelButtonRef = useRef(null);
   const [useEffectCall, setUseEffectCall] = useState(false);
-  const [allUserData, setAllUserData] = useState([]);
 
-  useEffect(() => {
-    const fetchData = async () => {
-        try {
-            const res = await instance.get(`/users/all-user`);
-            console.log("ress",res);
-            setAllUserData(res.data);
-        } catch (error) {
-            console.log("errrrr",error);
-        }
-    };
-    fetchData();
-},[useEffectCall]);
+  const [formData, setFormData] = useState({
+    name: userData.name || "",
+    email: userData.email ||"",
+    password:"",
+  });
 
   const toggleDropdown = () => {
     setIsOpen(!isOpen);
@@ -34,6 +26,7 @@ const Dropdown = ({ userId, parentSetUseEffectCall }) => {
   const closeDropdown = () => {
     setIsOpen(false);
   };
+
 
   const deleteUserModal = async () => {
     try {
@@ -45,6 +38,35 @@ const Dropdown = ({ userId, parentSetUseEffectCall }) => {
     }catch(error) {
         console.error("Error:", error);
       }
+  };
+
+  const handleChangeAddUser = (e) => {
+    const { name, value } = e.target;
+   
+      setFormData((prevData) => ({
+        ...prevData,
+        [name]: value,
+      }));
+};
+
+
+const handleSubmitEditUser = () => {
+    console.log(formData);
+    instance
+      .put(`/users/edit-user/${userData._id}`, formData)
+      .then((res) => {
+        console.log("Edit userrrrr", res);
+          setFormData({
+            name: "",
+            email: "",
+            password: "",
+          });
+          setEditOpen(false);
+          parentSetUseEffectCall((prev) => !prev);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
 
@@ -89,30 +111,23 @@ const Dropdown = ({ userId, parentSetUseEffectCall }) => {
                         <div class="w-full max-w-xs">
                             <form class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
                                 <div class="mb-4">
-                                    <label class="block text-gray-700 text-sm font-bold mb-2" for="username">
+                                    <label class="block text-gray-700 text-sm font-bold mb-2" for="name" >
                                         Name
                                     </label>
-                                    <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="username" type="text" placeholder="Enter Name" />
+                                    <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="name" type="text" placeholder="Enter Name" name='name' value={formData.name} onChange={handleChangeAddUser} />
                                 </div>
                                 <div class="mb-4">
-                                    <label class="block text-gray-700 text-sm font-bold mb-2" for="username">
+                                    <label class="block text-gray-700 text-sm font-bold mb-2" for="email">
                                         Email
                                     </label>
-                                    <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="username" type="text" placeholder="Enter Email" />
+                                    <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="email" type="text" placeholder="Enter Email" name='email' value={formData.email} onChange={handleChangeAddUser}  />
                                 </div>
                                 <div class="mb-6">
                                     <label class="block text-gray-700 text-sm font-bold mb-2" for="password">
                                         Password
                                     </label>
-                                    <input class="shadow appearance-none border border-red-500 rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline" id="password" type="password" placeholder="******************" />
+                                    <input class="shadow appearance-none border border-red-500 rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline" id="password" type="password" placeholder="******************" name='password' value={formData.password} onChange={handleChangeAddUser}  />
                                     <p class="text-red-500 text-xs italic">Please choose a password.</p>
-                                </div>
-                                <div class="mb-6">
-                                    <label class="block text-gray-700 text-sm font-bold mb-2" for="password">
-                                        Confirm Password
-                                    </label>
-                                    <input class="shadow appearance-none border border-red-500 rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline" id="password" type="password" placeholder="******************" />
-                                    <p class="text-red-500 text-xs italic">Please re-write the password.</p>
                                 </div>
                             </form>
                             </div>
@@ -120,8 +135,7 @@ const Dropdown = ({ userId, parentSetUseEffectCall }) => {
                         <div className="mt-4 flex justify-end">
                         <button
                             type="button"
-                            className="mr-2 inline-flex justify-center px-4 py-2 text-sm font-semibold text-white bg-[rgb(133,160,238)] rounded-md hover:bg-[rgb(133,160,238)] focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-red-500"
-                            onClick={() => setEditOpen(false)}
+                            onClick={handleSubmitEditUser}
                         >
                             Update
                         </button>
