@@ -7,7 +7,6 @@ import { useParams } from 'react-router-dom';
 
 const SPlantFacilities = () => {
     const { plantId } = useParams()
-    console.log(plantId)
     const { updatePath, updateParent, updateLevel, selectItem, updatePlant } = useHierarchy();
     useEffect(() => {
         selectItem(null)
