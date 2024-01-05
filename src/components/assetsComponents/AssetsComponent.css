@@ -20,3 +20,53 @@
   background-size: 100%;
   background-repeat: no-repeat; 
 }
+
+
+.dropContent {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.dropContent p {
+  margin: 0;
+  transform-origin: center bottom;
+  transition: transform 0.3s ease; 
+}
+
+.dropContent.show {
+  /* transform: translateY(-120px); */
+  transform: translateY(12px);
+} 
+
+.dropContent.show p {
+  transform: rotate(calc(var(--i) * (360deg / 1)));
+}
+
+
+.p-tooltip {
+  position: relative;
+  display: inline-block;
+}
+
+.tooltip {
+  visibility: hidden;
+  width: 250%;
+  /* background-color: #333; */
+  color: #fff;
+  text-align: center;
+  border-radius: 3px;
+  padding: 5px;
+  position: absolute;
+  z-index: 1;
+  bottom: -30%;
+  left: -50%;
+  margin-left: -50%;
+  opacity: 0;
+  transition: opacity 0.3s;
+  font-size: 8px;
+  height: 25px;
+  text-align: center;
+  justify-content: center;
+}
