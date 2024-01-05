@@ -11,7 +11,7 @@ import { instance } from "../../api";
 
 const AdminDashboardComp = () => {
     const [showAddModal, setShowAddModal] = useState(false);
-    const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+    const [isDropdownOpen, setIsDropdownOpen] = useState({});
     const [isHovered, setIsHovered] = useState(false);
     const [isHoveredDelete, setIsHoveredDelete] = useState(false);
     const [isHoveredClone, setIsHoveredClone] = useState(false);
@@ -19,7 +19,9 @@ const AdminDashboardComp = () => {
     const [showUpdateConfirmation, setShowUpdateConfirmation] = useState(false);
     const [editModal, setEditModal] = useState(false);
     const [showConfirmationModal, setShowConfirmationModal] = useState(false);
-    const [plants, setPlants] = useState()
+    const [plants, setPlants] = useState([])
+    const [useEffectCall, setUseEffectCall] = useState(false)
+
     useEffect(() => {
         const fetchPlant = async () => {
             try {
@@ -32,10 +34,12 @@ const AdminDashboardComp = () => {
         }
 
         fetchPlant()
-    }, [])
+    }, [useEffectCall])
 
-    const toggleDropdown = () => {
-        setIsDropdownOpen(!isDropdownOpen);
+    const toggleDropdown = (id) => {
+        setIsDropdownOpen(prevState => ({
+            [id]: !prevState[id]
+        }));
     };
 
     const closeDropdown = () => {
@@ -155,6 +159,16 @@ const AdminDashboardComp = () => {
         handleDeleteModalView();
     };
 
+    const handleDeletePlant = (id) => {
+        instance.delete(`/plants/delete-plant/${id}`).then((res) => {
+            console.log(res)
+            handleDeleteModalView()
+            setUseEffectCall(!useEffectCall)
+        }).catch((err) => {
+            console.log(err)
+        })
+    }
+
     const handleUpdateConfirmationClose = () => {
         setShowUpdateConfirmation(false);
     };
@@ -185,10 +199,10 @@ const AdminDashboardComp = () => {
     return (
         <div className="bg-white p-4 h-[89.4vh] rounded-2xl shadow-md main-container">
             <div className="h-[40%]  rounded-2xl" style={{ backgroundColor: 'rgba(255, 255, 255, 0.5)' }}>
-                <div className="cursor-pointer flex items-end justify-end">
+                {/* <div className="cursor-pointer flex items-end justify-end">
                     <CiCirclePlus className="text-slate-950 font-bold text-[20px]" onClick={handleCreateView} />
-                </div>
-                {showAddModal ? (
+                </div> */}
+                {/* {showAddModal ? (
                     <>
                         <div className="">
                             <div
@@ -260,7 +274,7 @@ const AdminDashboardComp = () => {
                             <div className="opacity-25 fixed inset-0 z-40 bg-black"></div>
                         </div>
                     </>
-                ) : null}
+                ) : null} */}
 
                 <div className="flex items-center gap-5">
                     {plants?.map((item, index) => (
@@ -268,13 +282,13 @@ const AdminDashboardComp = () => {
                         <div key={item._id} className="bg-[rgb(254,132,183)] p-4 rounded-lg relative">
                             <div
                                 className="top-0 right-0 p-2 text-red cursor-pointer w-0"
-                                onClick={toggleDropdown}
+                                onClick={() => toggleDropdown(item._id)}
                             //onClick={() => handlePlusSPlantSFacClick(item._id)}
                             >
                                 <BsThreeDots className="font-lighter text-[10px] mt-[-26px]  h-5  ml-[90px] text-red-700" />
                             </div>
-                            {isDropdownOpen && (
-                                <div className="absolute top-0 right-0 left-20 shadow-lg mt-4  border-gray-300 rounded">
+                            {isDropdownOpen[item._id] && (
+                                <div className="absolute top-0 right-0 left-20 shadow-lg mt-4 z-100 border-gray-300 rounded">
                                     <button
                                         className="block px-4 py-2 text-[12px] text-gray-700 "
                                         onClick={handleEditModal}
@@ -416,7 +430,7 @@ const AdminDashboardComp = () => {
 
                                                             <div className="flex items-start justify-between p-5 ">
                                                                 <h3 className="text-3xl font-semibold text-black">
-                                                                    Delete -
+                                                                    Delete - {item.name}
                                                                 </h3>
                                                                 <button
                                                                     className="p-1 ml-auto bg-transparent border-0 text-black opacity-5 float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
@@ -446,7 +460,7 @@ const AdminDashboardComp = () => {
                                                                 <button
                                                                     className="bg-[rgb(186,212,249)] text-black active:bg-[rgb(186,212,249)] font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
                                                                     type="button"
-                                                                    onClick={handleDeleteModal}
+                                                                    onClick={() => handleDeletePlant(item._id)}
                                                                 //onClick={() => handleDelete(item._id, item.parent)}
                                                                 >
                                                                     Yes

@@ -14,7 +14,7 @@ import { instance } from '../../api';
 import { useHierarchy } from '../../context/HierarchyContext';
 import './AdminSidebar.css';
 import { FaRegUser } from "react-icons/fa";
-
+import readXlsxFile from 'read-excel-file';
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -24,6 +24,7 @@ const AdminSidebar = () => {
     const navigate = useNavigate();
     const [showAddModal, setShowAddModal] = useState(false);
     const [selectedFile, setSelectedFile] = useState(null);
+    const [importFile, setImportFile] = useState(null)
     const [formData, setFormData] = useState({
         name: '',
         description: '',
@@ -90,38 +91,7 @@ const AdminSidebar = () => {
 
     const handleFileChange = (event) => {
         const file = event.target.files[0];
-        Papa.parse(file, {
-            header: true,
-            dynamicTyping: true,
-            complete: (result) => {
-                const parsedData = result?.data;
-
-                const extractedData = parsedData.map((item) => ({
-                    name: item.name,
-                    description: item.description,
-                    system: item.system,
-                    parent: item.parent,
-                    level: item.level
-                }));
-
-                extractedData.forEach((element, index) => {
-                    instance.post(`/assets/addAssetImport`, element).then((res) => {
-                        if (res.data) {
-                            console.log(res.data)
-                            handleLiClick("657d9cc91a95c5b61f5d90b5")
-                        } else {
-                            console.log('Error adding data')
-                        }
-                    }).catch((err) => {
-                        console.log(err)
-                    }).finally(() => {
-                        toast.success("Imported Successfully");
-                        window.location.reload()
-                    })
-                })
-            }
-        });
-
+        setImportFile(file)
     };
 
     const handleImportButtonClick = () => {
@@ -135,29 +105,58 @@ const AdminSidebar = () => {
             description: '',
 
         })
+        setImportFile(null)
         setShowAddModal(true)
     };
 
     const handleCreate = (e) => {
         e.preventDefault();
 
-        if (formData.name === "" || formData.description === "" || formData.system === "") {
+        if (formData.name === "" || formData.description === "" || importFile == null) {
             console.log('Fill data')
         } else {
-            // instance.post(`/assets/addAsset/${level}`, formData).then((res) => {
-            //     toast.success("Created successfully");
-            //     console.log(res)
-            //     setFormData({
-            //         name: '',
-            //         description: '',
-            //         system: 'primary',
-            //         parent: parent
-            //     })
-            //     fetchData(res.data?.parent)
-            // }).catch((err) => {
-            //     console.log(err)
-            // })
-            // setShowAddModal(false)
+            instance.post(`/plants/create-plant`, formData).then((res) => {
+                toast.success("Created successfully");
+                console.log(res.data)
+                Papa.parse(importFile, {
+                    header: true,
+                    dynamicTyping: true,
+                    complete: (result) => {
+                        const parsedData = result?.data;
+                        const extractedData = parsedData.map((item) => ({
+                            name: item.Location,
+                            description: item.Description,
+                            system: item.System,
+                            parent: item.Parent,
+                            level: item.Level,
+                            plant:res.data.plant._id
+                        }));
+
+                        console.log(extractedData)
+
+                        // extractedData.forEach((element, index) => {
+                            instance.post(`/assets/addAssetImport`, extractedData).then((res) => {
+                                if (res.data) {
+                                    console.log(res.data)
+                                    // handleLiClick("657d9cc91a95c5b61f5d90b5")
+                                } else {
+                                    console.log('Error adding data')
+                                }
+                            }).catch((err) => {
+                                console.log(err)
+                            })
+                        // })
+                    }
+                });
+                setFormData({
+                    name: '',
+                    description: '',
+                })
+
+            }).catch((err) => {
+                console.log(err)
+            })
+            setShowAddModal(false)
         }
 
     };
@@ -173,14 +172,14 @@ const AdminSidebar = () => {
         const file = event.target.files[0];
         const allowedTypes = ['text/csv'];
         if (file && allowedTypes.includes(file.type)) {
-          setSelectedFile(file); 
+            setSelectedFile(file);
         } else {
-          setSelectedFile(null);
+            setSelectedFile(null);
         }
-      };
+    };
 
     return (
-        
+
         <aside className="bg-white overflow-hidden text-white py-5 rounded-lg mr-4 w-60 sidebar-container flex flex-col justify-between items-center bg-bottom">
             {/* <ToastContainer /> */}
             <div>
@@ -201,10 +200,10 @@ const AdminSidebar = () => {
                         </div>
                     </Link>
                     <Link to='/reports'>
-                    <div className="mt-5 text-zinc-900 text-[14px] cursor-pointer flex items-start justify-start">
-                        <SiGoogleanalytics style={{ marginRight: '8px', marginTop: '4px' }} />
-                        Reporting & Analytics
-                    </div>
+                        <div className="mt-5 text-zinc-900 text-[14px] cursor-pointer flex items-start justify-start">
+                            <SiGoogleanalytics style={{ marginRight: '8px', marginTop: '4px' }} />
+                            Reporting & Analytics
+                        </div>
                     </Link>
                     <Link to='/user'>
                         <div className="mt-5 text-zinc-900 text-[14px] cursor-pointer flex items-start justify-start">
@@ -216,119 +215,119 @@ const AdminSidebar = () => {
             </div>
             <div>
                 <div>
-                    <input
+                    {/* <input
                         type="file"
                         ref={fileInputRef}
                         onChange={handleFileChange}
                         style={{ display: 'none' }}
-                    />
+                    /> */}
                     <button className="rounded-31xl flex items-center justify-center py-2.5 px-5 gap-[9px] text-[14px] text-white  cursor-pointer text-center rounded  bg-[rgb(254,0,144)] border-[rgb(254,0,144)] hover:bg-[rgb(254,116,194)]  "
                         //onClick={handleImportButtonClick}
                         onClick={handleCreateView}
-                        >
+                    >
 
                         <CiImport />Import
                     </button>
 
                     {showAddModal ? (
-                    <>
-                        <div className="">
-                            <div
-                                className=" justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none"
-                            >
-                                <div className="relative my-6 mx-auto w-[800px]">
+                        <>
+                            <div className="">
+                                <div
+                                    className=" justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none"
+                                >
+                                    <div className="relative my-6 mx-auto w-[800px]">
 
-                                    <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-green-50 outline-none focus:outline-none">
+                                        <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-green-50 outline-none focus:outline-none">
 
-                                        <div className="flex items-start justify-between p-5 ">
-                                            <h3 className="text-3xl font-semibold text-black">
-                                                Import Plant
-                                            </h3>
-                                            <button
-                                                className="p-1 ml-auto bg-transparent border-0 text-black opacity-5 float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
-                                                onClick={() => setShowAddModal(false)}
-                                            >
-                                                <span className="bg-transparent text-black opacity-5 h-6 w-6 text-2xl block outline-none focus:outline-none">
-                                                    ×
-                                                </span>
-                                            </button>
-                                        </div>
-                                        <div className="mb-4">
-                                            <label htmlFor="name" className="block text-sm font-medium text-gray-700 ml-[25px]">
-                                                Plant Name:
-                                            </label>
-                                            <input
-                                                type="text"
-                                                id="name"
-                                                name="name"
-                                                value={formData.name}
-                                                onChange={handleChangeCreate}
-                                                className="mt-1 ml-[25px] p-2 border border-gray-300 rounded-md w-[735px] h-[35px] text-black"
-                                            />
-                                        </div>
-                                        <div className="mb-4 mt-2">
-                                            <label htmlFor="name" className="block text-sm font-medium text-gray-700 ml-[25px]">
-                                                Description:
-                                            </label>
-                                            <input
-                                                type="text"
-                                                id="description"
-                                                name="description"
-                                                value={formData.description}
-                                                onChange={handleChangeCreate}
-                                                className="mt-1 ml-[25px] p-2 border border-gray-300 rounded-md w-[735px] h-[35px] text-black"
-                                            />
-                                        </div>
-                                        <div>
-                                            <div>
-                                                <label htmlFor="csvFile" style={{ fontSize: '13px' }}>
-                                                Upload Your CSV File:
-                                                </label>
-                                            </div>
-                                            <div className="flex items-center mt-2">
-                                                <input
-                                                    type="file"
-                                                    id="csvFile"
-                                                    name="csvFile"
-                                                    accept=".csv"
-                                                    onChange={handleChangeFile}
-                                                    className="hidden"
-                                                />
-                                                <label
-                                                    htmlFor="csvFile"
-                                                    className="cursor-pointer border border-gray-300 py-2 px-4 rounded-md bg-[rgb(183,211,249)] hover:bg-gray-100 ml-7"
+                                            <div className="flex items-start justify-between p-5 ">
+                                                <h3 className="text-3xl font-semibold text-black">
+                                                    Import Plant
+                                                </h3>
+                                                <button
+                                                    className="p-1 ml-auto bg-transparent border-0 text-black opacity-5 float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
+                                                    onClick={() => setShowAddModal(false)}
                                                 >
-                                                    Upload
+                                                    <span className="bg-transparent text-black opacity-5 h-6 w-6 text-2xl block outline-none focus:outline-none">
+                                                        ×
+                                                    </span>
+                                                </button>
+                                            </div>
+                                            <div className="mb-4">
+                                                <label htmlFor="name" className="block text-sm font-medium text-gray-700 ml-[25px]">
+                                                    Plant Name:
                                                 </label>
-                                                {selectedFile && (
-                                                <div className="ml-3 text-gray-700">{selectedFile.name}</div>
-                                                )}
+                                                <input
+                                                    type="text"
+                                                    id="name"
+                                                    name="name"
+                                                    value={formData.name}
+                                                    onChange={handleChangeCreate}
+                                                    className="mt-1 ml-[25px] p-2 border border-gray-300 rounded-md w-[735px] h-[35px] text-black"
+                                                />
                                             </div>
+                                            <div className="mb-4 mt-2">
+                                                <label htmlFor="name" className="block text-sm font-medium text-gray-700 ml-[25px]">
+                                                    Description:
+                                                </label>
+                                                <input
+                                                    type="text"
+                                                    id="description"
+                                                    name="description"
+                                                    value={formData.description}
+                                                    onChange={handleChangeCreate}
+                                                    className="mt-1 ml-[25px] p-2 border border-gray-300 rounded-md w-[735px] h-[35px] text-black"
+                                                />
                                             </div>
-                                        <div className="flex items-center justify-end p-6">
-                                            <button
-                                                className="text-red-500 background-transparent font-bold uppercase px-6 py-2 text-sm outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150 h-10"
-                                                type="button"
-                                                onClick={() => setShowAddModal(false)}
-                                            >
-                                                Cancel
-                                            </button>
-                                            <button
-                                                className="bg-[rgb(138,168,249)] text-white active:bg-[rgb(138,168,249)] font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
-                                                type="button"
-                                                onClick={handleCreate}
+                                            <div>
+                                                <div>
+                                                    <label htmlFor="csvFile" style={{ fontSize: '13px' }}>
+                                                        Upload Your CSV File:
+                                                    </label>
+                                                </div>
+                                                <div className="flex items-center mt-2">
+                                                    <input
+                                                        type="file"
+                                                        id="csvFile"
+                                                        name="csvFile"
+                                                        accept=".csv"
+                                                        onChange={handleFileChange}
+                                                        className="hidden"
+                                                    />
+                                                    <label
+                                                        htmlFor="csvFile"
+                                                        className="cursor-pointer border border-gray-300 py-2 px-4 rounded-md bg-[rgb(183,211,249)] hover:bg-gray-100 ml-7"
+                                                    >
+                                                        Upload
+                                                    </label>
+                                                    {importFile && (
+                                                        <div className="ml-3 text-gray-700">{importFile.name}</div>
+                                                    )}
+                                                </div>
+                                            </div>
+                                            <div className="flex items-center justify-end p-6">
+                                                <button
+                                                    className="text-red-500 background-transparent font-bold uppercase px-6 py-2 text-sm outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150 h-10"
+                                                    type="button"
+                                                    onClick={() => setShowAddModal(false)}
+                                                >
+                                                    Cancel
+                                                </button>
+                                                <button
+                                                    className="bg-[rgb(138,168,249)] text-white active:bg-[rgb(138,168,249)] font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+                                                    type="button"
+                                                    onClick={handleCreate}
                                                 //onClick={handleImportButtonClick}
-                                            >
-                                                Import
-                                            </button>
+                                                >
+                                                    Import
+                                                </button>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
+                                <div className="opacity-25 fixed inset-0 z-40 bg-black"></div>
                             </div>
-                            <div className="opacity-25 fixed inset-0 z-40 bg-black"></div>
-                        </div>
-                    </>
-                ) : null}
+                        </>
+                    ) : null}
 
 
                 </div>
