@@ -22,6 +22,8 @@ const AssetsComponenet = ({ plantId }) => {
     const {  parentid } = useHierarchy();
     const [showDropDownSPlantSFac, setShowDropDownSPlantSFac] = useState({});
     const [deleteModal, setDeleteModal] = useState({});
+    const [showUpdateConfirmation, setShowUpdateConfirmation] = useState(false);
+    const [showEditSPlantSFacModal, setShowEditSPlantSFacModal] = useState(false);
     const [formData, setFormData] = useState({
         description: '',
         system: 'primary',
@@ -82,6 +84,14 @@ const AssetsComponenet = ({ plantId }) => {
             ...prevState,
             [itemId]: !prevState[itemId]
         }))
+    };
+
+    const handleUpdateConfirmationView = () => {
+        setShowUpdateConfirmation(true);
+    };
+
+    const handleUpdateConfirmationClose = () => {
+        setShowUpdateConfirmation(false);
     };
 
     return (
@@ -217,7 +227,7 @@ const AssetsComponenet = ({ plantId }) => {
                                                                         <span className="tooltip">Delete</span>
                                                                     </p>
                                                                     <p className="m-0  whitespace-nowrap cursor-pointer p-tooltip" 
-                                                                    //onClick={() => { setShowEditSPlantSFacModal(true); setFormData(item); }}
+                                                                    onClick={() => { setShowEditSPlantSFacModal(true); setFormData(item); }}
                                                                         style={{ '--i': 1 }}
                                                                     >
                                                                         <CiEdit className='mt-2 text-slate-950' />
@@ -338,6 +348,122 @@ const AssetsComponenet = ({ plantId }) => {
                                                             </div>
                                                             <div className="opacity-25 fixed inset-0 z-40 bg-black"></div>
                                                         </div>
+                                                    </>
+                                                ) : null}
+
+                                                {showEditSPlantSFacModal ? (
+                                                    <>
+                                                        <div className={`bg-slate-900 z-50 ${showUpdateConfirmation ? 'modal-overlay' : ''}`}>
+                                                            <div
+                                                                className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none"
+                                                            >
+                                                                <div className="relative my-6 mx-auto w-[800px]">
+
+                                                                    <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-green-50 outline-none focus:outline-none">
+
+                                                                        <div className="flex items-start justify-between p-5 ">
+                                                                            <h3 className="text-3xl font-semibold text-black">
+                                                                                Edit
+                                                                            </h3>
+                                                                            <button
+                                                                                className="p-1 ml-auto bg-transparent border-0 text-black opacity-5 float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
+                                                                                onClick={() => { setShowEditSPlantSFacModal(false) }}
+                                                                            >
+                                                                                <span className="bg-transparent text-black opacity-5 h-6 w-6 text-2xl block outline-none focus:outline-none">
+                                                                                    ×
+                                                                                </span>
+                                                                            </button>
+                                                                        </div>
+
+                                                                        <div className="mb-4 mt-2">
+                                                                            <label htmlFor="name" className="block text-sm font-medium text-gray-700 ml-[-660px]">
+                                                                                Description:
+                                                                            </label>
+                                                                            <input
+                                                                                type="text"
+                                                                                id="description"
+                                                                                name="description"
+                                                                                value={formData.description}
+                                                                                onChange={handleChangeCreate}
+                                                                                className="mt-1 ml-[-10px] p-2 border border-gray-300 rounded-md w-[740px] h-[35px] text-black"
+                                                                            />
+                                                                        </div>
+                                                                        <div className="mb-4 mt-2">
+                                                                            <label htmlFor="system" className="block text-sm font-medium text-gray-700 ml-[-690px]">
+                                                                                System:
+                                                                            </label>
+                                                                            <select
+                                                                                //type="text"
+                                                                                id="system"
+                                                                                name="system"
+                                                                                value={formData.system}
+                                                                                onChange={handleChangeCreate}
+                                                                                //value={system}
+                                                                                //onChange={(e) => setName(e.target.value)}
+                                                                                className="mt-1 ml-[-10px] p-1 border border-gray-300 rounded-md w-[740px] h-[35px] text-black"
+                                                                            >
+                                                                                <option value="primary">primary</option>
+                                                                            </select>
+                                                                        </div>
+
+                                                                        <div className="flex items-center justify-end p-6">
+                                                                            <button
+                                                                                className="text-red-500 background-transparent font-bold uppercase px-6 py-2 text-sm outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150 h-10"
+                                                                                type="button"
+                                                                                onClick={() => setShowEditSPlantSFacModal(false)}
+                                                                            >
+                                                                                Cancel
+                                                                            </button>
+                                                                            <button
+                                                                                className="bg-emerald-500 text-white active:bg-emerald-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+                                                                                type="button"
+                                                                                //onClick={handleEditSubmit}
+                                                                                onClick={() => {
+                                                                                    handleUpdateConfirmationView();
+
+                                                                                }}
+                                                                            >
+                                                                                Update
+                                                                            </button>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div className="opacity-25 fixed inset-0 z-40 bg-black"></div>
+                                                        </div>
+
+                                                        {showUpdateConfirmation && (
+
+                                                            <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50 bg-white ml-[-138px]" style={{ border: '2px solid rgb(65,73,115)' }}>
+                                                                <div className="relative p-6 flex-auto">
+                                                                    <p className="my-4 text-blueGray-500 text-lg leading-relaxed text-black">
+                                                                        Are you sure you want to update?
+                                                                    </p>
+                                                                </div>
+                                                                <div className="bg-white p-6 shadow-md rounded-md">
+                                                                    <button
+                                                                        className="text-red-500 background-transparent font-bold uppercase px-6 py-2 text-sm outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150 h-10"
+                                                                        type="button"
+                                                                        onClick={() => {
+                                                                            setShowUpdateConfirmation(false);
+                                                                            handleUpdateConfirmationClose();
+                                                                        }}
+                                                                    >
+                                                                        Cancel
+                                                                    </button>
+                                                                    <button
+                                                                        className="bg-emerald-500 text-white active:bg-emerald-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+                                                                        type="button"
+                                                                        onClick={() => {
+                                                                            handleUpdateConfirmationClose();
+                                                                            //handleEditSubmit();
+                                                                        }}
+                                                                    >
+                                                                        Confirm Update
+                                                                    </button>
+                                                                </div>
+                                                            </div>
+                                                        )}
                                                     </>
                                                 ) : null}
 
