@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 // import './Sidebar.scss',
 import { GiPathDistance } from "react-icons/gi";
 import { Link, useNavigate } from 'react-router-dom';
@@ -7,6 +7,8 @@ import { CiImport } from "react-icons/ci";
 import { CiExport } from "react-icons/ci";
 import { IoMdSettings } from "react-icons/io";
 import { IoIosLogOut } from "react-icons/io";
+import { Dialog } from '@headlessui/react'
+import { IoIosCloseCircleOutline } from "react-icons/io";
 import { HiBuildingLibrary } from "react-icons/hi2";
 import { SiGoogleanalytics } from "react-icons/si";
 import Papa from 'papaparse';
@@ -25,23 +27,37 @@ const AdminSidebar = () => {
     const [showAddModal, setShowAddModal] = useState(false);
     const [selectedFile, setSelectedFile] = useState(null);
     const [importFile, setImportFile] = useState(null)
+    const [plants, setPlants] = useState([])
+    const [selectedPlant, setSelectedPlant] = useState('')
     const [formData, setFormData] = useState({
         name: '',
         description: '',
     })
 
+    useEffect(() => {
+        const fetchPlant = async () => {
+            try {
+                const response = await instance.get('/plants/all-plant')
+                console.log(response.data)
+                setPlants(response.data)
+            } catch (error) {
+                console.log(error)
+            }
+        }
+
+        fetchPlant()
+    }, [])
     const handleLogout = () => {
         navigate('/authentication/login')
     }
 
     const handleExport = () => {
-        const fields = ['name', 'description', 'system', 'parent', 'level'];
+        const fields = ['Location', 'Description', 'System', 'Parent', 'Level'];
 
         try {
             //setLoading(true)
             const exportedData = [];
-            instance.get(`/assets/allAsset`).then((res) => {
-                toast.success("Exported Successfully");
+            instance.get(`/assets/allAsset/${selectedPlant}`).then((res) => {
                 res.data.forEach(async (item) => {
                     await flattenHierarchy(item, exportedData);
                 });
@@ -59,17 +75,18 @@ const AdminSidebar = () => {
                 document.body.appendChild(link);
                 link.click();
                 document.body.removeChild(link);
+                setOpen(false)
             }).catch(err => {
                 console.log(err);
                 //setLoading(false);
             })
             function flattenHierarchy(item, exportedData) {
                 exportedData.push({
-                    name: item.name,
-                    description: item.description,
-                    system: item.system,
-                    parent: item.parent,
-                    level: item.level
+                    Location: item.name,
+                    Description: item.description,
+                    System: item.system,
+                    Parent: item.parent,
+                    Level: item.level
                 });
 
                 if (item.children && item.children.length > 0) {
@@ -129,22 +146,23 @@ const AdminSidebar = () => {
                             system: item.System,
                             parent: item.Parent,
                             level: item.Level,
-                            plant:res.data.plant._id
+                            plant: res.data.plant._id
                         }));
 
                         console.log(extractedData)
 
                         // extractedData.forEach((element, index) => {
-                            instance.post(`/assets/addAssetImport`, extractedData).then((res) => {
-                                if (res.data) {
-                                    console.log(res.data)
-                                    // handleLiClick("657d9cc91a95c5b61f5d90b5")
-                                } else {
-                                    console.log('Error adding data')
-                                }
-                            }).catch((err) => {
-                                console.log(err)
-                            })
+                        instance.post(`/assets/addAssetImport`, extractedData).then((res) => {
+                            if (res.data) {
+                                console.log(res.data)
+                                // handleLiClick("657d9cc91a95c5b61f5d90b5")
+                            } else {
+                                console.log('Error adding data')
+                            }
+                            window.location.reload()
+                        }).catch((err) => {
+                            console.log(err)
+                        })
                         // })
                     }
                 });
@@ -177,6 +195,12 @@ const AdminSidebar = () => {
             setSelectedFile(null);
         }
     };
+    const [open, setOpen] = useState(false);
+    const cancelButtonRef = useRef(null);
+
+    const handleRadioChange = (id) => {
+        setSelectedPlant(id)
+    }
 
     return (
 
@@ -228,6 +252,69 @@ const AdminSidebar = () => {
 
                         <CiImport />Import
                     </button>
+
+                    <Dialog
+                        open={open}
+                        onClose={() => setOpen(false)}
+                        initialFocus={cancelButtonRef}
+                    >
+                        <div className="fixed inset-0 z-10 flex items-center justify-center">
+                            <Dialog.Overlay className="fixed inset-0 bg-black opacity-30" />
+                            <div className="relative bg-white p-4 rounded-lg text-left shadow-xl w-96">
+                                <div className="flex items-center justify-between mb-4">
+                                    <Dialog.Title as="h3" className="text-lg font-semibold text-gray-900">
+                                        Select a plant
+                                    </Dialog.Title>
+                                    <button
+                                        className="text-gray-500 hover:text-gray-700"
+                                        onClick={() => setOpen(false)}
+                                        ref={cancelButtonRef}
+                                    >
+                                        <span className="sr-only">Close</span>
+                                        <IoIosCloseCircleOutline className="h-6 w-6" />
+                                    </button>
+                                </div>
+                                <div className="mt-2 text-sm text-gray-500">
+                                    <div className="w-full max-w-xs">
+                                        <form class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 ">
+                                            {plants.length !== 0 && plants.map((item, index) => (
+                                                <div key={index} className="mb-4 flex items-center gap-2">
+                                                    <label className="block text-gray-700 text-sm font-bold" htmlFor={`name-${index}`}>
+                                                        {item.name}
+                                                    </label>
+                                                    <input
+                                                        className=""
+                                                        type="radio"
+                                                        name="name"
+                                                        id={`name-${index}`}
+                                                        onChange={() => handleRadioChange(item._id)}
+                                                    />
+                                                </div>
+                                            ))}
+
+
+                                        </form>
+                                    </div>
+                                </div>
+                                <div className="mt-4 flex justify-end">
+                                    <button
+                                        type="button"
+                                        className="mr-2 inline-flex justify-center px-4 py-2 text-sm font-semibold text-white bg-[rgb(133,160,238)] rounded-md hover:bg-[rgb(133,160,238)] focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-red-500"
+                                        disabled={!selectedPlant}
+                                        onClick={handleExport}
+                                    >
+                                        Export
+                                    </button>
+                                    <button
+                                        type="button"
+                                        className="inline-flex justify-center px-4 py-2 text-sm font-semibold text-gray-700 bg-gray-200 rounded-md hover:bg-gray-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-gray-500"
+                                    >
+                                        Cancel
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </Dialog>
 
                     {showAddModal ? (
                         <>
@@ -332,7 +419,7 @@ const AdminSidebar = () => {
 
                 </div>
                 <button className="rounded-31xl flex items-center justify-center py-2.5 px-5 gap-[9px] text-center text-[14px] text-white cursor-pointer rounded  bg-[rgb(254,0,144)] border-[rgb(254,0,144)] hover:bg-[rgb(254,116,194)] mt-4"
-                    onClick={handleExport}
+                    onClick={() => setOpen(true)}
                 >
                     {loading ? (
                         <div className="flex justify-center items-center h-[80%]">

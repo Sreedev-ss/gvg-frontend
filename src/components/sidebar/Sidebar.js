@@ -15,7 +15,7 @@ import { PiArrowBendDownRightLight } from "react-icons/pi";
 
 
 const Sidebar = () => {
-    const { hierarchicalPath, selectItem, parentid, level } = useHierarchy();
+    const { hierarchicalPath, selectItem, parentid, updateParent, level, plantId } = useHierarchy();
     const navigate = useNavigate();
 
     // const handleLogout = () => {
@@ -29,12 +29,12 @@ const Sidebar = () => {
         cursor: "pointer",
     }
 
-    const handleLiClick = (id) => {
-        selectItem(id)
+    const handleLiClick = (id, parent) => {
+        selectItem(id);
+        console.log(parent,'side')
+        updateParent(parent)
+
     }
-
-
-
 
     const handleExport = () => {
         const fields = ['name', 'description', 'system', 'parent', 'level'];
@@ -98,7 +98,7 @@ const Sidebar = () => {
                     description: item.description,
                     system: item.system,
                     parent: item.parent,
-                    level:item.level
+                    level: item.level
                 }));
 
                 extractedData.forEach((element, index) => {
@@ -139,31 +139,29 @@ const Sidebar = () => {
                     <GiPathDistance className="text-black" />
                     <b className="text-[15px] underline text-black m-2">Path</b>
                 </div>
-                <Link to='/assets'>
-                <div className=" text-black text-[14px] cursor-pointer flex items-start justify-start">
-                    <IoIosPlay style={{marginRight:'10px', marginTop:'2px'}}/>
+                <div onClick={() => navigate(`/assets/${plantId}`)} className=" text-black text-[14px] cursor-pointer flex items-start justify-start">
+                    <IoIosPlay style={{ marginRight: '10px', marginTop: '2px' }} />
                     ASSETS
-                
+
                     {/* <span><IoIosPlay className={`text-black `} /></span>
                     <p className='text-black'>Assets</p> */}
                 </div>
-                </Link>
                 <div className="flex items-center text-[14px] mt-[0px] text-black ml-1">
                     {/* <IoIosPlay className="text-black" /> */}
                     {/* <Link to="/dashboardMain" style={linkStyle}>
                         East Assets
                     </Link> */}
-                    
+
                     <ul className="hierarchical-path">
                         {hierarchicalPath.map((pathItem, index) => (
                             <span key={index} style={{ marginLeft: `${index * 5}px` }} className={`flex items-center mt-2`}>
-                                { index === hierarchicalPath.length - 1 ? (
-                                    <PiArrowBendDownRightLight className={`text-black `}/>
-                                ):(
+                                {index === hierarchicalPath.length - 1 ? (
+                                    <PiArrowBendDownRightLight className={`text-black `} />
+                                ) : (
 
-                                <IoIosPlay className={`text-black`} />
+                                    <IoIosPlay className={`text-black`} />
                                 )}
-                                <li title={pathItem?.name} className='liPath w-28 cursor-pointer overflow-hidden text-ellipsis whitespace-nowrap ml-1' onClick={() => handleLiClick(pathItem?._id)} key={index} >{pathItem?.name}</li>
+                                <li title={pathItem?.name} className='liPath w-28 cursor-pointer overflow-hidden text-ellipsis whitespace-nowrap ml-1' onClick={() => handleLiClick(pathItem?.name, pathItem.parent)} key={index} >{pathItem?.name}</li>
                             </span>
                         ))}
                     </ul>
@@ -172,14 +170,14 @@ const Sidebar = () => {
 
             <div >
                 <div>
-                <div className="mt-16  text-zinc-900 text-[14px] cursor-pointer flex items-center justify-center">
-                    <IoMdSettings style={{marginRight:'10px'}}/>
-                    Settings
-                </div>
-                <div className="mt-4 text-zinc-900 text-[14px] cursor-pointer flex items-center justify-center" onClick={handleLogout}>
-                    <IoIosLogOut style={{marginRight:'10px'}}/>
-                    Logout
-                </div>
+                    <div className="mt-16  text-zinc-900 text-[14px] cursor-pointer flex items-center justify-center">
+                        <IoMdSettings style={{ marginRight: '10px' }} />
+                        Settings
+                    </div>
+                    <div className="mt-4 text-zinc-900 text-[14px] cursor-pointer flex items-center justify-center" onClick={handleLogout}>
+                        <IoIosLogOut style={{ marginRight: '10px' }} />
+                        Logout
+                    </div>
 
                 </div>
                 {/* <div className='ml-9'>
