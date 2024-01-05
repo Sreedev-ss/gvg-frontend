@@ -29,9 +29,7 @@ const UserComp = () => {
                 console.log("errrrr",error);
             }
         };
-
         fetchData();
-
     },[useEffectCall]);
 
     const handleChangeAddUser = (e) => {
@@ -181,7 +179,7 @@ const UserComp = () => {
                             </td>
 
                             <td class="px-6 py-4 text-right">
-                                <Dropdown />
+                                <Dropdown userId = {item._id} parentSetUseEffectCall={setUseEffectCall} />
                             </td>
                             </tr>  
                         </React.Fragment>

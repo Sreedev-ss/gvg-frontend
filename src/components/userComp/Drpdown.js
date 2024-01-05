@@ -1,15 +1,31 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { FaArrowCircleRight } from 'react-icons/fa'; 
 import { Link } from 'react-router-dom';
 import { Dialog } from '@headlessui/react'
 import { IoIosCloseCircleOutline } from "react-icons/io";
+import { instance } from "../../api";
 
-const Dropdown = () => {
+const Dropdown = ({ userId, parentSetUseEffectCall }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [editOpen, setEditOpen] = useState(false);
   const [deleteOpen, setDeleteOpen] = useState(false);
   const [permissionOpen, setPermissionOpen] = useState(false);
-  const cancelButtonRef = useRef(null)
+  const cancelButtonRef = useRef(null);
+  const [useEffectCall, setUseEffectCall] = useState(false);
+  const [allUserData, setAllUserData] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+        try {
+            const res = await instance.get(`/users/all-user`);
+            console.log("ress",res);
+            setAllUserData(res.data);
+        } catch (error) {
+            console.log("errrrr",error);
+        }
+    };
+    fetchData();
+},[useEffectCall]);
 
   const toggleDropdown = () => {
     setIsOpen(!isOpen);
@@ -18,6 +34,19 @@ const Dropdown = () => {
   const closeDropdown = () => {
     setIsOpen(false);
   };
+
+  const deleteUserModal = async () => {
+    try {
+        const response = await instance.delete(`/users/delete-user/${userId}`);
+        console.log("ressss",response);
+        setUseEffectCall(!useEffectCall);
+        parentSetUseEffectCall((prev) => !prev);
+        setDeleteOpen(false)
+    }catch(error) {
+        console.error("Error:", error);
+      }
+  };
+
 
   return (
     <div className="relative inline-block ">
@@ -138,13 +167,16 @@ const Dropdown = () => {
                             </div>
                         </div>
                         <div className="mt-10 flex justify-end">
+                            
                         <button
+                            
                             type="button"
                             className="mr-2 inline-flex justify-center px-4 py-2 text-sm font-semibold text-white bg-[rgb(183,78,78)] rounded-md hover:bg-[rgb(133,160,238)] focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-red-500"
-                            onClick={() => setDeleteOpen(false)}
+                            onClick={deleteUserModal}
                         >
                             Delete
                         </button>
+                       
                         <button
                             type="button"
                             className="inline-flex justify-center px-4 py-2 text-sm font-semibold text-gray-700 bg-gray-200 rounded-md hover:bg-gray-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-gray-500"
