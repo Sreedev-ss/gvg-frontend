@@ -12,7 +12,7 @@ import './Dummy.css';
 import Draggable from 'react-draggable';
 import { CiFilter } from "react-icons/ci";
 import Modal from 'react-modal';
-
+import { SketchPicker } from 'react-color';
 
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -41,6 +41,8 @@ const DummyComp = () => {
     const [mainRegion2, setMainRegion2] = useState([])
     const [showConfirmationModal, setShowConfirmationModal] = useState(false);
     const [itemIdToDuplicate, setItemIdToDuplicate] = useState(null);
+    const [showColorPicker, setShowColorPicker] = useState(false);
+    const [selectedColor, setSelectedColor] = useState('#ffffff');
     const [formData, setFormData] = useState({
         description: '',
         system: 'primary',
@@ -298,7 +300,16 @@ const DummyComp = () => {
             }
         ))
         setShowAddModal(true)
-    }
+    };
+
+    const handleFilterClick = () => {
+        setShowColorPicker(!showColorPicker);
+      };
+    
+      const handleColorChange = (color) => {
+        setSelectedColor(color.hex);
+       
+      };
 
     return (
         <>
@@ -306,7 +317,14 @@ const DummyComp = () => {
                 <ToastContainer />
 
                 <div className="w-[96%] h-[94%]  m-6 rounded-2xl" style={{ border: '2px solid rgb(65,73,115)', backgroundColor: 'rgba(255, 255, 255, 0.8)' }} >
-                    <CiFilter className='ml-[98%] m-4' />
+                    <CiFilter className='ml-[98%] m-4' onClick={handleFilterClick}/>
+                    {showColorPicker && (
+                        <SketchPicker
+                        className='absolute right-4 mt-4'
+                        color={selectedColor}
+                        onChangeComplete={(color) => handleColorChange(color)}
+                        />
+                    )}
 
                     {/* <div className='flex items-end justify-end'>
                     <button className="rounded-21xl flex items-center justify-center py-2.5 px-5 gap-[9px] text-[10px] text-white  cursor-pointer text-center rounded  bg-blue-800 border-blue-800  ">

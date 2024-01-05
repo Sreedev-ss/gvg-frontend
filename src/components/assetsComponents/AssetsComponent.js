@@ -12,6 +12,8 @@ import Modal from 'react-modal';
 import { HiOutlineDocumentDuplicate } from "react-icons/hi";
 import { CiEdit } from "react-icons/ci";
 import { MdDeleteOutline } from "react-icons/md";
+import { CiFilter } from "react-icons/ci";
+import { SketchPicker } from 'react-color';
 
 const AssetsComponenet = ({ plantId }) => {
     const { id } = useParams()
@@ -26,6 +28,8 @@ const AssetsComponenet = ({ plantId }) => {
     const [showEditSPlantSFacModal, setShowEditSPlantSFacModal] = useState(false);
     const [itemIdToDuplicate, setItemIdToDuplicate] = useState(null);
     const [showConfirmationModal, setShowConfirmationModal] = useState(false);
+    const [showColorPicker, setShowColorPicker] = useState(false);
+    const [selectedColor, setSelectedColor] = useState('#ffffff');
     const [formData, setFormData] = useState({
         description: '',
         system: 'primary',
@@ -105,6 +109,15 @@ const AssetsComponenet = ({ plantId }) => {
         setShowConfirmationModal(false);
     };
 
+    const handleFilterClick = () => {
+        setShowColorPicker(!showColorPicker);
+      };
+    
+      const handleColorChange = (color) => {
+        setSelectedColor(color.hex);
+       
+      };
+
     return (
 
         <div className="bg-white p-4 h-[89.4vh] rounded-lg shadow-md main-container">
@@ -116,8 +129,19 @@ const AssetsComponenet = ({ plantId }) => {
             </div>
             {loading && 
             <div className="h-[78%] max-h-[80%]  m-6 rounded-2xl" style={{ border: '2px solid rgb(17,110,255)', backgroundColor: 'rgba(255, 255, 255, 0.8)' }}>
+                
                 <div className="cursor-pointer flex items-end justify-end m-4">
                     <CiCirclePlus className="text-slate-950 font-bold text-[20px]" onClick={handleCreateView} />
+                    <span>
+                    <CiFilter className='ml-[97%] ' onClick={handleFilterClick}/>
+                    {showColorPicker && (
+                        <SketchPicker
+                        className='absolute right-4 mt-4'
+                        color={selectedColor}
+                        onChangeComplete={(color) => handleColorChange(color)}
+                        />
+                    )}
+                    </span>
                 </div>
 
                 {showAddModal ? (
