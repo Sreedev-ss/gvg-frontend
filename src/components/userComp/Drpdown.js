@@ -16,6 +16,7 @@ const cancelButtonRef = useRef(null);
 const [useEffectCall, setUseEffectCall] = useState(false);
 const [plants, setPlants] = useState([]);
 const [permissions, setPermissions] = useState([]);
+const [selectedPlants, setSelectedPlants] = useState([]);
 // const [permissions, setPermissions] = useState([
 //     {
 //         plant: null,
@@ -35,6 +36,49 @@ const [permissions, setPermissions] = useState([]);
     // password:"",
   });
 
+  const handleSelectAll = (e) => {
+    const selectedPlantId = e.target.checked ? 'all' : null;
+    setSelectedPlants(selectedPlantId !== null ? [selectedPlantId] : []);
+  };
+
+  const handleCheckboxChange = (plantId, permissionType) => {
+    // Your existing togglePermission logic here
+    togglePermission(plantId, permissionType);
+  };
+
+//   const handleSelectRow = (plantId) => {
+//     setSelectedPlants((prevSelectedPlants) => {
+        
+//       if (prevSelectedPlants.includes(plantId)) {
+//         // Deselect the row
+//         return prevSelectedPlants.filter((id) => id !== plantId);
+//       } else {
+//         // Select the row
+//         return [...prevSelectedPlants, plantId];
+//       }
+//     });
+//   };
+
+const handleSelectRow = (plantId) => {
+    setSelectedPlants((prevSelectedPlants) => {
+      const hasEditPermission = permissions.some((p) => p.plant === plantId && p.access.edit);
+  
+      if (hasEditPermission) {
+        if (prevSelectedPlants.includes(plantId)) {
+          // Deselect the row
+          return prevSelectedPlants.filter((id) => id !== plantId);
+        } else {
+          // Select the row
+          return [...prevSelectedPlants, plantId];
+        }
+      } else {
+        // If no "Edit" permission, do not select the row
+        return prevSelectedPlants.filter((id) => id !== plantId);
+      }
+    });
+  };
+
+  
 //   useEffect(() => {
 //     const fetchPlant = async () => {
 //         try {
@@ -49,23 +93,76 @@ const [permissions, setPermissions] = useState([]);
 //     fetchPlant()
 // }, [useEffectCall])
 
+// useEffect(() => {
+//     const fetchPlant = async () => {
+//       try {
+//         const response = await instance.get('/plants/all-plant');
+//         console.log(response.data);
+  
+//         // const initialPermissions = response.data.map((plant) => ({
+//         //   plant: plant._id,
+//         //   access: {
+//         //     edit: false,
+//         //     delete: false,
+//         //     create: false,
+//         //     duplicate: false,
+//         //   },
+//         // }));
+//         const existingPermissions = response.data.map((plant) => {
+//             const existingPermission = userData.permissions?.find((p) => p.plant === plant._id);
+//             return existingPermission || {
+//               plant: plant._id,
+//               access: {
+//                 edit: false,
+//                 delete: false,
+//                 create: false,
+//                 duplicate: false,
+//               },
+//             };
+//           });
+  
+//         setPermissions(existingPermissions);
+//         setPlants(response.data);
+//       } catch (error) {
+//         console.log(error);
+//       }
+//     };
+  
+//     fetchPlant();
+//   }, [userData]);
+
 useEffect(() => {
     const fetchPlant = async () => {
       try {
         const response = await instance.get('/plants/all-plant');
         console.log(response.data);
   
-        const initialPermissions = response.data.map((plant) => ({
-          plant: plant._id,
-          access: {
-            edit: false,
-            delete: false,
-            create: false,
-            duplicate: false,
-          },
-        }));
+        const existingPermissions = response.data.map((plant) => {
+          const existingPermissionIndex = Array.isArray(userData.permissions)
+            ? userData.permissions.findIndex((p) => p.plant === plant._id)
+            : -1;
   
-        setPermissions(initialPermissions);
+          if (existingPermissionIndex !== -1 && userData.permissions[existingPermissionIndex]) {
+            return {
+              plant: plant._id,
+              access: {
+                ...userData.permissions[existingPermissionIndex].access,
+              },
+            };
+          } else {
+            return {
+              plant: plant._id,
+              access: {
+                edit: false,
+                delete: false,
+                create: false,
+                duplicate: false,
+              },
+            };
+          }
+        });
+  
+        setPermissions(existingPermissions);
         setPlants(response.data);
       } catch (error) {
         console.log(error);
@@ -73,7 +170,10 @@ useEffect(() => {
     };
   
     fetchPlant();
-  }, []);
+  }, [userData]);
+  
+  
+  
 
   const toggleDropdown = () => {
     setIsOpen(!isOpen);
@@ -129,9 +229,9 @@ const handleSubmitEditUser = () => {
     console.log("permisssss",permissions);
     console.log(formData);
 
-    const selectedPlants = permissions
-    .filter((permission) => Object.values(permission.access).some((value) => value))
-    .map((permission) => permission.plant);
+    // const selectedPlants = permissions
+    // .filter((permission) => Object.values(permission.access).some((value) => value))
+    // .map((permission) => permission.plant);
 
 
   const updatedUserData = {
@@ -156,8 +256,8 @@ const handleSubmitEditUser = () => {
       .catch((err) => {
         console.log(err);
       });
-      setPermissions([]);
-    setPermissionOpen(false);
+      //setPermissions([]);
+    //setPermissionOpen(false);
   };
 
 
@@ -342,8 +442,11 @@ const handleSubmitEditUser = () => {
                                     <tr class="bg-white dark:bg-white hover:bg-gray-50 dark:hover:bg-[rgb(223,232,251)]">
                                         <th scope="col" class="p-4">
                                             <div class="flex items-center">
-                                                <input id="checkbox-all-search" type="checkbox" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"/>
-                                                <label for="checkbox-all-search" class="sr-only">checkbox</label>
+                                                <input id={`checkbox-${item._id}`} type="checkbox" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                                                checked={selectedPlants.includes(item._id)}
+                                                onChange={()=> handleSelectRow(item._id)}
+                                                />
+                                                <label htmlFor={`checkbox-${item._id}`} class="sr-only">checkbox</label>
                                             </div>
                                         </th>
                                         <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-gray-900">{index+1}</th>
