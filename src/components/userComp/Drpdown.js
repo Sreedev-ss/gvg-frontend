@@ -8,13 +8,26 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 const Dropdown = ({ userId, parentSetUseEffectCall, userData }) => {
-  const [isOpen, setIsOpen] = useState(false);
-  const [editOpen, setEditOpen] = useState(false);
-  const [deleteOpen, setDeleteOpen] = useState(false);
-  const [permissionOpen, setPermissionOpen] = useState(false);
-  const cancelButtonRef = useRef(null);
-  const [useEffectCall, setUseEffectCall] = useState(false);
-  const [plants, setPlants] = useState([]);
+const [isOpen, setIsOpen] = useState(false);
+const [editOpen, setEditOpen] = useState(false);
+const [deleteOpen, setDeleteOpen] = useState(false);
+const [permissionOpen, setPermissionOpen] = useState(false);
+const cancelButtonRef = useRef(null);
+const [useEffectCall, setUseEffectCall] = useState(false);
+const [plants, setPlants] = useState([]);
+const [permissions, setPermissions] = useState([]);
+// const [permissions, setPermissions] = useState([
+//     {
+//         plant: null,
+//         access: {
+//             edit: false,
+//             delete: false,
+//             create: false,
+//             duplicate: false,
+//         },
+//     }
+// ]);
+
 
   const [formData, setFormData] = useState({
     name: userData.name || "",
@@ -22,19 +35,45 @@ const Dropdown = ({ userId, parentSetUseEffectCall, userData }) => {
     // password:"",
   });
 
-  useEffect(() => {
-    const fetchPlant = async () => {
-        try {
-            const response = await instance.get('/plants/all-plant')
-            console.log(response.data)
-            setPlants(response.data)
-        } catch (error) {
-            console.log(error)
-        }
-    }
+//   useEffect(() => {
+//     const fetchPlant = async () => {
+//         try {
+//             const response = await instance.get('/plants/all-plant')
+//             console.log(response.data)
+//             setPlants(response.data)
+//         } catch (error) {
+//             console.log(error)
+//         }
+//     }
 
-    fetchPlant()
-}, [useEffectCall])
+//     fetchPlant()
+// }, [useEffectCall])
+
+useEffect(() => {
+    const fetchPlant = async () => {
+      try {
+        const response = await instance.get('/plants/all-plant');
+        console.log(response.data);
+  
+        const initialPermissions = response.data.map((plant) => ({
+          plant: plant._id,
+          access: {
+            edit: false,
+            delete: false,
+            create: false,
+            duplicate: false,
+          },
+        }));
+  
+        setPermissions(initialPermissions);
+        setPlants(response.data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+  
+    fetchPlant();
+  }, []);
 
   const toggleDropdown = () => {
     setIsOpen(!isOpen);
@@ -44,6 +83,24 @@ const Dropdown = ({ userId, parentSetUseEffectCall, userData }) => {
     setIsOpen(false);
   };
 
+  const togglePermission = (plantId, accessType) => {
+    setPermissions((prevPermissions) =>
+      prevPermissions.map((permission) =>
+        permission.plant === plantId
+          ? {
+              ...permission,
+              access: {
+                ...permission.access,
+                [accessType]: !permission.access[accessType],
+              },
+            }
+          : permission
+      )
+    );
+  };
+  
+  
+  
 
   const deleteUserModal = async () => {
     try {
@@ -69,9 +126,21 @@ const Dropdown = ({ userId, parentSetUseEffectCall, userData }) => {
 
 
 const handleSubmitEditUser = () => {
+    console.log("permisssss",permissions);
     console.log(formData);
+
+    const selectedPlants = permissions
+    .filter((permission) => Object.values(permission.access).some((value) => value))
+    .map((permission) => permission.plant);
+
+
+  const updatedUserData = {
+    ...formData,
+    plant: selectedPlants,
+  };
+
     instance
-      .put(`/users/edit-user/${userData._id}`, formData)
+      .put(`/users/edit-user/${userData._id}`, updatedUserData)
 
       .then((res) => {
           toast.success("Edited successfully");
@@ -87,6 +156,8 @@ const handleSubmitEditUser = () => {
       .catch((err) => {
         console.log(err);
       });
+      setPermissions([]);
+    setPermissionOpen(false);
   };
 
 
@@ -283,8 +354,12 @@ const handleSubmitEditUser = () => {
                                             <ul class="items-center w-full text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg sm:flex dark:bg-white dark:border-gray-600 dark:text-white">
                                                 <li class="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
                                                     <div class="flex items-center ps-3">
-                                                        <input id="vue-checkbox-list" type="checkbox" value="" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"/>
-                                                        <label for="vue-checkbox-list" class="w-full py-3 ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">Edit</label>
+                                                        <input 
+                                                        id={`edit-checkbox-${item._id}`} type="checkbox" value="" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
+                                                        checked={permissions.some((p) => p.plant === item._id && p.access.edit)}
+                                                        onChange={() => togglePermission(item._id, 'edit')}
+                                                        />
+                                                        <label for={`edit-checkbox-${item._id}`} class="w-full py-3 ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">Edit</label>
                                                     </div>
                                                 </li>
                                                 <li class="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
@@ -324,7 +399,8 @@ const handleSubmitEditUser = () => {
                             <button
                                 type="button"
                                 className="mr-2 inline-flex justify-center px-4 py-2 text-sm font-semibold text-white bg-[rgb(183,78,78)] rounded-md hover:bg-[rgb(133,160,238)] focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-red-500"
-                                onClick={() => setPermissionOpen(false)}
+                                // onClick={() => setPermissionOpen(false)}
+                                onClick={handleSubmitEditUser}
                             >
                                 Allow
                             </button>
