@@ -36,6 +36,7 @@ const Dropdown = ({ userId, parentSetUseEffectCall, userData }) => {
     // password:"",
   });
 
+
   const handleSelectAll = (e) => {
     const selectedPlantId = e.target.checked ? 'all' : null;
     setSelectedPlants(selectedPlantId !== null ? [selectedPlantId] : []);
@@ -250,7 +251,16 @@ const Dropdown = ({ userId, parentSetUseEffectCall, userData }) => {
   };
 
   const [permissions, setPermissions] = useState([]);
-  console.log(permissions)
+
+  useEffect(()=>{
+    setPermissions(userData?.plant)
+    userData?.plant.forEach((item)=>{
+      setMasterCheckboxes(prevState=>({
+        ...prevState,
+        [item.plant]:true
+      }))
+    })
+  },[])
   const [masterCheckboxes, setMasterCheckboxes] = useState({});
 
   const handleMasterCheckboxChange = (rowId) => {

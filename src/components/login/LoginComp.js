@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { instance } from "../../api";
 import './LoginComp.css';
@@ -8,10 +8,21 @@ const LoginComp = () => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
 
+  useEffect(()=>{
+    if(localStorage.getItem("loginData")){
+      navigate('/')
+    }
+  },[])
+
   const handleLogin = () => {
     instance.post('/auth/login', { email, password }).then((res) => {
       if (res.data.status === "Success") {
-        localStorage.setItem("loginData", res.data.token)
+        const data = {
+          token:res.data?.token,
+          role:res.data?.role,
+          plant: res.data?.plant
+        }
+        localStorage.setItem("loginData", JSON.stringify(data))
         navigate('/')
       } else {
         alert('Error while login please try again')
