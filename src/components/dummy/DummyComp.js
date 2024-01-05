@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { instance } from '../../api';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { FaArrowLeft } from "react-icons/fa";
 import { CiCirclePlus } from "react-icons/ci";
 import { BsThreeDots } from "react-icons/bs";
@@ -18,10 +18,12 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 const DummyComp = () => {
+    const { id } = useParams()
+    const { plantId } = useParams()
     const [loading, setLoading] = useState(null);
-    const { hierarchicalPath, updatePath, selectedItemId, updateParent, updateLevel, level, parentid, plantId } = useHierarchy();
-    const [selectedItems, setSelectedItems] = useState([]);
+    const { updatePath, selectedItemId, updateParent, updateLevel, level, parentid } = useHierarchy();
     const [drillDownData, setDrillDownData] = useState([]);
+    const [plant, setPlant] = useState(plantId)
     const [parentName, setParentName] = useState('');
     const [grandparentName, setGrandparentName] = useState('');
     const [showAddModal, setShowAddModal] = useState(false);
@@ -30,20 +32,20 @@ const DummyComp = () => {
     const [showDeleteModal, setShowDeleteModal] = useState(false);
     const [showEditSPlantSFacModal, setShowEditSPlantSFacModal] = useState(false);
     const [selectedEditSystem, setSelectedEditSystem] = useState('Primary');
-    const [parent, setParent] = useState('657d9cc91a95c5b61f5d90b5')
+    const [parent, setParent] = useState(id)
     // const [level, setLevel] = useState(1)
     const [useEffectCall, setUseEffectCall] = useState(false)
-    const [exportData, setExportData] = useState([]);
     const [showUpdateConfirmation, setShowUpdateConfirmation] = useState(false);
     const [filterTerm, setFilterTerm] = useState('');
     const [mainRegion, setMainRegion] = useState([]);
+    const [mainRegion2, setMainRegion2] = useState([])
     const [showConfirmationModal, setShowConfirmationModal] = useState(false);
     const [itemIdToDuplicate, setItemIdToDuplicate] = useState(null);
     const [formData, setFormData] = useState({
-        name: '',
         description: '',
         system: 'primary',
-        parent: ''
+        parent: '',
+        plant: plantId
     })
 
     const [deleteModal, setDeleteModal] = useState({})
@@ -72,8 +74,8 @@ const DummyComp = () => {
         const fetchDataAndSetMainRegion = async () => {
             // Fetch initial data when the component mounts
             try {
-                const data = await fetchData("657d9cc91a95c5b61f5d90b5"); // Fetch top-level data
-                setMainRegion(data);
+                await fetchData(id, 1); // Fetch top-level data
+
             } catch (error) {
                 console.error("Error fetching data:", error);
                 // Handle the error, e.g., show an error message or log it
@@ -85,7 +87,6 @@ const DummyComp = () => {
     }, []);
 
     useEffect(() => {
-        console.log(parent)
         setFormData((prevData) => ({
             ...prevData,
             parent: parent
@@ -99,17 +100,23 @@ const DummyComp = () => {
         }))
     }, [parentid])
 
-    const fetchData = async (parentId, plant) => {
+    const fetchData = async (parentId, level) => {
         try {
             setLoading(true);
-            const response = await instance.get(`/assets/children/${parentId}/${plantId}`);
+            const response = await instance.get(`/assets/children/${parentId}/${plant}`);
             setDrillDownData(response.data);
+            if (level == 1 && response.data.length < 5) {
+                setMainRegion(response.data)
+            }
+            if (level == 5 && response.data.length < 5) {
+                setMainRegion2(response.data)
+            }
 
             if (parentId !== 'null') {
-                const parentResponse = await instance.get(`/assets/asset/${parentId}`);
+                const parentResponse = await instance.get(`/assets/asset/${parentId}/${plant}`);
 
                 setParentName(parentResponse.data);
-                updateParent(parentResponse.data._id)
+                updateParent(parentResponse.data.name.trim())
                 updateLevel(parentResponse.data.level + 1)
 
                 // If the _id exists, slice the array up to that index (exclusive)
@@ -127,15 +134,15 @@ const DummyComp = () => {
                             // Remove all items with the same level
                             const newPath = prevPath.filter(item => item.level !== parentResponse.data?.level);
                             // Add the new object
-                            return [...newPath, { _id: parentResponse.data?._id, name: parentResponse.data?.name, level: parentResponse.data?.level }];
+                            return [...newPath, { _id: parentResponse.data?._id, name: parentResponse.data?.name.trim(), parent: parentResponse.data?.parent?.trim(), level: parentResponse.data?.level }];
                         } else {
-                            return [...prevPath, { _id: parentResponse.data?._id, name: parentResponse.data?.name, level: parentResponse.data?.level }];
+                            return [...prevPath, { _id: parentResponse.data?._id, name: parentResponse.data?.name.trim(), parent: parentResponse.data?.parent?.trim(), level: parentResponse.data?.level }];
                         }
                     }
                 });
 
                 if (parentResponse.data.parent !== null) {
-                    const grandparentResponse = await instance.get(`/assets/asset/${parentResponse.data.parent}`);
+                    const grandparentResponse = await instance.get(`/assets/asset/${parentResponse.data.parent}/${plant}`);
                     setGrandparentName(grandparentResponse.data);
                 } else {
                     setGrandparentName('');
@@ -164,7 +171,7 @@ const DummyComp = () => {
         setParent(itemId)
 
         // Fetch data for the next level based on the selected items
-        fetchData(itemId, plant);
+        fetchData(itemId, level + 1);
     };
 
     const handleSystemChange = (e) => {
@@ -199,20 +206,20 @@ const DummyComp = () => {
     const handleCreate = (e) => {
         e.preventDefault();
 
-        if (formData.name === "" || formData.description === "" || formData.system === "") {
+        if (formData.name === "" || formData.description === "" || formData.system === "" || formData.plant === "") {
             console.log('Fill data')
         } else {
-            console.log(level)
+            console.log(level, formData)
             instance.post(`/assets/addAsset/${level}`, formData).then((res) => {
                 toast.success("Created successfully");
                 console.log(res)
                 setFormData({
-                    name: '',
                     description: '',
                     system: 'primary',
-                    parent: parent
+                    parent: '',
+                    plant: plantId
                 })
-                fetchData(res.data?.parent)
+                fetchData(res.data?.parent, level)
             }).catch((err) => {
                 console.log(err)
             })
@@ -221,10 +228,12 @@ const DummyComp = () => {
 
     }
 
-    const handleDelete = (id, parent) => {
-        instance.delete(`/assets/deleteAsset/${id}`).then((res) => {
+    const handleDelete = (id, parent, name, level) => {
+        console.log(level)
+        console.log(name)
+        instance.delete(`/assets/deleteAsset/${id}/${name}/${plantId}`).then((res) => {
             toast.success("Deleted successfully");
-            fetchData(parent)
+            fetchData(parent, level)
             setShowDeleteModal(false)
 
         }).catch((err) => {
@@ -241,7 +250,8 @@ const DummyComp = () => {
                 name: '',
                 description: '',
                 system: 'primary',
-                parent: ''
+                parent: '',
+                plant: plantId
             })
             handlePlusSPlantSFacClick(res.data._id)
 
@@ -286,15 +296,19 @@ const DummyComp = () => {
         if (id !== null) {
             fetchData(id)
         }
+
     }
 
     const handleCreateView = () => {
-        setFormData({
-            name: '',
-            description: '',
-            system: 'primary',
-            parent: parent
-        })
+        setFormData((prevData) => (
+            {
+                ...prevData,
+                name: '',
+                description: '',
+                system: 'primary',
+                parent: parent
+            }
+        ))
         setShowAddModal(true)
     }
 
@@ -324,7 +338,7 @@ const DummyComp = () => {
                         </div>
                     ) : (
                         <div className='w-[100%] h-[100%] flex flex-col justify-center items-center p-3'>
-                            {grandparentName && grandparentName?.name?.length === 1 ? (
+                            {grandparentName && grandparentName?.name?.length == 1 ? (
                                 <b className="text-2xl cursor-pointer flex items-center justify-center" onClick={() => handleFetchData(grandparentName?.parent)}>
                                     {grandparentName?.description?.slice(0, 35)}
                                 </b>
@@ -334,21 +348,29 @@ const DummyComp = () => {
                                 </b>
                             )}
                             <div className='flex flex-col items-center mt-4'>
-                                {parentName?.name && level !== 2 ? (
+                                {parentName?.name && level == 6 || level == 2 ? (
+                                    <div className="flex justify-evenly z-0 gap-10 align-middle box-border rounded-2xl w-[100%] cursor-pointer" >
+                                        {level == 6 ? mainRegion2 && mainRegion2.map((item, index) => (
+                                            <div key={index} onClick={() => fetchData(item.name.trim())} style={{ backgroundColor: parentName?.name?.trim() == item?.name?.trim() && parentName?._id?.trim() == item?._id?.trim() ? 'rgb(215,235,230)' : '', border: parentName?.name?.trim() == item?.name?.trim() && parentName?._id?.trim() == item?._id?.trim() ? '2px solid rgb(77,164,164)' : '', borderRadius: parentName?.name?.trim() == item?.name?.trim() && parentName?._id?.trim() == item?._id?.trim() ? '7px 7px 0 0' : '', padding: '3px', borderBottom: 'none' }}>
+                                                <p className="m-0 px-4 text-black justify-center items-center flex font-semibold">{item?.name?.length !== 1 && item?.name}</p>
+                                                <p className="m-0 px-4 text-black justify-center items-center flex font-semibold">{item?.description?.slice(0, 20)}</p>
+                                            </div>
+                                        )) :
+                                            mainRegion && mainRegion.map((item, index) => (
+                                                <div key={index} onClick={() => fetchData(item.name.trim())} style={{ backgroundColor: parentName?.name?.trim() == item?.name?.trim() && parentName?._id?.trim() == item?._id?.trim() ? 'rgb(215,235,230)' : '', border: parentName?.name?.trim() == item?.name?.trim() && parentName?._id?.trim() == item?._id?.trim() ? '2px solid rgb(77,164,164)' : '', borderRadius: parentName?.name?.trim() == item?.name?.trim() && parentName?._id?.trim() == item?._id?.trim() ? '7px 7px 0 0' : '', padding: '3px', borderBottom: 'none' }}>
+                                                    <p className="m-0 px-4 text-black justify-center items-center flex font-semibold">{item?.name?.length !== 1 && item?.name}</p>
+                                                    <p className="m-0 px-4 text-black justify-center items-center flex font-semibold">{item?.description?.slice(0, 20)}</p>
+                                                </div>
+                                            ))
+                                        }
+                                    </div>
+
+                                ) :
                                     <div className="flex justify-between z-0 box-border rounded-2xl w-[100%] cursor-pointer" onClick={() => handleFetchData(parentName?.parent)}>
                                         <div className='' style={{ backgroundColor: 'rgb(215,235,230)', border: '2px solid rgb(77,164,164)', borderRadius: '7px 7px 0 0', padding: '3px', borderBottom: 'none' }}>
-                                            <p className="m-0 px-4 text-black justify-center items-center flex font-semibold">{parentName?.name?.length !== 1 && parentName?.name}</p>
+                                            <p className="m-0 px-4 text-black justify-center items-center flex font-semibold">{parentName?.name?.length !== 0 && parentName?.name}</p>
                                             <p className="m-0 px-4 text-black justify-center items-center flex font-semibold">{parentName?.description?.slice(0, 35)}</p>
                                         </div>
-                                    </div>
-                                ) :
-                                    <div className="flex justify-evenly z-0 gap-10 align-middle box-border rounded-2xl w-[100%] cursor-pointer" >
-                                        {mainRegion && mainRegion.map((item, index) => (
-                                            <div key={index} onClick={() => fetchData(item._id)} style={{ backgroundColor: parentName?.name?.trim() == item?.name?.trim() && parentName?._id?.trim() == item?._id?.trim() ? 'rgb(215,235,230)' : '', border: parentName?.name?.trim() == item?.name?.trim()  && parentName?._id?.trim() == item?._id?.trim() ? '2px solid rgb(77,164,164)' : '', borderRadius: parentName?.name?.trim() == item?.name?.trim() && parentName?._id?.trim() == item?._id?.trim() ? '7px 7px 0 0' : '', padding: '3px', borderBottom: 'none' }}>
-                                                <p className="m-0 px-4 text-black justify-center items-center flex font-semibold">{item?.name?.length !== 1 && item?.name}</p>
-                                                <p className="m-0 px-4 text-black justify-center items-center flex font-semibold">{item?.description?.slice(0, 35)}</p>
-                                            </div>
-                                        ))}
                                     </div>
                                 }
                             </div>
@@ -454,7 +476,7 @@ const DummyComp = () => {
 
                                     <div className="flex flex-wrap justify-center items-center gap-4">
                                         {drillDownData.map((item) => (
-                                            <div key={item._id}>
+                                            <div key={item._id} className=''>
                                                 <Draggable key={item._id}>
                                                     <div key={item._id} className=" rounded-6xl bg-cornflowerblue h-[215px] overflow-hidden shrink-0 mt-2"
                                                     >
@@ -464,7 +486,7 @@ const DummyComp = () => {
                                                                 className="flex justify-center items-center bg-[#3773ca] rounded-xl font-light w-full h-full text-[15px]"
 
                                                             >
-                                                                <div className="font-semibold text-[15px] overflow-hidden" onClick={() => handleItemClick(item._id, item.level, item.parent, item.plant)}>
+                                                                <div className="font-semibold text-[15px] overflow-hidden" onClick={() => handleItemClick(item.name.trim(), item.level, item.parent, item.plant)}>
                                                                     <p className="m-0 text-white mt-3 p-2 ">{item.name}</p>
                                                                     <p
                                                                         className="m-0 text-white overflow-hidden text-ellipsis"
@@ -639,7 +661,7 @@ const DummyComp = () => {
                                                                             <button
                                                                                 className="bg-emerald-500 text-white active:bg-emerald-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
                                                                                 type="button"
-                                                                                onClick={() => handleDelete(item._id, item.parent)}
+                                                                                onClick={() => handleDelete(item._id, item.parent, item.name, item.level)}
                                                                             >
                                                                                 Yes
                                                                             </button>
@@ -674,19 +696,7 @@ const DummyComp = () => {
                                                                                 </span>
                                                                             </button>
                                                                         </div>
-                                                                        <div className="mb-4">
-                                                                            <label htmlFor="name" className="block text-sm font-medium text-gray-700 ml-[-690px]">
-                                                                                Name:
-                                                                            </label>
-                                                                            <input
-                                                                                type="text"
-                                                                                id="name-1"
-                                                                                name="name"
-                                                                                value={formData.name}
-                                                                                onChange={handleChangeCreate}
-                                                                                className="mt-1 ml-[-10px] p-2 border border-gray-300 rounded-md w-[740px] h-[35px] text-black"
-                                                                            />
-                                                                        </div>
+
                                                                         <div className="mb-4 mt-2">
                                                                             <label htmlFor="name" className="block text-sm font-medium text-gray-700 ml-[-660px]">
                                                                                 Description:

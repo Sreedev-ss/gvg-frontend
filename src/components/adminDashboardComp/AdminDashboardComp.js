@@ -21,7 +21,11 @@ const AdminDashboardComp = () => {
     const [showConfirmationModal, setShowConfirmationModal] = useState(false);
     const [plants, setPlants] = useState([])
     const [useEffectCall, setUseEffectCall] = useState(false)
-
+    const [formData, setFormData] = useState({
+        _id: '',
+        name: '',
+        description: '',
+    })
     useEffect(() => {
         const fetchPlant = async () => {
             try {
@@ -36,11 +40,30 @@ const AdminDashboardComp = () => {
         fetchPlant()
     }, [useEffectCall])
 
-    const toggleDropdown = (id) => {
+    const toggleDropdown = (id, item) => {
         setIsDropdownOpen(prevState => ({
             [id]: !prevState[id]
         }));
+        setFormData(item)
     };
+
+    const handleEditSubmit = () => {
+        instance.put(`/plants/update-plant/${formData._id}`, formData).then((res) => {
+            console.log(res)
+            toggleDropdown(res.data._id)
+            setEditModal(false)
+            setFormData({
+                _id: '',
+                name: '',
+                description: '',
+            })
+            handleUpdateConfirmationClose();
+            setUseEffectCall(!useEffectCall)
+        }).catch((err) => {
+            console.log(err)
+        })
+
+    }
 
     const closeDropdown = () => {
         setIsDropdownOpen(false);
@@ -73,10 +96,7 @@ const AdminDashboardComp = () => {
         localStorage.setItem("boxes", JSON.stringify(boxes));
     }, [boxes]);
 
-    const [formData, setFormData] = useState({
-        name: '',
-        description: '',
-    })
+
 
     const handleChangeCreate = (e) => {
         const { name, value } = e.target
@@ -282,7 +302,7 @@ const AdminDashboardComp = () => {
                         <div key={item._id} className="bg-[rgb(254,132,183)] p-4 rounded-lg relative">
                             <div
                                 className="top-0 right-0 p-2 text-red cursor-pointer w-0"
-                                onClick={() => toggleDropdown(item._id)}
+                                onClick={() => toggleDropdown(item._id, item)}
                             //onClick={() => handlePlusSPlantSFacClick(item._id)}
                             >
                                 <BsThreeDots className="font-lighter text-[10px] mt-[-26px]  h-5  ml-[90px] text-red-700" />
@@ -396,10 +416,7 @@ const AdminDashboardComp = () => {
                                                         <button
                                                             className="bg-emerald-500 text-white active:bg-emerald-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
                                                             type="button"
-                                                            onClick={() => {
-                                                                handleUpdateConfirmationClose();
-                                                                //handleEditSubmit();
-                                                            }}
+                                                            onClick={handleEditSubmit}
                                                         >
                                                             Confirm Update
                                                         </button>

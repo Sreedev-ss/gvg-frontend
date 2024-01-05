@@ -24,7 +24,7 @@ const SPlantFacilities = () => {
                 <Navbar />
 
                 <div className="flex-1  overflow-hidden">
-                    <AssetsComponenet />
+                    <AssetsComponenet plantId={plantId} />
                 </div>
             </div>
         </div>
