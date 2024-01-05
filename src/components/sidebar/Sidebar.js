@@ -15,7 +15,7 @@ import { PiArrowBendDownRightLight } from "react-icons/pi";
 
 
 const Sidebar = () => {
-    const { hierarchicalPath, selectItem, parentid, updateParent, level, plantId } = useHierarchy();
+    const { hierarchicalPath, selectItem, parentid, updateParent, level, plantId, updateUseEffect } = useHierarchy();
     const navigate = useNavigate();
 
     // const handleLogout = () => {
@@ -31,8 +31,8 @@ const Sidebar = () => {
 
     const handleLiClick = (id, parent) => {
         selectItem(id);
-        console.log(parent,'side')
         updateParent(parent)
+        updateUseEffect()
 
     }
 
@@ -161,7 +161,7 @@ const Sidebar = () => {
 
                                     <IoIosPlay className={`text-black`} />
                                 )}
-                                <li title={pathItem?.name} className='liPath w-28 cursor-pointer overflow-hidden text-ellipsis whitespace-nowrap ml-1' onClick={() => handleLiClick(pathItem?.name, pathItem.parent)} key={index} >{pathItem?.name}</li>
+                                <li title={pathItem?.name} className='liPath w-28 cursor-pointer overflow-hidden text-ellipsis whitespace-nowrap ml-1' onClick={() => handleLiClick(pathItem?.name, pathItem.name)} key={index} >{pathItem?.name}</li>
                             </span>
                         ))}
                     </ul>

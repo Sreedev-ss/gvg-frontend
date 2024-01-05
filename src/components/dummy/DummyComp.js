@@ -21,7 +21,7 @@ const DummyComp = () => {
     const { id } = useParams()
     const { plantId } = useParams()
     const [loading, setLoading] = useState(null);
-    const { updatePath, selectedItemId, updateParent, updateLevel, level, parentid } = useHierarchy();
+    const { updatePath, selectedItemId, updateParent, updateLevel, useEffectCallM, level, parentid } = useHierarchy();
     const [drillDownData, setDrillDownData] = useState([]);
     const [plant, setPlant] = useState(plantId)
     const [parentName, setParentName] = useState('');
@@ -44,7 +44,7 @@ const DummyComp = () => {
     const [formData, setFormData] = useState({
         description: '',
         system: 'primary',
-        parent: '',
+        parent: id,
         plant: plantId
     })
 
@@ -65,10 +65,14 @@ const DummyComp = () => {
 
     useEffect(() => {
         if (selectedItemId != null) {
-            fetchData(selectedItemId)
+            fetchData(selectedItemId, level)
+            setFormData((prevData) => ({
+                ...prevData,
+                parent: selectedItemId
+            }))
         }
 
-    }, [selectedItemId]);
+    }, [useEffectCallM]);
 
     useEffect(() => {
         const fetchDataAndSetMainRegion = async () => {
@@ -86,12 +90,12 @@ const DummyComp = () => {
 
     }, []);
 
-    useEffect(() => {
-        setFormData((prevData) => ({
-            ...prevData,
-            parent: parent
-        }))
-    }, [parent])
+    // useEffect(() => {
+    //     setFormData((prevData) => ({
+    //         ...prevData,
+    //         parent: parent
+    //     }))
+    // }, [parent])
 
     useEffect(() => {
         setFormData((prevData) => ({
@@ -99,6 +103,8 @@ const DummyComp = () => {
             parent: parentid
         }))
     }, [parentid])
+
+    console.log(formData)
 
     const fetchData = async (parentId, level) => {
         try {
@@ -163,24 +169,11 @@ const DummyComp = () => {
     };
 
     const handleItemClick = (itemId, level, parentId, plant) => {
-        // setLevel(level + 1)
-        // // Update the selected items array based on user clicks
-        // const updatedItems = selectedItems.slice(0, level);
-        // updatedItems[level] = itemId;
-        // setSelectedItems(updatedItems);
         setParent(itemId)
 
-        // Fetch data for the next level based on the selected items
         fetchData(itemId, level + 1);
     };
 
-    const handleSystemChange = (e) => {
-        setSelectedSystem(e.target.value);
-    };
-
-    const handleSystemEditChange = (e) => {
-        setSelectedEditSystem(e.target.value);
-    };
 
     const handleChangeCreate = (e) => {
         const { name, value } = e.target
@@ -209,10 +202,8 @@ const DummyComp = () => {
         if (formData.name === "" || formData.description === "" || formData.system === "" || formData.plant === "") {
             console.log('Fill data')
         } else {
-            console.log(level, formData)
             instance.post(`/assets/addAsset/${level}`, formData).then((res) => {
                 toast.success("Created successfully");
-                console.log(res)
                 setFormData({
                     description: '',
                     system: 'primary',
@@ -229,8 +220,7 @@ const DummyComp = () => {
     }
 
     const handleDelete = (id, parent, name, level) => {
-        console.log(level)
-        console.log(name)
+
         instance.delete(`/assets/deleteAsset/${id}/${name}/${plantId}`).then((res) => {
             toast.success("Deleted successfully");
             fetchData(parent, level)
@@ -242,10 +232,8 @@ const DummyComp = () => {
     }
 
     const handleEditSubmit = () => {
-        console.log(formData)
         instance.put(`/assets/editAsset/${formData._id}`, formData).then((res) => {
             toast.success("Edited successfully");
-            console.log(res)
             setFormData({
                 name: '',
                 description: '',
@@ -306,7 +294,7 @@ const DummyComp = () => {
                 name: '',
                 description: '',
                 system: 'primary',
-                parent: parent
+                parent: parentid
             }
         ))
         setShowAddModal(true)
