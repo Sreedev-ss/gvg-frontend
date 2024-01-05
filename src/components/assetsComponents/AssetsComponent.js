@@ -223,27 +223,27 @@ const AssetsComponenet = ({ plantId }) => {
                                                 <BsThreeDots className="font-lighter text-[10px]" />
                                             </div>
                                             {showDropDownSPlantSFac[item._id] && (
-                                                <div className="text-white bg-[#3773ca] rounded-xl shadow-lg px-2 absolute top-0 right-0 mt-[270px] mr-[555px] dropContent show text-xs">
+                                                <div className="text-white bg-[#3773ca] rounded-xl shadow-lg px-2 absolute top-0 right-0 mt-[280px] mr-[555px] dropContent show text-xs">
                                                     {/* <div className="dropdown"> */}
                                                     <p className="m-0  whitespace-nowrap cursor-pointer p-tooltip" 
                                                         onClick={() => handleDeleteModalView(item._id)}
                                                         style={{ '--i': 0 }}
                                                     >
-                                                        <MdDeleteOutline className="text-slate-950" />
+                                                        <MdDeleteOutline className="text-slate-950 mt-2" />
                                                         <span className="tooltip">Delete</span>
                                                     </p>
                                                     <p className="m-0  whitespace-nowrap cursor-pointer p-tooltip" 
                                                     onClick={() => { setShowEditSPlantSFacModal(true); setFormData(item); }}
                                                         style={{ '--i': 1 }}
                                                     >
-                                                        <CiEdit className='mt-2 text-slate-950' />
+                                                        <CiEdit className='mt-3 text-slate-950' />
                                                         <span className="tooltip">Edit</span>
                                                     </p>
                                                     <p className="m-0  whitespace-nowrap cursor-pointer p-tooltip" 
                                                     onClick={() => handleDuplicate(item._id)}
                                                         style={{ '--i': 2 }}
                                                     >
-                                                        <HiOutlineDocumentDuplicate className='mt-2 text-slate-950' />
+                                                        <HiOutlineDocumentDuplicate className='mt-3 text-slate-950' />
                                                         <span className="tooltip">Duplicate</span>
                                                     </p>
                                                     <Modal className='flex items-center justify-center'
@@ -472,7 +472,7 @@ const AssetsComponenet = ({ plantId }) => {
                                                     </>
                                                 ) : null}
 
-                                                <div onClick={() => navigate(`/asset/${item?.name}/${plantId}`)} className= "font-semibold bg-[rgb(55,115,202)] rounded-xl w-[150px] h-[80px] text-[15px] mt-2 flex flex-col items-center justify-center cursor-pointer">
+                                                <div onClick={() => navigate(`/asset/${item?.name}/${plantId}`)} className= "font-semibold bg-[rgb(55,115,202)] rounded-xl w-[150px] h-[110px] text-[15px] mt-2 flex flex-col items-center justify-center cursor-pointer">
                                                     <p className="m-0 text-white  text-[17px] ml-10 ">{item?.name?.split(" ")[0]}</p>
                                                     {item?.name?.split(" ")[1] !== "" && <p className="m-0 text-white text-[17px] mb-4  ml-10">{item?.name?.split(" ")[1]}</p>}
                                                     
