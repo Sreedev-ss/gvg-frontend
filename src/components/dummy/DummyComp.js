@@ -191,7 +191,6 @@ const DummyComp = () => {
         setShowUpdateConfirmation(true);
     };
 
-
     const handleUpdateConfirmationClose = () => {
         setShowUpdateConfirmation(false);
     };
@@ -345,7 +344,7 @@ const DummyComp = () => {
                                 ) :
                                     <div className="flex justify-evenly z-0 gap-10 align-middle box-border rounded-2xl w-[100%] cursor-pointer" >
                                         {mainRegion && mainRegion.map((item, index) => (
-                                            <div key={index} onClick={() => fetchData(item._id)} style={{ backgroundColor: parentName?.name?.trim() == item?.name?.trim() ? 'rgb(215,235,230)' : '', border: parentName?.name?.trim() == item?.name?.trim() ? '2px solid rgb(77,164,164)' : '', borderRadius: parentName?.name?.trim() == item?.name?.trim() ? '7px 7px 0 0' : '', padding: '3px', borderBottom: 'none' }}>
+                                            <div key={index} onClick={() => fetchData(item._id)} style={{ backgroundColor: parentName?.name?.trim() == item?.name?.trim() && parentName?._id?.trim() == item?._id?.trim() ? 'rgb(215,235,230)' : '', border: parentName?.name?.trim() == item?.name?.trim()  && parentName?._id?.trim() == item?._id?.trim() ? '2px solid rgb(77,164,164)' : '', borderRadius: parentName?.name?.trim() == item?.name?.trim() && parentName?._id?.trim() == item?._id?.trim() ? '7px 7px 0 0' : '', padding: '3px', borderBottom: 'none' }}>
                                                 <p className="m-0 px-4 text-black justify-center items-center flex font-semibold">{item?.name?.length !== 1 && item?.name}</p>
                                                 <p className="m-0 px-4 text-black justify-center items-center flex font-semibold">{item?.description?.slice(0, 35)}</p>
                                             </div>
