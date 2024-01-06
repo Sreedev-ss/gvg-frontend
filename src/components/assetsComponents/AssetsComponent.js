@@ -318,10 +318,10 @@ const AssetsComponenet = ({ plantId }) => {
                         <b className="text-4xl cursor-pointer flex items-center justify-center">
                             Assets
                         </b>
-                        <div className='flex items-center justify-center mt-5'>
-                            <div className=' mt-0 left-0 top-60'>
+                        <div className='flex items-center justify-center mt-5  overflow-y-scroll' style={{ maxHeight: '350px' }}>        
+                            <div className='py-5 left-0 top-60 pt-16'>
                                 <div className="text-center text-xl text-white ">
-                                    <div className={`grid ${asset.length == 1 ? 'grid-cols-1' : 'grid-cols-2'} gap-5`}>
+                                    <div className={`grid ${asset?.length == 1 ? 'grid-cols-1' : 'grid-cols-2'} gap-5`}>
                                         {asset.map((item, index) => (
 
                                             <div key={index} className=" bg-[rgb(55,115,202)] overflow-hidden rounded-2xl w-[190px] relative" >
