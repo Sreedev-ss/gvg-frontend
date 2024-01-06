@@ -16,7 +16,7 @@ const ReportingAnalyticsComp = () => {
     return (
         <>
             <div className="bg-white p-4 h-[89.4vh] rounded-lg shadow-md main-container">
-                {tableData.length ? <div>
+                {tableData.length ? <div className="overflow-y-scroll" style={{ maxHeight: '84vh' }}>
                     <table className="w-full border-collapse bg-white opacity-80 overflow-scroll">
                         <thead>
                             <tr>
