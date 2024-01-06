@@ -28,7 +28,7 @@ const AssetsComponenet = ({ plantId }) => {
     const [showEditSPlantSFacModal, setShowEditSPlantSFacModal] = useState(false);
     const [itemIdToDuplicate, setItemIdToDuplicate] = useState(null);
     const [showConfirmationModal, setShowConfirmationModal] = useState(false);
-    const [userData, setUserData] = useState(JSON.parse(localStorage.getItem("loginData")))
+    const [userData, setUserData] = useState(JSON?.parse(localStorage?.getItem("loginData")))
     const [showColorPicker, setShowColorPicker] = useState(false);
     const [accessState, setAccessState] = useState({})
     const [selectedColor, setSelectedColor] = useState('#ffffff');
@@ -49,20 +49,23 @@ const AssetsComponenet = ({ plantId }) => {
         }
     }, [])
     useEffect(() => {
-        setLoading(false)
+        setLoading(true)
         instance.get(`/assets/children/null/${plantId}`).then((res) => {
 
             if (res.data.length == 0) {
                 instance.get(`/assets/allAsset/${plantId}`).then((res) => {
                     if (res.data) {
-                        navigate(`/asset/${res.data[0].parent}/${plantId}`)
+                        const data = res.data.find((item => item?.level == 1))
+                        navigate(`/asset/${data?.parent}/${plantId}`)
+                        setLoading(false)
                     }
                 }).catch((err) => {
                     console.log(err)
                 })
             } else {
-                setLoading(true)
+                setLoading(false)
             }
+            // setLoading(false)
             setAsset(res.data)
         }).catch((err) => {
             console.log(err)
@@ -203,8 +206,14 @@ const AssetsComponenet = ({ plantId }) => {
                     <FaArrowLeft className="text-slate-500 font-lighter text-[20px]" />
                 </Link>
             </div>
-            {loading &&
-                <div className="h-[78%] max-h-[80%]  m-6 rounded-2xl" style={{ border: '2px solid rgb(17,110,255)', backgroundColor: 'rgba(255, 255, 255, 0.8)' }}>
+            {loading ? (
+                <div className="flex justify-center items-center h-[80%]">
+                    <div className="animate-spin rounded-full h-10 w-10 border-t-4 border-blue-500 border-solid">
+
+                    </div>
+                </div>
+            ) :
+                (<div className="h-[78%] max-h-[80%]  m-6 rounded-2xl" style={{ border: '2px solid rgb(17,110,255)', backgroundColor: 'rgba(255, 255, 255, 0.8)' }}>
 
                     <div className="cursor-pointer flex items-end justify-end m-4">
                         {accessState?.create && <CiCirclePlus className="text-slate-950 font-bold text-[20px]" onClick={handleCreateView} />}
@@ -586,8 +595,8 @@ const AssetsComponenet = ({ plantId }) => {
 
                         </div>
                     </div>
-                </div>
-            }
+                </div>)}
+
 
         </div>
     )
