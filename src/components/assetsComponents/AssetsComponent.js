@@ -318,7 +318,7 @@ const AssetsComponenet = ({ plantId }) => {
                         <b className="text-4xl cursor-pointer flex items-center justify-center">
                             Assets
                         </b>
-                        <div className="max-h-[65vh] pb-5 overflow-y-scroll">
+                        <div className="h-[60vh] pb-5 overflow-y-scroll">
                         <div className='flex items-center justify-center mt-10  '>        
                             <div className=''>
                                 <div className="text-center text-xl text-white ">
