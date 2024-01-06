@@ -1,4 +1,4 @@
-import React, { useRef } from 'react'
+import React, { useRef, useState } from 'react'
 // import './Sidebar.scss',
 import { GiPathDistance } from "react-icons/gi";
 import { Link, useNavigate } from 'react-router-dom';
@@ -18,7 +18,7 @@ import { CgProfile } from "react-icons/cg";
 const Sidebar = () => {
     const { hierarchicalPath, selectItem, parentid, updateParent, level, plantId, updateUseEffect } = useHierarchy();
     const navigate = useNavigate();
-
+    const [userData, setUserData] = useState(JSON?.parse(localStorage?.getItem("loginData")))
     // const handleLogout = () => {
     //     localStorage.removeItem("loginData");
     //     navigate('/authentication/login')
@@ -174,7 +174,7 @@ const Sidebar = () => {
                 <div>
                     <div className="mt-16  text-zinc-900 text-[14px] cursor-pointer flex items-center justify-center">
                         <CgProfile style={{ marginRight: '10px' }} />
-                        Settings
+                        {userData?.name}
                     </div>
                     <div className="mt-4 text-zinc-900 text-[14px] cursor-pointer flex items-center justify-center" onClick={handleLogout}>
                         <IoIosLogOut style={{ marginRight: '10px' }} />

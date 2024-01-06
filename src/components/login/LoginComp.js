@@ -20,7 +20,8 @@ const LoginComp = () => {
         const data = {
           token:res.data?.token,
           role:res.data?.role,
-          plant: res.data?.plant
+          plant: res.data?.plant,
+          name:res.data?.name
         }
         localStorage.setItem("loginData", JSON.stringify(data))
         navigate('/')
