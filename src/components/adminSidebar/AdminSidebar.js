@@ -19,6 +19,7 @@ import { FaRegUser } from "react-icons/fa";
 import readXlsxFile from 'read-excel-file';
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { CgProfile } from "react-icons/cg";
 
 const AdminSidebar = () => {
     const [loading, setLoading] = useState(false);
@@ -445,7 +446,7 @@ const AdminSidebar = () => {
 
                 <div className=''>
                     <div className="mt-16 text-zinc-900 text-[14px] cursor-pointer flex items-center justify-center">
-                        <IoMdSettings style={{ marginRight: '10px' }} />
+                        <CgProfile style={{ marginRight: '10px' }} />
                         Settings
                     </div>
                     <div className="mt-4 text-zinc-900 text-[14px] cursor-pointer flex items-center justify-center" onClick={handleLogout}>

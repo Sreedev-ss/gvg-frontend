@@ -12,6 +12,7 @@ import { useHierarchy } from '../../context/HierarchyContext';
 import { instance } from '../../api';
 import { BsArrowReturnRight } from "react-icons/bs";
 import { PiArrowBendDownRightLight } from "react-icons/pi";
+import { CgProfile } from "react-icons/cg";
 
 
 const Sidebar = () => {
@@ -172,7 +173,7 @@ const Sidebar = () => {
             <div >
                 <div>
                     <div className="mt-16  text-zinc-900 text-[14px] cursor-pointer flex items-center justify-center">
-                        <IoMdSettings style={{ marginRight: '10px' }} />
+                        <CgProfile style={{ marginRight: '10px' }} />
                         Settings
                     </div>
                     <div className="mt-4 text-zinc-900 text-[14px] cursor-pointer flex items-center justify-center" onClick={handleLogout}>
