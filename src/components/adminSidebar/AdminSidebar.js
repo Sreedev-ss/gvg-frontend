@@ -208,6 +208,10 @@ const AdminSidebar = () => {
     const cancelButtonRef = useRef(null);
     const handleRadioChange = (id) => {
         setSelectedPlant(id)
+    };
+    const handleExportClose = () => {
+        console.log("clicked");
+        setOpen(false);
     }
 
     return (
@@ -322,6 +326,7 @@ const AdminSidebar = () => {
                                         <button
                                             type="button"
                                             className="inline-flex justify-center px-4 py-2 text-sm font-semibold text-gray-700 bg-gray-200 rounded-md hover:bg-gray-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-gray-500"
+                                            onClick={handleExportClose}
                                         >
                                             Cancel
                                         </button>
