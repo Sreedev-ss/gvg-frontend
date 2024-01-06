@@ -213,7 +213,7 @@ const AssetsComponenet = ({ plantId }) => {
                     </div>
                 </div>
             ) :
-                (<div className="h-[78%] max-h-[80%]  m-6 rounded-2xl" style={{ border: '2px solid rgb(17,110,255)', backgroundColor: 'rgba(255, 255, 255, 0.8)' }}>
+                (<div className="h-[90%] max-h-[90%] rounded-2xl" style={{ border: '2px solid rgb(17,110,255)', backgroundColor: 'rgba(255, 255, 255, 0.8)' }}>
 
                     <div className="cursor-pointer flex items-end justify-end m-4">
                         {accessState?.create && <CiCirclePlus className="text-slate-950 font-bold text-[20px]" onClick={handleCreateView} />}
@@ -314,12 +314,13 @@ const AssetsComponenet = ({ plantId }) => {
                         </>
                     ) : null}
 
-                    <div className='m-15'>
+                    <div className='mt-15 '>
                         <b className="text-4xl cursor-pointer flex items-center justify-center">
                             Assets
                         </b>
-                        <div className='flex items-center justify-center mt-5  overflow-y-scroll' style={{ maxHeight: '350px' }}>        
-                            <div className='py-5 left-0 top-60 pt-16'>
+                        <div className="max-h-[65vh] pb-5 overflow-y-scroll">
+                        <div className='flex items-center justify-center mt-10  '>        
+                            <div className=''>
                                 <div className="text-center text-xl text-white ">
                                     <div className={`grid ${asset?.length == 1 ? 'grid-cols-1' : 'grid-cols-2'} gap-5`}>
                                         {asset.map((item, index) => (
@@ -593,6 +594,7 @@ const AssetsComponenet = ({ plantId }) => {
                                 </div>
                             </div>
 
+                        </div>
                         </div>
                     </div>
                 </div>)}
