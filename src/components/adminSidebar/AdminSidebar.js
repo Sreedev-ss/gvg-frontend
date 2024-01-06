@@ -29,7 +29,8 @@ const AdminSidebar = () => {
     const [selectedFile, setSelectedFile] = useState(null);
     const [importFile, setImportFile] = useState(null)
     const [plants, setPlants] = useState([])
-    const [role, setRole] = useState(JSON?.parse(localStorage?.getItem("loginData"))?.role)
+    const [userData, setUserData] = useState(JSON?.parse(localStorage?.getItem("loginData")))
+    const role = userData.role ? userData.role:''
     const [selectedPlant, setSelectedPlant] = useState('')
     const [formData, setFormData] = useState({
         name: '',
@@ -47,7 +48,6 @@ const AdminSidebar = () => {
         }
 
         fetchPlant()
-        console.log(role)
     }, [])
     const handleLogout = () => {
         localStorage.removeItem("loginData")
@@ -453,7 +453,7 @@ const AdminSidebar = () => {
                 <div className=''>
                     <div className="mt-16 text-zinc-900 text-[14px] cursor-pointer flex items-center justify-center">
                         <CgProfile style={{ marginRight: '10px' }} />
-                        Settings
+                        {userData?.name}
                     </div>
                     <div className="mt-4 text-zinc-900 text-[14px] cursor-pointer flex items-center justify-center" onClick={handleLogout}>
                         <IoIosLogOut style={{ marginRight: '10px' }} />
