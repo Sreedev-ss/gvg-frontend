@@ -18,7 +18,7 @@ const AdminDashboardComp = () => {
     const [deleteModal, setDeleteModal] = useState(false);
     const [showUpdateConfirmation, setShowUpdateConfirmation] = useState(false);
     const [editModal, setEditModal] = useState(false);
-    const [userData, setUserData] = useState(JSON.parse(localStorage.getItem("loginData")))
+    const [userData, setUserData] = useState(JSON?.parse(localStorage?.getItem("loginData")))
     const [showConfirmationModal, setShowConfirmationModal] = useState(false);
     const [plants, setPlants] = useState([])
     const [useEffectCall, setUseEffectCall] = useState(false)

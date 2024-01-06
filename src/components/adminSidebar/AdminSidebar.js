@@ -29,7 +29,7 @@ const AdminSidebar = () => {
     const [selectedFile, setSelectedFile] = useState(null);
     const [importFile, setImportFile] = useState(null)
     const [plants, setPlants] = useState([])
-    const [role, setRole] = useState(JSON.parse(localStorage.getItem("loginData"))?.role)
+    const [role, setRole] = useState(JSON?.parse(localStorage?.getItem("loginData"))?.role)
     const [selectedPlant, setSelectedPlant] = useState('')
     const [formData, setFormData] = useState({
         name: '',
@@ -135,6 +135,7 @@ const AdminSidebar = () => {
         if (formData.name === "" || formData.description === "" || importFile == null) {
             console.log('Fill data')
         } else {
+            setLoading(true)
             instance.post(`/plants/create-plant`, formData).then((res) => {
                 toast.success("Created successfully");
                 console.log(res.data)
@@ -156,8 +157,16 @@ const AdminSidebar = () => {
 
                         // extractedData.forEach((element, index) => {
                         instance.post(`/assets/addAssetImport`, extractedData).then((res) => {
+
                             if (res.data) {
                                 console.log(res.data)
+                                setLoading(false)
+                                setShowAddModal(false)
+                                setFormData({
+                                    name: '',
+                                    description: '',
+                                })
+
                                 // handleLiClick("657d9cc91a95c5b61f5d90b5")
                             } else {
                                 console.log('Error adding data')
@@ -169,15 +178,12 @@ const AdminSidebar = () => {
                         // })
                     }
                 });
-                setFormData({
-                    name: '',
-                    description: '',
-                })
-
             }).catch((err) => {
+                setLoading(false)
+                window.location.reload()
                 console.log(err)
             })
-            setShowAddModal(false)
+
         }
 
     };
@@ -200,15 +206,15 @@ const AdminSidebar = () => {
     };
     const [open, setOpen] = useState(false);
     const cancelButtonRef = useRef(null);
-
     const handleRadioChange = (id) => {
         setSelectedPlant(id)
     }
 
     return (
 
-        <aside className="bg-white overflow-hidden text-white py-5 rounded-lg mr-4 w-60 sidebar-container flex flex-col justify-between items-center bg-bottom">
+        <aside className="bg-white overflow-hidden text-white py-5 rounded-lg mr-4 w-60 sidebar-container flex flex-col justify-between items-center bg-bottom ">
             {/* <ToastContainer /> */}
+
             <div>
                 <Link to='/'>
                     <div className=" font-bold text-[25px]  text-[rgb(157,49,113)] flex justify-center items-center">
@@ -311,6 +317,7 @@ const AdminSidebar = () => {
                                             onClick={handleExport}
                                         >
                                             Export
+
                                         </button>
                                         <button
                                             type="button"
@@ -384,7 +391,7 @@ const AdminSidebar = () => {
                                                             id="csvFile"
                                                             name="csvFile"
                                                             accept=".csv"
-                                                            onChange={handleFileChange}
+                                                            onChange={!loading ? handleFileChange : null}
                                                             className="hidden"
                                                         />
                                                         <label
@@ -402,17 +409,22 @@ const AdminSidebar = () => {
                                                     <button
                                                         className="text-red-500 background-transparent font-bold uppercase px-6 py-2 text-sm outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150 h-10"
                                                         type="button"
-                                                        onClick={() => setShowAddModal(false)}
+                                                        onClick={() => !loading ? setShowAddModal(false) : null}
                                                     >
                                                         Cancel
                                                     </button>
                                                     <button
                                                         className="bg-[rgb(138,168,249)] text-white active:bg-[rgb(138,168,249)] font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
                                                         type="button"
-                                                        onClick={handleCreate}
+                                                        onClick={!loading ? handleCreate : null}
                                                     //onClick={handleImportButtonClick}
                                                     >
-                                                        Import
+                                                        {loading ?
+                                                            <div className="flex justify-center items-center h-[80%]">
+                                                                <div className="animate-spin rounded-full h-6 w-6 border-t-4 border-white border-solid">
+
+                                                                </div>
+                                                            </div> : 'Import'}
                                                     </button>
                                                 </div>
                                             </div>
@@ -429,17 +441,11 @@ const AdminSidebar = () => {
                         <button className="rounded-31xl flex items-center justify-center py-2.5 px-5 gap-[9px] text-center text-[14px] text-white cursor-pointer rounded  bg-[rgb(254,0,144)] border-[rgb(254,0,144)] hover:bg-[rgb(254,116,194)] mt-4"
                             onClick={() => setOpen(true)}
                         >
-                            {loading ? (
-                                <div className="flex justify-center items-center h-[80%]">
-                                    <div className="animate-spin rounded-full h-10 w-10 border-t-4 border-blue-500 border-solid">
 
-                                    </div>
-                                </div>
-                            ) : (
-                                <>
-                                    <CiExport />Export
-                                </>
-                            )}
+                            <>
+                                <CiExport />Export
+                            </>
+
                         </button>
                     </div>
                 </div>}
@@ -456,6 +462,7 @@ const AdminSidebar = () => {
                 </div>
             </div>
         </aside >
+
     )
 }
 

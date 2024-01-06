@@ -50,7 +50,7 @@ const DummyComp = () => {
         parent: id,
         plant: plantId
     })
-    const [userData, setUserData] = useState(JSON.parse(localStorage.getItem("loginData")))
+    const [userData, setUserData] = useState(JSON?.parse(localStorage?.getItem("loginData")))
     const [accessState, setAccessState] = useState({})
     useEffect(() => {
         if (userData.role == "admin") {

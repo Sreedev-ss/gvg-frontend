@@ -14,7 +14,7 @@ const AdminDashboard = () => {
     updatePlant("")
   }, [])
   return (
-    <div className="flex h-[96vh] overflow-y-hidden">
+    <div className="flex h-[96vh] overflow-y-hidden relative">
       <AdminSidebar />
 
       <div className="flex-1 flex flex-col overflow-hidden">
