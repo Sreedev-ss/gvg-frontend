@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { instance } from "../../api";
-import { format } from 'date-fns';
+
 
 const ReportingAnalyticsComp = () => {
     const [tableData, setTableData] = useState([]);
@@ -39,7 +39,7 @@ const ReportingAnalyticsComp = () => {
                             ))}
                         </tbody>
                     </table>
-                </div> : <div className="flex justify-center w-full"><h1 className="font-semibold text-3xl text-center">No Reports found</h1></div>}
+                </div> : <div className="flex justify-center w-full"></div>}
             </div>
         </>
     )

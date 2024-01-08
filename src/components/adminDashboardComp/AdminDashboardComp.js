@@ -561,7 +561,7 @@ const AdminDashboardComp = () => {
                                 </div>
                             </Link>
                         </div>
-                    )) : <div className="flex justify-center w-full"><h1 className="font-bold text-3xl text-center">No plant found</h1></div>}
+                    )) : <div className="flex justify-center w-full"></div>}
 
                 </div>
             </div>
