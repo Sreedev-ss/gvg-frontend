@@ -43,7 +43,9 @@ const DummyComp = () => {
     const [showConfirmationModal, setShowConfirmationModal] = useState(false);
     const [itemIdToDuplicate, setItemIdToDuplicate] = useState(null);
     const [showColorPicker, setShowColorPicker] = useState(false);
-    const [selectedColor, setSelectedColor] = useState();
+    const [showBgColorPicker, setShowBgColorPicker] = useState(false);
+    const [selectedColor, setSelectedColor] = useState('#3773ca');
+    const [bgselectedColor, setBgSelectedColor] = useState('#d7ebe6')
     const [formData, setFormData] = useState({
         description: '',
         system: 'primary',
@@ -124,6 +126,7 @@ const DummyComp = () => {
             const response = await instance.get(`/assets/children/${parentId}/${plant}`);
             if (response.data.length) {
                 setSelectedColor(response.data[0]?.color)
+                setBgSelectedColor(response.data[0]?.bgcolor)
             }
             setDrillDownData(response.data);
             if (level == 1 && response.data.length < 5) {
@@ -317,6 +320,12 @@ const DummyComp = () => {
 
     const handleFilterClick = () => {
         setShowColorPicker(!showColorPicker);
+        setShowBgColorPicker(false);
+    };
+
+    const handlebgFilterClick = () => {
+        setShowBgColorPicker(!showBgColorPicker);
+        setShowColorPicker(false);
     };
 
     const debouncedApiCall = debounce((color) => {
@@ -329,9 +338,23 @@ const DummyComp = () => {
         })
     }, 3000);
 
+    const debouncedBgApiCall = debounce((color) => {
+        console.log(color, level, plantId)
+        instance.put(`/assets/update-bg-color/${level}/${plantId}`, { color: color }).then((res) => {
+            console.log(res.data)
+            setShowBgColorPicker(false)
+        }).catch((err) => {
+            console.log(err)
+        })
+    }, 3000);
+
     const handleColorChange = (color) => {
         setSelectedColor(color.hex);
         debouncedApiCall(color.hex)
+    };
+    const handleBgColorChange = (color) => {
+        setBgSelectedColor(color.hex);
+        debouncedBgApiCall(color.hex)
     };
 
     return (
@@ -339,13 +362,23 @@ const DummyComp = () => {
             <div className="bg-white p-4 h-[89.4vh] rounded-lg shadow-md main-container">
                 <ToastContainer />
 
-                <div className="w-[96%] h-[94%]  m-6 rounded-2xl" style={{ border: '2px solid rgb(65,73,115)', backgroundColor: 'rgba(255, 255, 255, 0.8)' }} >
-                    <CiFilter className='ml-[98%] m-4' onClick={handleFilterClick} />
+                <div className="w-[96%] h-[94%] m-6 rounded-2xl" style={{ border: '2px solid rgb(65,73,115)', backgroundColor: 'rgba(255, 255, 255, 0.8)' }} >
+                    <div className='flex justify-end mt-5 gap-4 '>
+                        <CiFilter  onClick={handlebgFilterClick} />
+                        <CiFilter  onClick={handleFilterClick} />
+                    </div>
                     {showColorPicker && (
                         <SketchPicker
                             className='absolute right-4 mt-4 z-50'
                             color={selectedColor}
                             onChangeComplete={(color) => handleColorChange(color)}
+                        />
+                    )}
+                    {showBgColorPicker && (
+                        <SketchPicker
+                            className='absolute right-4 mt-4 z-50'
+                            color={bgselectedColor}
+                            onChangeComplete={(color) => handleBgColorChange(color)}
                         />
                     )}
 
@@ -380,13 +413,13 @@ const DummyComp = () => {
                                 {parentName?.name && level == 6 || level == 2 ? (
                                     <div className="flex justify-evenly z-0 gap-10 align-middle box-border rounded-2xl w-[100%] cursor-pointer" >
                                         {level == 6 ? mainRegion2 && mainRegion2.map((item, index) => (
-                                            <div key={index} onClick={() => fetchData(item.name.trim())} style={{ backgroundColor: parentName?.name?.trim() == item?.name?.trim() && parentName?._id?.trim() == item?._id?.trim() ? 'rgb(215,235,230)' : '', border: parentName?.name?.trim() == item?.name?.trim() && parentName?._id?.trim() == item?._id?.trim() ? '2px solid rgb(77,164,164)' : '', borderRadius: parentName?.name?.trim() == item?.name?.trim() && parentName?._id?.trim() == item?._id?.trim() ? '7px 7px 0 0' : '', padding: '3px', borderBottom: 'none' }}>
+                                            <div key={index} onClick={() => fetchData(item.name.trim())} style={{ backgroundColor: parentName?.name?.trim() == item?.name?.trim() && parentName?._id?.trim() == item?._id?.trim() ? `${bgselectedColor}` : '', border: parentName?.name?.trim() == item?.name?.trim() && parentName?._id?.trim() == item?._id?.trim() ? '2px solid rgb(77,164,164)' : '', borderRadius: parentName?.name?.trim() == item?.name?.trim() && parentName?._id?.trim() == item?._id?.trim() ? '7px 7px 0 0' : '', padding: '3px', borderBottom: 'none' }}>
                                                 <p className="m-0 px-4 text-black justify-center items-center flex font-semibold">{item?.name?.length !== 1 && item?.name}</p>
                                                 <p className="m-0 px-4 text-black justify-center items-center flex font-semibold">{item?.description?.slice(0, 20)}</p>
                                             </div>
                                         )) :
                                             mainRegion && mainRegion.map((item, index) => (
-                                                <div key={index} onClick={() => fetchData(item.name.trim())} style={{ backgroundColor: parentName?.name?.trim() == item?.name?.trim() && parentName?._id?.trim() == item?._id?.trim() ? 'rgb(215,235,230)' : '', border: parentName?.name?.trim() == item?.name?.trim() && parentName?._id?.trim() == item?._id?.trim() ? '2px solid rgb(77,164,164)' : '', borderRadius: parentName?.name?.trim() == item?.name?.trim() && parentName?._id?.trim() == item?._id?.trim() ? '7px 7px 0 0' : '', padding: '3px', borderBottom: 'none' }}>
+                                                <div key={index} onClick={() => fetchData(item.name.trim())} style={{ backgroundColor: parentName?.name?.trim() == item?.name?.trim() && parentName?._id?.trim() == item?._id?.trim() ? `${bgselectedColor}` : '', border: parentName?.name?.trim() == item?.name?.trim() && parentName?._id?.trim() == item?._id?.trim() ? '2px solid rgb(77,164,164)' : '', borderRadius: parentName?.name?.trim() == item?.name?.trim() && parentName?._id?.trim() == item?._id?.trim() ? '7px 7px 0 0' : '', padding: '3px', borderBottom: 'none' }}>
                                                     <p className="m-0 px-4 text-black justify-center items-center flex font-semibold">{item?.name?.length !== 1 && item?.name}</p>
                                                     <p className="m-0 px-4 text-black justify-center items-center flex font-semibold">{item?.description?.slice(0, 20)}</p>
                                                 </div>
@@ -396,7 +429,7 @@ const DummyComp = () => {
 
                                 ) :
                                     <div className="flex justify-between z-0 box-border rounded-2xl w-[100%] cursor-pointer" onClick={() => handleFetchData(parentName?.parent)}>
-                                        <div className='' style={{ backgroundColor: 'rgb(215,235,230)', border: '2px solid rgb(77,164,164)', borderRadius: '7px 7px 0 0', padding: '3px', borderBottom: 'none' }}>
+                                        <div className='' style={{ backgroundColor: `${bgselectedColor}`, border: '2px solid rgb(77,164,164)', borderRadius: '7px 7px 0 0', padding: '3px', borderBottom: 'none' }}>
                                             <p className="m-0 px-4 text-black justify-center items-center flex font-semibold">{parentName?.name?.length !== 0 && parentName?.name}</p>
                                             <p className="m-0 px-4 text-black justify-center items-center flex font-semibold">{parentName?.description?.slice(0, 35)}</p>
                                         </div>
@@ -404,9 +437,9 @@ const DummyComp = () => {
                                 }
                             </div>
                             <div className='w-[100%] h-[99%] px-2'>
-                                <div className="text-center text-xl text-white bg-[rgb(215,235,230)] rounded-2xl h-[78%] max-h-[80%] py-[12px] overflow-y-scroll " style={{ outline: '2px solid rgb(77,164,164)' }}>
+                                <div className="text-center text-xl text-white rounded-2xl h-[78%] max-h-[80%] py-[12px] overflow-y-scroll " style={{ outline: '2px solid rgb(77,164,164)',backgroundColor:`${bgselectedColor}` }}>
                                     <div className="cursor-pointer flex items-end justify-end">
-                                    {accessState?.create &&<CiCirclePlus className="text-slate-950 font-bold text-[20px]" onClick={handleCreateView} />}
+                                        {accessState?.create && <CiCirclePlus className="text-slate-950 font-bold text-[20px]" onClick={handleCreateView} />}
                                     </div>
 
 
@@ -543,19 +576,19 @@ const DummyComp = () => {
                                                             {showDropDownSPlantSFac[item._id] && (
                                                                 <div style={{ backgroundColor: `${selectedColor}` }} className={`text-white rounded-xl shadow-lg px-2 absolute top-0 right-0 mt-8 mr-2 dropContent show`}>
                                                                     {/* <div className="dropdown"> */}
-                                                                    {accessState?.delete &&<p className="m-0  whitespace-nowrap cursor-pointer p-tooltip" onClick={() => handleDeleteModalView(item._id)}
+                                                                    {accessState?.delete && <p className="m-0  whitespace-nowrap cursor-pointer p-tooltip" onClick={() => handleDeleteModalView(item._id)}
                                                                         style={{ '--i': 0 }}
                                                                     >
                                                                         <MdDeleteOutline />
                                                                         <span className="tooltip">Delete</span>
                                                                     </p>}
-                                                                    {accessState?.edit &&<p className="m-0  whitespace-nowrap cursor-pointer p-tooltip" onClick={() => { setShowEditSPlantSFacModal(true); setFormData(item); }}
+                                                                    {accessState?.edit && <p className="m-0  whitespace-nowrap cursor-pointer p-tooltip" onClick={() => { setShowEditSPlantSFacModal(true); setFormData(item); }}
                                                                         style={{ '--i': 1 }}
                                                                     >
                                                                         <CiEdit className='mt-2' />
                                                                         <span className="tooltip">Edit</span>
                                                                     </p>}
-                                                                    {accessState?.duplicate &&<p className="m-0  whitespace-nowrap cursor-pointer p-tooltip" onClick={() => handleDuplicate(item._id)}
+                                                                    {accessState?.duplicate && <p className="m-0  whitespace-nowrap cursor-pointer p-tooltip" onClick={() => handleDuplicate(item._id)}
                                                                         style={{ '--i': 2 }}
                                                                     >
                                                                         <HiOutlineDocumentDuplicate className='mt-2' />
