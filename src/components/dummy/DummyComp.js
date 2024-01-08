@@ -45,7 +45,9 @@ const DummyComp = () => {
     const [showColorPicker, setShowColorPicker] = useState(false);
     const [showBgColorPicker, setShowBgColorPicker] = useState(false);
     const [selectedColor, setSelectedColor] = useState('#3773ca');
-    const [bgselectedColor, setBgSelectedColor] = useState('#d7ebe6')
+    const [bgselectedColor, setBgSelectedColor] = useState('#d7ebe6');
+    const [isHoveredBg, setIsHoveredBg] = useState(false);
+    const [isHoveredBox, setIsHoveredBox] = useState(false);
     const [formData, setFormData] = useState({
         description: '',
         system: 'primary',
@@ -357,15 +359,36 @@ const DummyComp = () => {
         debouncedBgApiCall(color.hex)
     };
 
+    const handleMouseEnterBg = () => {
+        setIsHoveredBg(true);
+    };
+
+    const handleMouseLeaveBg = () => {
+        setIsHoveredBg(false);
+    };
+
+    const handleMouseEnterBox = () => {
+        setIsHoveredBox(true);
+    };
+
+    const handleMouseLeaveBox = () => {
+        setIsHoveredBox(false);
+    };
+
     return (
         <>
             <div className="bg-white p-4 h-[89.4vh] rounded-lg shadow-md main-container">
                 <ToastContainer />
 
                 <div className="w-[96%] h-[94%] m-6 rounded-2xl" style={{ border: '2px solid rgb(65,73,115)', backgroundColor: 'rgba(255, 255, 255, 0.8)' }} >
-                    <div className='flex justify-end mt-5 gap-4 '>
-                        <CiFilter  onClick={handlebgFilterClick} />
-                        <CiFilter  onClick={handleFilterClick} />
+                    <div className='flex justify-end mt-5 gap-4 relative'>
+                        <span><CiFilter  onClick={handlebgFilterClick} onMouseEnter={handleMouseEnterBg} onMouseLeave={handleMouseLeaveBg} />
+                        {isHoveredBg && <p className='absolute right-5 text-xs'>Background</p>}
+                        </span>
+                        <span>
+                        <CiFilter  onClick={handleFilterClick} onMouseEnter={handleMouseEnterBox} onMouseLeave={handleMouseLeaveBox} />
+                        {isHoveredBox && <p className='absolute right-1 text-xs'>Box</p>}
+                        </span>
                     </div>
                     {showColorPicker && (
                         <SketchPicker
